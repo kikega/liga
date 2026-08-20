@@ -1,0 +1,13 @@
+<ul class="divide-y divide-slate-100">
+    {% for p in jornada.partidos.all %}
+        {% if not p.jugado %}
+        <li class="py-2 flex items-center justify-between gap-2 text-sm">
+            <span class="truncate font-medium">{{ p.local.nombre }}</span>
+            <span class="text-slate-400 whitespace-nowrap">vs</span>
+            <span class="truncate text-right font-medium">{{ p.visitante.nombre }}</span>
+        </li>
+        {% endif %}
+    {% empty %}
+        <li class="py-2 text-sm text-slate-500">Sin partidos programados.</li>
+    {% endfor %}
+</ul>

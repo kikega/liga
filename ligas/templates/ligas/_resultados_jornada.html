@@ -1,0 +1,13 @@
+<ul class="divide-y divide-slate-100">
+    {% for p in jornada.partidos.all %}
+        {% if p.jugado %}
+        <li class="px-4 py-2.5 flex items-center justify-between gap-2 text-sm">
+            <span class="truncate">{{ p.local.nombre }}</span>
+            <span class="font-mono font-semibold whitespace-nowrap bg-slate-100 rounded px-2 py-0.5">
+                {{ p.goles_local }} - {{ p.goles_visitante }}
+            </span>
+            <span class="truncate text-right">{{ p.visitante.nombre }}</span>
+        </li>
+        {% endif %}
+    {% endfor %}
+</ul>

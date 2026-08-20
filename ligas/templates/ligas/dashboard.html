@@ -1,0 +1,81 @@
+{% extends "ligas/base.html" %}
+
+{% block title %}Dashboard · {{ temporada.nombre }}{% endblock %}
+
+{% block content %}
+<div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+    <h1 class="text-2xl font-bold">Dashboard</h1>
+    {% if temporada %}
+        <form method="get" class="flex items-center gap-2">
+            <label class="text-sm text-slate-600" for="division">División</label>
+            <select name="division" id="division"
+                    onchange="this.form.submit()"
+                    class="border border-slate-300 rounded px-3 py-1.5 bg-white text-sm">
+                {% for d in divisiones %}
+                    <option value="{{ d.nivel }}" {% if d.id == division.id %}selected{% endif %}>
+                        {{ d.nombre }}
+                    </option>
+                {% endfor %}
+            </select>
+            <span class="text-sm text-slate-500">· Temporada <strong>{{ temporada.nombre }}</strong></span>
+        </form>
+    {% endif %}
+</div>
+
+{% if not temporada %}
+    <div class="bg-amber-50 border border-amber-200 text-amber-800 rounded-lg p-6">
+        <h2 class="font-semibold mb-2">No hay datos</h2>
+        <p class="text-sm mb-4">
+            La base de datos está vacía. Importa el histórico desde un CSV:
+        </p>
+        <code class="block bg-slate-900 text-emerald-300 rounded px-3 py-2 text-sm mb-2">
+            python manage.py import_csv --csv ruta/historico.csv
+        </code>
+        <p class="text-sm">y entrena el modelo con</p>
+        <code class="block bg-slate-900 text-emerald-300 rounded px-3 py-2 text-sm">
+            python manage.py train_model
+        </code>
+    </div>
+{% else %}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <section class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="px-4 py-3 border-b border-slate-200 font-semibold">
+                Clasificación · {{ division.nombre }}
+            </div>
+            {% include "ligas/_clasificacion.html" with clasificacion=clasificacion %}
+        </section>
+
+        <aside class="space-y-6">
+            {% if ultima_jornada %}
+                <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="px-4 py-3 border-b border-slate-200 font-semibold">
+                        Última jornada ({{ ultima_jornada.numero }})
+                    </div>
+                    {% include "ligas/_resultados_jornada.html" with jornada=ultima_jornada %}
+                </section>
+            {% endif %}
+
+            {% if proxima_jornada %}
+                <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="px-4 py-3 border-b border-slate-200 font-semibold">
+                        Próxima jornada ({{ proxima_jornada.numero }})
+                    </div>
+                    <div class="p-4 space-y-3">
+                        {% include "ligas/_proximos_partidos.html" with jornada=proxima_jornada %}
+                        <div id="predicciones-jornada" class="pt-2"></div>
+                        <button
+                            hx-post="{% url 'ligas:jornada_predecir' proxima_jornada.id %}"
+                            hx-target="#predicciones-jornada"
+                            hx-swap="innerHTML"
+                            hx-disabled-elt="this"
+                            class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg px-4 py-2.5 text-sm transition"
+                        >
+                            Predecir Resultados
+                        </button>
+                    </div>
+                </section>
+            {% endif %}
+        </aside>
+    </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Fútbol Predictivo{% endblock %}</title>
+    {# En desarrollo se usan CDN. En producción sirve estáticos Nginx:
+       python manage.py collectstatic  ->  staticfiles/
+       location /static/ { alias /ruta/a/futbol/staticfiles/; } #}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+<body class="bg-slate-100 text-slate-800">
+    <header class="bg-slate-900 text-white shadow">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="{% url 'ligas:dashboard' %}" class="text-xl font-bold tracking-tight">
+                ⚽ Fútbol Predictivo
+            </a>
+            <nav class="text-sm text-slate-300">
+                <a href="{% url 'ligas:dashboard' %}" class="hover:text-white">Dashboard</a>
+            </nav>
+        </div>
+    </header>
+    <main class="max-w-6xl mx-auto px-4 py-6">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

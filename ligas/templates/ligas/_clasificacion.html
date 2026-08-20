@@ -1,0 +1,38 @@
+{% if clasificacion %}
+<div class="overflow-x-auto">
+    <table class="w-full text-sm">
+        <thead>
+            <tr class="text-left text-xs uppercase tracking-wide text-slate-500 border-b border-slate-200">
+                <th class="px-4 py-2">#</th>
+                <th class="px-4 py-2">Equipo</th>
+                <th class="px-2 py-2 text-center">PJ</th>
+                <th class="px-2 py-2 text-center">PG</th>
+                <th class="px-2 py-2 text-center">PE</th>
+                <th class="px-2 py-2 text-center">PP</th>
+                <th class="px-2 py-2 text-center">GF</th>
+                <th class="px-2 py-2 text-center">GC</th>
+                <th class="px-4 py-2 text-center font-bold">PTS</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fila in clasificacion %}
+            <tr class="border-b border-slate-100 hover:bg-slate-50">
+                <td class="px-4 py-2 text-slate-500">{{ forloop.counter }}</td>
+                <td class="px-4 py-2 font-medium">{{ fila.nombre }}</td>
+                <td class="px-2 py-2 text-center">{{ fila.pj }}</td>
+                <td class="px-2 py-2 text-center">{{ fila.pg }}</td>
+                <td class="px-2 py-2 text-center">{{ fila.pe }}</td>
+                <td class="px-2 py-2 text-center">{{ fila.pp }}</td>
+                <td class="px-2 py-2 text-center">{{ fila.gf }}</td>
+                <td class="px-2 py-2 text-center">{{ fila.gc }}</td>
+                <td class="px-4 py-2 text-center font-bold text-emerald-700">{{ fila.pts }}</td>
+            </tr>
+            {% empty %}
+            <tr><td class="px-4 py-6 text-center text-slate-500">Sin partidos jugados en esta división.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="px-4 py-6 text-sm text-slate-500">No hay partidos jugados para calcular la clasificación.</p>
+{% endif %}
