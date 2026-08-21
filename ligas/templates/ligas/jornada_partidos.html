@@ -1,0 +1,340 @@
+{% extends "ligas/base.html" %}
+{% block title %}Jornada {{ jornada.numero }} · Fútbol Predictivo{% endblock %}
+
+{% block content %}
+<a href="{% url 'ligas:configuracion' %}" class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 hover:text-emerald-700 transition mb-4">
+    ← Volver a Configuración
+</a>
+
+<div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+        <h1 class="text-3xl font-black text-slate-900 tracking-tight">Gestión de la Jornada {{ jornada.numero }}</h1>
+        <p class="text-sm text-slate-500 mt-1">
+            {{ temporada }} · 
+            <span class="font-bold text-slate-700">{{ partidos|length }} partidos en total</span>
+            {% if partidos_div1 or partidos_div2 %}
+                (<span class="text-indigo-600 font-semibold">{{ partidos_div1|length }} de 1ª División</span>
+                {% if partidos_div1 and partidos_div2 %} · {% endif %}
+                <span class="text-amber-600 font-semibold">{{ partidos_div2|length }} de 2ª División</span>)
+            {% endif %}
+        </p>
+    </div>
+    {% if partidos %}
+    <form method="post" action="{% url 'ligas:jornada_cerrar' jornada.id %}"
+          onsubmit="return confirm('¿Cerrar Jornada {{ jornada.numero }} y re-entrenar el modelo con todos los resultados registrados?')">
+        {% csrf_token %}
+        <button type="submit"
+                class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold px-4 py-2.5 rounded-2xl text-xs shadow transition">
+            🏁 Cerrar Jornada y Re-entrenar
+        </button>
+    </form>
+    {% endif %}
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Formulario para Añadir Nuevos Partidos -->
+    <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-8 self-start">
+        <div class="flex items-center gap-2 mb-1">
+            <span class="text-lg">➕</span>
+            <h2 class="font-extrabold text-slate-900 text-base">Añadir Nuevos Partidos</h2>
+        </div>
+        <p class="text-xs text-slate-500 mb-6">
+            Elige equipos de <strong>1ª División</strong> o <strong>2ª División</strong> en el desplegable. Puedes indicar la fecha o añadirla después, y dejar los goles en blanco si están por jugar.
+        </p>
+        
+        <form method="post">
+            {% csrf_token %}
+            {{ formset.management_form }}
+            <div class="space-y-4">
+                {% for form in formset %}
+                <div class="rounded-2xl border border-slate-200/80 p-4 bg-slate-50/50 space-y-3">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Equipo Local</label>
+                            {{ form.local }}
+                            {% if form.local.errors %}<p class="text-[11px] text-rose-600 mt-0.5">{{ form.local.errors.0 }}</p>{% endif %}
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Equipo Visitante</label>
+                            {{ form.visitante }}
+                            {% if form.visitante.errors %}<p class="text-[11px] text-rose-600 mt-0.5">{{ form.visitante.errors.0 }}</p>{% endif %}
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Fecha</label>
+                            {{ form.fecha }}
+                            {% if form.fecha.errors %}<p class="text-[11px] text-rose-600 mt-0.5">{{ form.fecha.errors.0 }}</p>{% endif %}
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Goles Local</label>
+                            {{ form.goles_local }}
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Goles Visitante</label>
+                            {{ form.goles_visitante }}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            {% if formset.non_form_errors %}
+            <div class="rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold p-4 mt-4">
+                {{ formset.non_form_errors }}
+            </div>
+            {% endif %}
+            
+            <button type="submit"
+                    class="mt-6 w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-700 hover:to-emerald-600 text-white font-bold rounded-2xl px-5 py-3 text-sm shadow-md shadow-emerald-500/20 transition">
+                💾 Guardar Nuevos Partidos
+            </button>
+        </form>
+    </div>
+
+    <!-- Lista de Partidos Registrados con Agrupación Principal por División -->
+    <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden self-start">
+        <div class="px-6 py-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/70">
+            <div class="flex items-center gap-2">
+                <span class="text-lg">📋</span>
+                <h2 class="font-extrabold text-slate-900 text-base">Resultados de la Jornada</h2>
+            </div>
+            
+            <!-- Selector de Vista (Pestañas) -->
+            <div class="flex items-center gap-1 bg-slate-200/80 p-1 rounded-xl text-xs font-bold self-start sm:self-auto">
+                <button type="button" onclick="cambiarVista('ambas')" id="btn-vista-ambas"
+                        class="vista-btn active-vista px-2.5 py-1 rounded-lg transition bg-white text-slate-900 shadow-xs">
+                    📋 Ambas ({{ partidos|length }})
+                </button>
+                <button type="button" onclick="cambiarVista('div1')" id="btn-vista-div1"
+                        class="vista-btn px-2.5 py-1 rounded-lg transition text-slate-600 hover:text-slate-900">
+                    🏆 1ª División ({{ partidos_div1|length }})
+                </button>
+                <button type="button" onclick="cambiarVista('div2')" id="btn-vista-div2"
+                        class="vista-btn px-2.5 py-1 rounded-lg transition text-slate-600 hover:text-slate-900">
+                    🥈 2ª División ({{ partidos_div2|length }})
+                </button>
+            </div>
+        </div>
+        
+        {% if partidos %}
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="accion" value="actualizar_resultados">
+            
+            <div class="space-y-6 p-4 sm:p-6">
+                
+                <!-- SECCIÓN 1: PRIMERA DIVISIÓN -->
+                <div id="seccion-div1" class="seccion-division rounded-2xl border border-indigo-100 bg-white overflow-hidden shadow-xs">
+                    <!-- Cabecera Principal de Primera División -->
+                    <div class="bg-gradient-to-r from-indigo-900 via-indigo-800 to-slate-900 px-5 py-3 flex items-center justify-between text-white">
+                        <div class="flex items-center gap-2.5">
+                            <span class="text-base">🏆</span>
+                            <div>
+                                <h3 class="font-black text-sm tracking-wide">Primera División · LaLiga EA Sports</h3>
+                                <p class="text-[10px] text-indigo-200">Partidos de la máxima categoría</p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-black bg-white/15 px-2.5 py-0.5 rounded-full border border-white/20">
+                            {{ partidos_div1|length }} partido{{ partidos_div1|length|pluralize }}
+                        </span>
+                    </div>
+
+                    {% if grupos_div1 %}
+                    <div class="divide-y divide-slate-100">
+                        {% for grupo in grupos_div1 %}
+                        <div>
+                            <!-- Cabecera de Fecha -->
+                            <div class="bg-indigo-50/60 px-5 py-2 border-b border-indigo-100/60 flex items-center justify-between">
+                                <span class="text-[11px] font-extrabold uppercase tracking-wider text-indigo-900">
+                                    📅 {{ grupo.label }}
+                                </span>
+                                <span class="text-[10px] font-bold text-indigo-600">
+                                    {{ grupo.partidos|length }} partido{{ grupo.partidos|length|pluralize }}
+                                </span>
+                            </div>
+
+                            <div class="divide-y divide-slate-100/80">
+                                {% for p in grupo.partidos %}
+                                <div class="px-4 py-3 flex items-center justify-between gap-2 sm:gap-3 hover:bg-indigo-50/20 transition">
+                                    <!-- Local -->
+                                    <div class="flex items-center gap-2 min-w-0 flex-1 justify-end text-right">
+                                        <span class="font-bold text-slate-800 text-xs sm:text-sm truncate">{{ p.local.nombre }}</span>
+                                        {% include "ligas/_escudo.html" with equipo=p.local %}
+                                    </div>
+
+                                    <!-- Marcador centrado -->
+                                    <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 shrink-0">
+                                        <input type="number" min="0" name="gl_{{ p.id }}" value="{{ p.goles_local|default_if_none:'' }}"
+                                               placeholder="—"
+                                               class="w-10 text-center font-mono font-black text-xs bg-white border border-slate-200 rounded-lg py-1 text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                                        <span class="text-slate-400 font-bold text-xs">-</span>
+                                        <input type="number" min="0" name="gv_{{ p.id }}" value="{{ p.goles_visitante|default_if_none:'' }}"
+                                               placeholder="—"
+                                               class="w-10 text-center font-mono font-black text-xs bg-white border border-slate-200 rounded-lg py-1 text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                                    </div>
+
+                                    <!-- Visitante -->
+                                    <div class="flex items-center gap-2 min-w-0 flex-1 text-left">
+                                        {% include "ligas/_escudo.html" with equipo=p.visitante %}
+                                        <span class="font-bold text-slate-800 text-xs sm:text-sm truncate">{{ p.visitante.nombre }}</span>
+                                    </div>
+
+                                    <!-- Acciones -->
+                                    <div class="flex items-center gap-1 shrink-0 ml-1">
+                                        <a href="{% url 'ligas:partido_editar' jornada.id p.id %}"
+                                           class="text-xs font-bold text-slate-500 hover:text-emerald-700 bg-slate-100 hover:bg-emerald-50 rounded-lg p-1.5 transition"
+                                           title="Editar partido">
+                                            ✏️
+                                        </a>
+                                        <button type="submit"
+                                                formaction="{% url 'ligas:partido_eliminar' jornada.id p.id %}"
+                                                onclick="return confirm('¿Eliminar este partido?')"
+                                                class="text-slate-300 hover:text-rose-600 transition text-sm p-1" title="Eliminar partido">
+                                            ✕
+                                        </button>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="px-6 py-8 text-center text-xs text-slate-400">
+                        No hay partidos de 1ª División en esta jornada.
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- SECCIÓN 2: SEGUNDA DIVISIÓN -->
+                <div id="seccion-div2" class="seccion-division rounded-2xl border border-amber-100 bg-white overflow-hidden shadow-xs">
+                    <!-- Cabecera Principal de Segunda División -->
+                    <div class="bg-gradient-to-r from-amber-900 via-amber-800 to-slate-900 px-5 py-3 flex items-center justify-between text-white">
+                        <div class="flex items-center gap-2.5">
+                            <span class="text-base">🥈</span>
+                            <div>
+                                <h3 class="font-black text-sm tracking-wide">Segunda División · LaLiga Hypermotion</h3>
+                                <p class="text-[10px] text-amber-200">Partidos de la categoría de plata</p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-black bg-white/15 px-2.5 py-0.5 rounded-full border border-white/20">
+                            {{ partidos_div2|length }} partido{{ partidos_div2|length|pluralize }}
+                        </span>
+                    </div>
+
+                    {% if grupos_div2 %}
+                    <div class="divide-y divide-slate-100">
+                        {% for grupo in grupos_div2 %}
+                        <div>
+                            <!-- Cabecera de Fecha -->
+                            <div class="bg-amber-50/60 px-5 py-2 border-b border-amber-100/60 flex items-center justify-between">
+                                <span class="text-[11px] font-extrabold uppercase tracking-wider text-amber-900">
+                                    📅 {{ grupo.label }}
+                                </span>
+                                <span class="text-[10px] font-bold text-amber-600">
+                                    {{ grupo.partidos|length }} partido{{ grupo.partidos|length|pluralize }}
+                                </span>
+                            </div>
+
+                            <div class="divide-y divide-slate-100/80">
+                                {% for p in grupo.partidos %}
+                                <div class="px-4 py-3 flex items-center justify-between gap-2 sm:gap-3 hover:bg-amber-50/20 transition">
+                                    <!-- Local -->
+                                    <div class="flex items-center gap-2 min-w-0 flex-1 justify-end text-right">
+                                        <span class="font-bold text-slate-800 text-xs sm:text-sm truncate">{{ p.local.nombre }}</span>
+                                        {% include "ligas/_escudo.html" with equipo=p.local %}
+                                    </div>
+
+                                    <!-- Marcador centrado -->
+                                    <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 shrink-0">
+                                        <input type="number" min="0" name="gl_{{ p.id }}" value="{{ p.goles_local|default_if_none:'' }}"
+                                               placeholder="—"
+                                               class="w-10 text-center font-mono font-black text-xs bg-white border border-slate-200 rounded-lg py-1 text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                                        <span class="text-slate-400 font-bold text-xs">-</span>
+                                        <input type="number" min="0" name="gv_{{ p.id }}" value="{{ p.goles_visitante|default_if_none:'' }}"
+                                               placeholder="—"
+                                               class="w-10 text-center font-mono font-black text-xs bg-white border border-slate-200 rounded-lg py-1 text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                                    </div>
+
+                                    <!-- Visitante -->
+                                    <div class="flex items-center gap-2 min-w-0 flex-1 text-left">
+                                        {% include "ligas/_escudo.html" with equipo=p.visitante %}
+                                        <span class="font-bold text-slate-800 text-xs sm:text-sm truncate">{{ p.visitante.nombre }}</span>
+                                    </div>
+
+                                    <!-- Acciones -->
+                                    <div class="flex items-center gap-1 shrink-0 ml-1">
+                                        <a href="{% url 'ligas:partido_editar' jornada.id p.id %}"
+                                           class="text-xs font-bold text-slate-500 hover:text-emerald-700 bg-slate-100 hover:bg-emerald-50 rounded-lg p-1.5 transition"
+                                           title="Editar partido">
+                                            ✏️
+                                        </a>
+                                        <button type="submit"
+                                                formaction="{% url 'ligas:partido_eliminar' jornada.id p.id %}"
+                                                onclick="return confirm('¿Eliminar este partido?')"
+                                                class="text-slate-300 hover:text-rose-600 transition text-sm p-1" title="Eliminar partido">
+                                            ✕
+                                        </button>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="px-6 py-8 text-center text-xs text-slate-400">
+                        No hay partidos de 2ª División en esta jornada.
+                    </div>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <div class="p-4 bg-slate-50/70 border-t border-slate-100 flex items-center justify-end">
+                <button type="submit"
+                        class="bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-2xl px-6 py-2.5 text-xs shadow transition">
+                    💾 Guardar Marcadores (1ª y 2ª División)
+                </button>
+            </div>
+        </form>
+        {% else %}
+        <div class="px-6 py-16 text-center text-sm text-slate-400">
+            Aún no hay partidos registrados en esta jornada.
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    function cambiarVista(modo) {
+        const secDiv1 = document.getElementById('seccion-div1');
+        const secDiv2 = document.getElementById('seccion-div2');
+
+        // Resetear visibilidad
+        if (modo === 'ambas') {
+            secDiv1.classList.remove('hidden');
+            secDiv2.classList.remove('hidden');
+        } else if (modo === 'div1') {
+            secDiv1.classList.remove('hidden');
+            secDiv2.classList.add('hidden');
+        } else if (modo === 'div2') {
+            secDiv1.classList.add('hidden');
+            secDiv2.classList.remove('hidden');
+        }
+
+        // Estilos de botones de vista
+        document.querySelectorAll('.vista-btn').forEach(btn => {
+            btn.classList.remove('bg-white', 'text-slate-900', 'shadow-xs');
+            btn.classList.add('text-slate-600');
+        });
+
+        const btnActivo = document.getElementById('btn-vista-' + modo);
+        if (btnActivo) {
+            btnActivo.classList.remove('text-slate-600');
+            btnActivo.classList.add('bg-white', 'text-slate-900', 'shadow-xs');
+        }
+    }
+</script>
+{% endblock %}

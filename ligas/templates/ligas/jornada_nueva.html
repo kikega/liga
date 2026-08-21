@@ -1,0 +1,34 @@
+{% extends "ligas/base.html" %}
+{% block title %}Nueva jornada · Fútbol Predictivo{% endblock %}
+
+{% block content %}
+<a href="{% url 'ligas:configuracion' %}" class="text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition">← Configuración</a>
+
+<div class="max-w-xl mx-auto mt-4">
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+        <h1 class="text-xl font-extrabold text-slate-900 mb-1">Crear nueva jornada</h1>
+        <p class="text-sm text-slate-500 mb-5">Define la temporada y el número; después añadirás los partidos.</p>
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Temporada</label>
+                {{ form.temporada }}
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Número</label>
+                {{ form.numero }}
+                <p class="text-xs text-slate-500 mt-1">Déjalo vacío para asignar el siguiente automáticamente.</p>
+            </div>
+            {% if form.errors %}
+            <div class="rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3">
+                {{ form.errors }}
+            </div>
+            {% endif %}
+            <button type="submit"
+                    class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl px-4 py-2.5 text-sm shadow-md shadow-emerald-200 transition">
+                Crear jornada
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

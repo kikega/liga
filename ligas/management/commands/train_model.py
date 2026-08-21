@@ -37,7 +37,7 @@ class Command(BaseCommand):
 
         self.stdout.write(f"Características sobre {len(partidos)} partidos jugados...")
         try:
-            predictor, exactitud, reporte, ruta = entrenar_modelo(
+            predictor, exactitud, brier, reporte, ruta = entrenar_modelo(
                 partidos,
                 form_window=options["ventana"],
                 output=options["output"],
@@ -49,7 +49,6 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(f"Modelo guardado en {ruta}"))
         self.stdout.write(
             self.style.SUCCESS(
-                f"Exactitud en validación: {exactitud:.1%} "
-                f"(muestras de validación: {reporte['macro avg']['support']})"
+                f"Exactitud en validación temporal: {exactitud:.1%} | Brier Score: {brier:.4f}"
             )
         )

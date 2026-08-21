@@ -1,0 +1,9 @@
+{% if equipo.escudo %}
+    <img src="{{ equipo.escudo.url }}" alt="{{ equipo.nombre }}"
+         class="h-7 w-7 sm:h-8 sm:w-8 rounded-full object-cover ring-2 ring-white shadow-sm shrink-0">
+{% else %}
+    <span class="inline-flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full text-xs font-black text-white ring-2 ring-white shadow-sm shrink-0 uppercase tracking-tighter"
+          style="background: linear-gradient(135deg, {{ equipo.color_primario|default:'#1e293b' }}, {{ equipo.color_secundario|default:'#0f172a' }});">
+        {{ equipo.nombre|slice:":2" }}
+    </span>
+{% endif %}

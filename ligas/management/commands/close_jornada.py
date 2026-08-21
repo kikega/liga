@@ -57,11 +57,11 @@ class Command(BaseCommand):
             .prefetch_related("ausencias__jugador")
         )
         try:
-            predictor, exactitud, _, ruta = entrenar_modelo(partidos, output=options["output"])
+            predictor, exactitud, brier, _, ruta = entrenar_modelo(partidos, output=options["output"])
         except ValueError as exc:
             self.stderr.write(self.style.WARNING(f"No se re-entrenó el modelo: {exc}"))
             return
 
         self.stdout.write(
-            self.style.SUCCESS(f"Modelo re-entrenado en {ruta} (exactitud {exactitud:.1%}).")
+            self.style.SUCCESS(f"Modelo re-entrenado en {ruta} (exactitud {exactitud:.1%}, Brier {brier:.4f}).")
         )

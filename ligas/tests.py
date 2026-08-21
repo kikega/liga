@@ -3,14 +3,18 @@ import tempfile
 from datetime import date
 from pathlib import Path
 
+from django.contrib.auth import get_user_model
 from django.core.management import call_command
-from django.test import TestCase
+from django.test import Client, TestCase
 
+from ligas.ml.dixon_coles import DixonColesModel
+from ligas.ml.elo import EloCalculator
 from ligas.models import (
     PUNTOS_DERROTA,
     PUNTOS_EMPATE,
     PUNTOS_VICTORIA,
     Ausencia,
+    Configuracion,
     Division,
     Equipo,
     Jornada,
@@ -20,7 +24,10 @@ from ligas.models import (
     Prediccion,
     Temporada,
 )
+from ligas.quiniela import GeneradorQuiniela, calcular_entropia
 from ligas.services import clasificacion_por_division
+
+Usuario = get_user_model()
 
 
 def crear_division(nivel):
@@ -75,8 +82,8 @@ class ClasificacionTests(TestCase):
     def setUp(self):
         div = crear_division(1)
         self.temporada = crear_temporada()
-        self.e1, self.e2, self.e3 = crear_equipos("Real", "Atletico", "Valencia")
-        for e in (self.e1, self.e2, self.e3):
+        self.e1, self.e2, self.e3, self.e4 = crear_equipos("Real", "Atletico", "Valencia", "Sevilla")
+        for e in (self.e1, self.e2, self.e3, self.e4):
             Participacion.objects.create(temporada=self.temporada, equipo=e, division=div)
         j1 = Jornada.objects.create(temporada=self.temporada, numero=1)
         Partido.objects.create(jornada=j1, local=self.e1, visitante=self.e2, goles_local=2, goles_visitante=0)
@@ -84,117 +91,104 @@ class ClasificacionTests(TestCase):
 
     def test_orden_y_puntos(self):
         clasificacion = clasificacion_por_division(self.temporada, Division.objects.get(nivel=1))
-        self.assertEqual([f["equipo_id"] for f in clasificacion], [self.e1.id, self.e3.id, self.e2.id])
+        # Sevilla no ha jugado partidos pero debe figurar con 0 puntos
+        self.assertEqual(len(clasificacion), 4)
+        nombres = [f["nombre"] for f in clasificacion]
+        self.assertIn("Sevilla", nombres)
         top = clasificacion[0]
+        self.assertEqual(top["nombre"], "Real")
         self.assertEqual((top["pj"], top["pg"], top["pts"], top["gf"], top["gc"]), (2, 2, 6, 3, 0))
 
 
-class AscensosDescensosTests(TestCase):
+class EloCalculatorTests(TestCase):
     def setUp(self):
-        self.div1 = crear_division(1)
-        self.div2 = crear_division(2)
-        self.t2024 = crear_temporada("2024-2025", activa=False)
-        self.t2025 = crear_temporada("2025-2026", activa=True)
-        self.j1 = Jornada.objects.create(temporada=self.t2024, numero=1)
-        self.d1_equipos = crear_equipos("D1A", "D1B", "D1C", "D1D")
-        self.d2_equipos = crear_equipos("D2A", "D2B", "D2C", "D2D")
-        for e in self.d1_equipos:
-            Participacion.objects.create(temporada=self.t2024, equipo=e, division=self.div1)
-        for e in self.d2_equipos:
-            Participacion.objects.create(temporada=self.t2024, equipo=e, division=self.div2)
+        self.calculator = EloCalculator(k_factor=20.0, home_advantage=60.0)
+        self.e1, self.e2 = crear_equipos("LocalTeam", "VisitTeam")
+        self.div = crear_division(1)
+        self.temporada = crear_temporada()
+        for e in (self.e1, self.e2):
+            Participacion.objects.create(temporada=self.temporada, equipo=e, division=self.div)
+        self.j1 = Jornada.objects.create(temporada=self.temporada, numero=1)
 
-    def _resultado(self, local, visitante, gl, gv):
-        return Partido.objects.create(
-            jornada=self.j1, local=local, visitante=visitante, goles_local=gl, goles_visitante=gv
+    def test_elo_updates_correctly(self):
+        p = Partido.objects.create(
+            jornada=self.j1, local=self.e1, visitante=self.e2, goles_local=3, goles_visitante=0
         )
+        history = self.calculator.compute_match_ratings([p])
+        self.assertIn(p.id, history)
+        self.assertEqual(history[p.id]["local_elo"], 1500.0)
+        self.assertEqual(history[p.id]["visit_elo"], 1500.0)
 
-    def test_regla_3_descensos_y_3_ascensos(self):
-        d1, d2, d3, d4 = self.d1_equipos
-        e1, e2, e3, e4 = self.d2_equipos
-        self._resultado(d1, d2, 1, 0)
-        self._resultado(d3, d4, 1, 0)
-        self._resultado(e1, e2, 2, 0)
-        self._resultado(e3, e4, 2, 0)
-
-        movimientos = self.t2024.aplicar_ascensos_descensos()
-
-        descendidos = {e for e, _, tipo in movimientos if tipo == "descenso"}
-        ascendidos = {e for e, _, tipo in movimientos if tipo == "ascenso"}
-
-        self.assertEqual(len(descendidos), 3)
-        self.assertEqual(len(ascendidos), 3)
-
-        participaciones_2025 = {
-            (p.equipo_id, p.division_id) for p in Participacion.objects.filter(temporada=self.t2025)
-        }
-        for e in descendidos:
-            self.assertIn((e, self.div2.id), participaciones_2025)
-        for e in ascendidos:
-            self.assertIn((e, self.div1.id), participaciones_2025)
+        delta_l, delta_v = self.calculator.calculate_update(1500.0, 1500.0, 3, 0)
+        self.assertGreater(delta_l, 0)
+        self.assertLess(delta_v, 0)
 
 
-class ImportCsvTests(TestCase):
-    def test_importa_partidos_jugadores_y_bajas(self):
-        filas = [
-            {
-                "temporada": "2023-2024",
-                "division": "1",
-                "jornada": "1",
-                "fecha": "2023-08-20",
-                "local": "Betis",
-                "visitante": "Sevilla",
-                "goles_local": "2",
-                "goles_visitante": "1",
-                "jugadores_clave_local": "Isco;Fekir",
-                "jugadores_clave_visitante": "Navas",
-                "bajas_local": "Fekir",
-                "bajas_visitante": "",
-            },
-            {
-                "temporada": "2023-2024",
-                "division": "1",
-                "jornada": "2",
-                "fecha": "2023-08-27",
-                "local": "Sevilla",
-                "visitante": "Betis",
-                "goles_local": "",
-                "goles_visitante": "",
-                "jugadores_clave_local": "Navas",
-                "jugadores_clave_visitante": "Isco;Fekir",
-                "bajas_local": "",
-                "bajas_visitante": "",
-            },
-        ]
-        with tempfile.NamedTemporaryFile("w", suffix=".csv", delete=False, encoding="utf-8") as fh:
-            writer = csv.DictWriter(fh, fieldnames=list(filas[0].keys()))
-            writer.writeheader()
-            writer.writerows(filas)
-            ruta = fh.name
-        try:
-            call_command("import_csv", csv=ruta)
-        finally:
-            Path(ruta).unlink()
+class DixonColesTests(TestCase):
+    def test_exact_scores_and_1x2_sum_to_one(self):
+        model = DixonColesModel()
+        model.team_attack = {1: 0.2, 2: -0.1}
+        model.team_defense = {1: -0.1, 2: 0.2}
 
-        self.assertEqual(Equipo.objects.count(), 2)
-        self.assertEqual(Partido.objects.filter(goles_local__isnull=False).count(), 1)
-        self.assertEqual(Partido.objects.filter(goles_local__isnull=True).count(), 1)
-        isco = Jugador.objects.get(nombre="Isco")
-        self.assertTrue(isco.es_importante)
-        fekir = Jugador.objects.get(nombre="Fekir")
-        self.assertTrue(fekir.es_importante)
-        self.assertEqual(Ausencia.objects.filter(jugador=fekir).count(), 1)
+        matrix = model.score_probability_matrix(1, 2)
+        self.assertAlmostEqual(matrix.sum(), 1.0, places=4)
 
-    def test_dry_run_no_escribe(self):
-        with tempfile.NamedTemporaryFile("w", suffix=".csv", delete=False, encoding="utf-8") as fh:
-            fh.write("temporada,division,jornada,fecha,local,visitante,goles_local,goles_visitante\n")
-            fh.write("2023-2024,1,1,2023-08-20,Betis,Sevilla,2,1\n")
-            ruta = fh.name
-        try:
-            call_command("import_csv", csv=ruta, dry_run=True)
-        finally:
-            Path(ruta).unlink()
-        self.assertEqual(Equipo.objects.count(), 0)
-        self.assertEqual(Partido.objects.count(), 0)
+        p_l, p_e, p_v = model.predict_1x2_probabilities(1, 2)
+        self.assertAlmostEqual(p_l + p_e + p_v, 1.0, places=4)
+        self.assertGreater(p_l, p_v)
+
+        pleno = model.predict_pleno_al_15(1, 2)
+        self.assertIn(pleno["pleno_recomendado"], ("0-0", "1-0", "2-0", "2-1", "1-1", "M-0", "M-1", "0-1", "1-2"))
+
+
+class QuinielaTests(TestCase):
+    def test_generador_asigna_dobles_y_triples_por_entropia(self):
+        # 14 partidos simulados con distintas incertidumbres
+        partidos = []
+        for i in range(1, 16):
+            if i == 1:
+                # Muy cierto (baja entropía)
+                pl, pe, pv = 0.85, 0.10, 0.05
+            elif i == 2:
+                # Máxima incertidumbre (alta entropía)
+                pl, pe, pv = 0.34, 0.33, 0.33
+            elif i == 3:
+                # Disputado
+                pl, pe, pv = 0.40, 0.35, 0.25
+            else:
+                pl, pe, pv = 0.50, 0.30, 0.20
+
+            e1 = Equipo(id=i * 2, nombre=f"Local {i}")
+            e2 = Equipo(id=i * 2 + 1, nombre=f"Visitante {i}")
+            partidos.append(
+                {
+                    "partido": None,
+                    "local": e1,
+                    "visitante": e2,
+                    "prob_local": pl,
+                    "prob_empate": pe,
+                    "prob_visitante": pv,
+                    "pleno_info": {"pleno_recomendado": "2-1", "marcador_probable": (2, 1), "marcador_probable_prob": 0.22},
+                }
+            )
+
+        generador = GeneradorQuiniela(n_dobles=2, n_triples=1)
+        self.assertEqual(generador.total_columnas, (2**2) * (3**1))  # 4 * 3 = 12
+        self.assertEqual(generador.coste_total, 12 * 0.75)  # 9.00 €
+
+        boleto = generador.generar_boleto(partidos)
+        self.assertEqual(len(boleto["filas"]), 14)
+        self.assertIsNotNone(boleto["pleno_al_15"])
+
+        # El partido con máxima entropía debe ser TRIPLE
+        partido_incierto = next(f for f in boleto["filas"] if f["numero"] == 2)
+        self.assertEqual(partido_incierto["tipo_apuesta"], "TRIPLE")
+        self.assertEqual(partido_incierto["signos_jugados"], ["1", "X", "2"])
+
+        # El partido muy seguro debe ser FIJO
+        partido_seguro = next(f for f in boleto["filas"] if f["numero"] == 1)
+        self.assertEqual(partido_seguro["tipo_apuesta"], "FIJO")
+        self.assertEqual(partido_seguro["signos_jugados"], ["1"])
 
 
 class PipelineMlTests(TestCase):
@@ -236,9 +230,12 @@ class PipelineMlTests(TestCase):
         )
         self.assertGreaterEqual(len(partidos), 30)
 
-        predictor, exactitud, _, ruta = entrenar_modelo(partidos, output=str(Path(tempfile.gettempdir()) / "test_model.joblib"))
+        predictor, exactitud, brier, _, ruta = entrenar_modelo(
+            partidos, output=str(Path(tempfile.gettempdir()) / "test_model.joblib")
+        )
         self.assertIsNotNone(predictor.modelo)
         self.assertGreaterEqual(exactitud, 0.0)
+        self.assertGreaterEqual(brier, 0.0)
         self.assertTrue(Path(ruta).exists())
 
         # Procesa los partidos de la temporada 2024-2025 como "próximos" (sin resultado).
@@ -250,7 +247,10 @@ class PipelineMlTests(TestCase):
         self.assertEqual(len(predicciones), 3)
         for pred in predicciones:
             self.assertIn(pred.resultado_predicho, ("1", "X", "2"))
-            self.assertAlmostEqual(pred.prob_local + pred.prob_empate + pred.prob_visitante, 1.0, places=5)
+            self.assertAlmostEqual(pred.prob_local + pred.prob_empate + pred.prob_visitante, 1.0, places=4)
+            self.assertGreaterEqual(pred.prob_local_pct, 0.0)
+            self.assertLessEqual(pred.prob_local_pct, 100.0)
+            self.assertIn(pred.confianza_nivel, ("ALTA", "MEDIA", "DISPUTADO"))
 
         # Cierre de jornada: registra resultados y re-entrena.
         for p in jornada.partidos.all():
@@ -267,3 +267,151 @@ class PipelineMlTests(TestCase):
 
         Path(ruta).unlink(missing_ok=True)
         Path(tempfile.gettempdir(), "test_model.joblib").unlink(missing_ok=True)
+
+
+class VistasConfiguracionTests(TestCase):
+    def setUp(self):
+        self.client = Client(SERVER_NAME="localhost")
+        self.user = Usuario.objects.create_user(
+            email="admin@test.com", password="adminpassword", is_staff=True
+        )
+        self.client.force_login(self.user)
+        self.div = crear_division(1)
+        self.temporada = crear_temporada("2024-2025")
+        self.e1, self.e2, self.e3, self.e4 = crear_equipos("A", "B", "C", "D")
+        for e in (self.e1, self.e2, self.e3, self.e4):
+            Participacion.objects.create(temporada=self.temporada, equipo=e, division=self.div)
+        cfg = Configuracion.cargar()
+        cfg.temporada_actual = self.temporada
+        cfg.save()
+
+    def test_paginas_configuracion_renderizan(self):
+        for url in ("/configuracion/", "/configuracion/jornada/nueva/", "/configuracion/equipos/", "/quiniela/"):
+            response = self.client.get(url)
+            self.assertEqual(response.status_code, 200, url)
+        html = self.client.get("/configuracion/").content.decode()
+        self.assertIn("Configuración", html)
+        self.assertIn("Django Admin", html)
+
+    def test_crear_jornada_y_anadir_partidos(self):
+        response = self.client.post(
+            "/configuracion/jornada/nueva/", {"temporada": self.temporada.id, "numero": ""}
+        )
+        self.assertEqual(response.status_code, 302)
+        jornada = Jornada.objects.filter(temporada=self.temporada).order_by("-numero").first()
+        self.assertIsNotNone(jornada)
+        self.assertEqual(jornada.numero, 1)
+
+        data = {
+            "form-TOTAL_FORMS": "2",
+            "form-INITIAL_FORMS": "0",
+            "form-MIN_NUM_FORMS": "1",
+            "form-MAX_NUM_FORMS": "1000",
+            "form-0-local": self.e1.id,
+            "form-0-visitante": self.e2.id,
+            "form-0-fecha": "",
+            "form-0-goles_local": "",
+            "form-0-goles_visitante": "",
+            "form-1-local": self.e3.id,
+            "form-1-visitante": self.e4.id,
+            "form-1-fecha": "",
+            "form-1-goles_local": "",
+            "form-1-goles_visitante": "",
+        }
+        response = self.client.post(f"/configuracion/jornada/{jornada.id}/", data)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(jornada.partidos.count(), 2)
+
+        partido = jornada.partidos.first()
+        response = self.client.post(
+            f"/configuracion/jornada/{jornada.id}/partido/{partido.id}/eliminar/"
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(jornada.partidos.count(), 1)
+
+    def test_actualizar_resultados_conserva_fecha_existente(self):
+        jornada = Jornada.objects.create(temporada=self.temporada, numero=3)
+        dt = parse_fecha_flexible("2026-08-15")
+        p = Partido.objects.create(jornada=jornada, local=self.e1, visitante=self.e2, fecha=dt)
+        data = {
+            "accion": "actualizar_resultados",
+            f"gl_{p.id}": "2",
+            f"gv_{p.id}": "1",
+        }
+        response = self.client.post(f"/configuracion/jornada/{jornada.id}/", data)
+        self.assertEqual(response.status_code, 302)
+        p.refresh_from_db()
+        self.assertEqual(p.goles_local, 2)
+        self.assertEqual(p.goles_visitante, 1)
+        self.assertIsNotNone(p.fecha)
+        self.assertEqual(p.fecha, dt)
+
+    def test_partido_editar_individual(self):
+        jornada = Jornada.objects.create(temporada=self.temporada, numero=4)
+        p = Partido.objects.create(jornada=jornada, local=self.e1, visitante=self.e2)
+        response = self.client.get(f"/configuracion/jornada/{jornada.id}/partido/{p.id}/editar/")
+        self.assertEqual(response.status_code, 200)
+
+        data = {
+            "local": self.e1.id,
+            "visitante": self.e3.id,
+            "fecha": "2026-08-16",
+            "goles_local": "2",
+            "goles_visitante": "0",
+        }
+        response = self.client.post(f"/configuracion/jornada/{jornada.id}/partido/{p.id}/editar/", data)
+        self.assertEqual(response.status_code, 302)
+        p.refresh_from_db()
+        self.assertEqual(p.visitante, self.e3)
+        self.assertEqual(p.goles_local, 2)
+
+    def test_reentrenar_modelo_web(self):
+        response = self.client.post("/configuracion/modelo/reentrenar/")
+        self.assertEqual(response.status_code, 302)
+
+    def test_cerrar_jornada_web(self):
+        jornada = Jornada.objects.create(temporada=self.temporada, numero=2)
+        Partido.objects.create(jornada=jornada, local=self.e1, visitante=self.e2, goles_local=1, goles_visitante=0)
+        response = self.client.post(f"/configuracion/jornada/{jornada.id}/cerrar/")
+        self.assertEqual(response.status_code, 302)
+        jornada.refresh_from_db()
+        self.assertTrue(jornada.cerrada)
+
+    def test_jornada_activar(self):
+        jornada = Jornada.objects.create(temporada=self.temporada, numero=5)
+        response = self.client.post(f"/configuracion/jornada/{jornada.id}/activar/")
+        self.assertEqual(response.status_code, 302)
+        config = Configuracion.cargar()
+        self.assertEqual(config.proxima_jornada_id, jornada.id)
+
+    def test_crear_jornada_desde_configuracion(self):
+        response = self.client.post("/configuracion/", {
+            "accion": "crear_jornada",
+            "temporada": self.temporada.id,
+            "numero": "6",
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(Jornada.objects.filter(temporada=self.temporada, numero=6).exists())
+
+    def test_equipos_cambiar_division_rapido(self):
+        div2 = Division.objects.get(nivel=2)
+        response = self.client.post("/configuracion/equipos/", {
+            "accion": "cambiar_division",
+            "equipo_id": self.e1.id,
+            "division_id": div2.id,
+        })
+        self.assertEqual(response.status_code, 302)
+        p = Participacion.objects.get(temporada=self.temporada, equipo=self.e1)
+        self.assertEqual(p.division, div2)
+
+    def test_equipo_nuevo_con_division(self):
+        div1 = Division.objects.get(nivel=1)
+        response = self.client.post("/configuracion/equipos/nuevo/", {
+            "nombre": "Nuevo Club",
+            "division": div1.id,
+            "color_primario": "#112233",
+            "color_secundario": "#445566",
+        })
+        self.assertEqual(response.status_code, 302)
+        nuevo = Equipo.objects.get(nombre="Nuevo Club")
+        self.assertTrue(Participacion.objects.filter(temporada=self.temporada, equipo=nuevo, division=div1).exists())

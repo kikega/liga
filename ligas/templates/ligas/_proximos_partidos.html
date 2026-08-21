@@ -1,13 +1,25 @@
-<ul class="divide-y divide-slate-100">
-    {% for p in jornada.partidos.all %}
-        {% if not p.jugado %}
-        <li class="py-2 flex items-center justify-between gap-2 text-sm">
-            <span class="truncate font-medium">{{ p.local.nombre }}</span>
-            <span class="text-slate-400 whitespace-nowrap">vs</span>
-            <span class="truncate text-right font-medium">{{ p.visitante.nombre }}</span>
-        </li>
-        {% endif %}
-    {% empty %}
-        <li class="py-2 text-sm text-slate-500">Sin partidos programados.</li>
+{% for grupo in grupos_resultados %}
+<div class="pt-2 pb-1">
+    <div class="inline-flex items-center gap-1 text-[11px] font-extrabold uppercase tracking-wider text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
+        ⚽ {{ grupo.division.nombre }}
+    </div>
+</div>
+
+<ul class="divide-y divide-slate-100 pb-2">
+    {% for p in grupo.partidos %}
+    <li class="py-2.5 flex items-center justify-between gap-3 text-xs sm:text-sm hover:bg-slate-50/80 px-2 rounded-xl transition">
+        <div class="flex items-center gap-2 min-w-0 flex-1">
+            {% include "ligas/_escudo.html" with equipo=p.local %}
+            <span class="truncate font-bold text-slate-800">{{ p.local.nombre }}</span>
+        </div>
+        <span class="text-slate-400 font-extrabold text-[11px] bg-slate-100 rounded-md px-2 py-0.5 shrink-0">vs</span>
+        <div class="flex items-center gap-2 min-w-0 flex-1 justify-end">
+            <span class="truncate font-bold text-slate-800 text-right">{{ p.visitante.nombre }}</span>
+            {% include "ligas/_escudo.html" with equipo=p.visitante %}
+        </div>
+    </li>
     {% endfor %}
 </ul>
+{% empty %}
+<p class="py-6 text-sm text-slate-400 text-center">Sin partidos programados en esta jornada.</p>
+{% endfor %}

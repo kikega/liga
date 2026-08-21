@@ -1,0 +1,16 @@
+<div class="bg-amber-50 border border-amber-200 text-amber-800 rounded-2xl p-6">
+    <h2 class="font-bold text-lg mb-2">No hay datos todavía</h2>
+    <p class="text-sm mb-4">Importa el histórico desde tu CSV y entrena el modelo:</p>
+    <div class="space-y-2">
+        <code class="block bg-slate-900 text-emerald-300 rounded-lg px-3 py-2 text-sm font-mono">
+            python manage.py import_csv --csv liga_espana.csv
+        </code>
+        <code class="block bg-slate-900 text-emerald-300 rounded-lg px-3 py-2 text-sm font-mono">
+            python manage.py train_model
+        </code>
+    </div>
+    <p class="text-sm mt-4">
+        Después configura la temporada y la próxima jornada desde el
+        <a href="/admin/ligas/configuracion/1/change/" class="font-semibold underline">panel de administración</a>.
+    </p>
+</div>

@@ -1,0 +1,72 @@
+{% extends "ligas/base.html" %}
+{% block title %}Editar Partido · {{ partido }} · Fútbol Predictivo{% endblock %}
+
+{% block content %}
+<a href="{% url 'ligas:jornada_partidos_add' jornada.id %}" class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 hover:text-emerald-700 transition mb-4">
+    ← Volver a Jornada {{ jornada.numero }}
+</a>
+
+<div class="max-w-2xl mx-auto bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-8">
+    <div class="flex items-center gap-3 mb-6">
+        <span class="text-2xl">⚽</span>
+        <div>
+            <h1 class="text-xl font-black text-slate-900 tracking-tight">Editar Enfrentamiento</h1>
+            <p class="text-xs text-slate-500">Jornada {{ jornada.numero }} · {{ temporada.nombre }}</p>
+        </div>
+    </div>
+
+    <form method="post" class="space-y-5">
+        {% csrf_token %}
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Equipo Local</label>
+                {{ form.local }}
+                {% if form.local.errors %}<p class="text-xs text-rose-600 mt-1">{{ form.local.errors.0 }}</p>{% endif %}
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Equipo Visitante</label>
+                {{ form.visitante }}
+                {% if form.visitante.errors %}<p class="text-xs text-rose-600 mt-1">{{ form.visitante.errors.0 }}</p>{% endif %}
+            </div>
+        </div>
+
+        <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Fecha del Partido</label>
+            {{ form.fecha }}
+            <p class="text-[11px] text-slate-400 mt-1">Selecciona el día del encuentro (pasado, presente o futuro).</p>
+            {% if form.fecha.errors %}<p class="text-xs text-rose-600 mt-1">{{ form.fecha.errors.0 }}</p>{% endif %}
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Goles Local</label>
+                {{ form.goles_local }}
+                <span class="text-[10px] text-slate-400">Dejar en blanco si no se ha jugado</span>
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Goles Visitante</label>
+                {{ form.goles_visitante }}
+                <span class="text-[10px] text-slate-400">Dejar en blanco si no se ha jugado</span>
+            </div>
+        </div>
+
+        {% if form.non_field_errors %}
+        <div class="rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold p-4">
+            {{ form.non_field_errors }}
+        </div>
+        {% endif %}
+
+        <div class="flex items-center justify-between gap-4 pt-4 border-t border-slate-100">
+            <a href="{% url 'ligas:jornada_partidos_add' jornada.id %}"
+               class="px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 transition">
+                Cancelar
+            </a>
+            <button type="submit"
+                    class="bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-700 hover:to-emerald-600 text-white font-bold rounded-2xl px-6 py-2.5 text-xs shadow-md shadow-emerald-500/20 transition">
+                💾 Guardar Cambios
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

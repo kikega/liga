@@ -1,0 +1,93 @@
+{% extends "ligas/base.html" %}
+
+{% block title %}Predicciones ML · Fútbol Predictivo{% endblock %}
+
+{% block content %}
+<div class="mb-8 bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-slate-700/50 relative overflow-hidden">
+    <div class="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <div class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-300 bg-emerald-500/20 border border-emerald-400/30 rounded-full px-3 py-1 uppercase tracking-wider mb-2">
+                🤖 Inteligencia Artificial & Estadística
+            </div>
+            <h1 class="text-3xl font-black text-white tracking-tight">Motor de Predicción de Jornada</h1>
+            <p class="text-slate-300 mt-1 text-sm">
+                Pronósticos 1X2 generados por el ensamble <strong>Elo Rating + Dixon-Coles Poisson + GBDT Calibrado</strong>.
+            </p>
+        </div>
+        {% if jornada %}
+        <a href="{% url 'ligas:quiniela' %}"
+           class="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold text-xs px-5 py-3 rounded-2xl shadow-lg shadow-emerald-500/20 transition self-start sm:self-auto">
+            🎟️ Ver Boleto de Quiniela →
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+{% if not jornada %}
+    <div class="bg-white rounded-3xl border border-slate-200 p-10 text-center max-w-xl mx-auto shadow-sm">
+        <div class="text-5xl mb-3">🔮</div>
+        <h2 class="text-xl font-bold text-slate-800 mb-2">No hay jornada configurada</h2>
+        <p class="text-sm text-slate-500 mb-6">
+            Configura la <strong>temporada actual</strong> y la <strong>próxima jornada</strong> desde el panel de control.
+        </p>
+        <a href="{% url 'ligas:configuracion' %}"
+           class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-5 py-3 rounded-2xl shadow transition">
+            ⚙️ Ir a Configuración
+        </a>
+    </div>
+{% else %}
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+    <!-- Próxima Jornada -->
+    <section class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+            <div class="flex items-center gap-2">
+                <span class="text-lg">📅</span>
+                <h2 class="font-extrabold text-slate-800 text-sm">Próxima Jornada</h2>
+            </div>
+            <span class="text-xs font-black text-slate-500">J{{ jornada.numero }} · {{ temporada.nombre }}</span>
+        </div>
+        <div class="p-6">
+            {% include "ligas/_proximos_partidos.html" with grupos_resultados=grupos_resultados %}
+        </div>
+    </section>
+
+    <!-- Predicción del Modelo -->
+    <section class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
+        <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+            <div class="flex items-center gap-2">
+                <span class="text-lg">🤖</span>
+                <h2 class="font-extrabold text-slate-800 text-sm">Probabilidades y Certeza</h2>
+            </div>
+            <span class="text-[10px] font-bold uppercase text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2.5 py-0.5">
+                Ensamble GBDT + Poisson
+            </span>
+        </div>
+        <div class="p-6 space-y-4 flex-1 flex flex-col justify-between">
+            <div id="predicciones-jornada">
+                {% include "ligas/_predicciones.html" with predicciones=predicciones %}
+            </div>
+            
+            <button
+                hx-post="{% url 'ligas:jornada_predecir' jornada.id %}"
+                hx-target="#predicciones-jornada"
+                hx-swap="innerHTML"
+                hx-indicator="#pred-indicator"
+                hx-disabled-elt="this"
+                class="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-700 hover:to-emerald-600 text-white font-bold rounded-2xl px-4 py-3.5 text-sm shadow-md shadow-emerald-500/25 transition mt-4"
+            >
+                <span class="inline-flex items-center justify-center gap-2">
+                    <span id="pred-indicator" class="htmx-indicator inline-flex items-center">
+                        <svg class="animate-spin h-4 w-4 mr-1.5" viewBox="0 0 24 24" fill="none">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8v4a4 4 0 0 0-4 4H4z"></path>
+                        </svg>
+                    </span>
+                    🔮 Predecir / Actualizar Resultados
+                </span>
+            </button>
+        </div>
+    </section>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,38 +1,113 @@
 {% if clasificacion %}
 <div class="overflow-x-auto">
-    <table class="w-full text-sm">
+    <table class="w-full text-left text-xs sm:text-sm">
         <thead>
-            <tr class="text-left text-xs uppercase tracking-wide text-slate-500 border-b border-slate-200">
-                <th class="px-4 py-2">#</th>
-                <th class="px-4 py-2">Equipo</th>
-                <th class="px-2 py-2 text-center">PJ</th>
-                <th class="px-2 py-2 text-center">PG</th>
-                <th class="px-2 py-2 text-center">PE</th>
-                <th class="px-2 py-2 text-center">PP</th>
-                <th class="px-2 py-2 text-center">GF</th>
-                <th class="px-2 py-2 text-center">GC</th>
-                <th class="px-4 py-2 text-center font-bold">PTS</th>
+            <tr class="text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 bg-slate-50/75 select-none">
+                <th class="py-3 px-3 sm:px-4 w-12 text-center">Pos</th>
+                <th class="py-3 px-2 sm:px-4">Equipo</th>
+                <th class="py-3 px-2 text-center font-semibold">PJ</th>
+                <th class="py-3 px-2 text-center font-semibold">PG</th>
+                <th class="py-3 px-2 text-center font-semibold">PE</th>
+                <th class="py-3 px-2 text-center font-semibold">PP</th>
+                <th class="py-3 px-2 text-center font-semibold hidden md:table-cell">GF</th>
+                <th class="py-3 px-2 text-center font-semibold hidden md:table-cell">GC</th>
+                <th class="py-3 px-2 text-center font-semibold">DG</th>
+                <th class="py-3 px-3 text-center font-semibold hidden sm:table-cell">Forma</th>
+                <th class="py-3 px-4 text-center font-black text-emerald-700 bg-emerald-50/50">PTS</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="divide-y divide-slate-100/80">
             {% for fila in clasificacion %}
-            <tr class="border-b border-slate-100 hover:bg-slate-50">
-                <td class="px-4 py-2 text-slate-500">{{ forloop.counter }}</td>
-                <td class="px-4 py-2 font-medium">{{ fila.nombre }}</td>
-                <td class="px-2 py-2 text-center">{{ fila.pj }}</td>
-                <td class="px-2 py-2 text-center">{{ fila.pg }}</td>
-                <td class="px-2 py-2 text-center">{{ fila.pe }}</td>
-                <td class="px-2 py-2 text-center">{{ fila.pp }}</td>
-                <td class="px-2 py-2 text-center">{{ fila.gf }}</td>
-                <td class="px-2 py-2 text-center">{{ fila.gc }}</td>
-                <td class="px-4 py-2 text-center font-bold text-emerald-700">{{ fila.pts }}</td>
+            {% with equipo=fila.equipo %}
+            <tr class="hover:bg-slate-50/90 transition {{ fila.zona_clase }}">
+                <!-- Posición con indicador de zona -->
+                <td class="py-3 px-3 sm:px-4 text-center font-extrabold text-slate-600">
+                    <div class="flex items-center justify-center gap-1.5">
+                        <span>{{ fila.posicion }}</span>
+                        {% if fila.zona_tipo == 'UCL' %}
+                        <span class="h-1.5 w-1.5 rounded-full bg-blue-500 hidden sm:inline-block" title="Zona Champions League"></span>
+                        {% elif fila.zona_tipo == 'UEL' %}
+                        <span class="h-1.5 w-1.5 rounded-full bg-amber-500 hidden sm:inline-block" title="Zona Europa League"></span>
+                        {% elif fila.zona_tipo == 'UECL' %}
+                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 hidden sm:inline-block" title="Zona Conference League"></span>
+                        {% elif fila.zona_tipo == 'DESC' %}
+                        <span class="h-1.5 w-1.5 rounded-full bg-rose-500 hidden sm:inline-block" title="Zona de Descenso"></span>
+                        {% elif fila.zona_tipo == 'ASC' %}
+                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 hidden sm:inline-block" title="Ascenso Directo"></span>
+                        {% elif fila.zona_tipo == 'PLAYOFF' %}
+                        <span class="h-1.5 w-1.5 rounded-full bg-blue-500 hidden sm:inline-block" title="Playoff de Ascenso"></span>
+                        {% endif %}
+                    </div>
+                </td>
+
+                <!-- Equipo con Escudo -->
+                <td class="py-3 px-2 sm:px-4">
+                    <div class="flex items-center gap-2.5 min-w-[140px]">
+                        {% include "ligas/_escudo.html" with equipo=equipo %}
+                        <span class="font-bold text-slate-800 tracking-tight truncate">{{ fila.nombre }}</span>
+                    </div>
+                </td>
+
+                <!-- Estadísticas de Partidos -->
+                <td class="py-3 px-2 text-center text-slate-500 font-medium">{{ fila.pj }}</td>
+                <td class="py-3 px-2 text-center text-slate-600 font-medium">{{ fila.pg }}</td>
+                <td class="py-3 px-2 text-center text-slate-600 font-medium">{{ fila.pe }}</td>
+                <td class="py-3 px-2 text-center text-slate-600 font-medium">{{ fila.pp }}</td>
+                <td class="py-3 px-2 text-center text-slate-500 hidden md:table-cell">{{ fila.gf }}</td>
+                <td class="py-3 px-2 text-center text-slate-500 hidden md:table-cell">{{ fila.gc }}</td>
+                
+                <!-- Diferencia de Goles -->
+                <td class="py-3 px-2 text-center font-bold {% if fila.dg > 0 %}text-emerald-600{% elif fila.dg < 0 %}text-rose-500{% else %}text-slate-400{% endif %}">
+                    {% if fila.dg > 0 %}+{{ fila.dg }}{% else %}{{ fila.dg }}{% endif %}
+                </td>
+
+                <!-- Forma Reciente (Últimos 5 Partidos) -->
+                <td class="py-3 px-3 text-center hidden sm:table-cell">
+                    <div class="flex items-center justify-center gap-1">
+                        {% for item in fila.racha %}
+                        <span class="inline-flex items-center justify-center h-5 w-5 rounded-md text-[10px] font-black {{ item.badge }} shadow-xs cursor-default"
+                              title="{{ item.info }}">
+                            {{ item.res }}
+                        </span>
+                        {% empty %}
+                        <span class="text-[11px] text-slate-300">—</span>
+                        {% endfor %}
+                    </div>
+                </td>
+
+                <!-- Puntos -->
+                <td class="py-3 px-4 text-center bg-emerald-50/30">
+                    <span class="inline-flex min-w-7 justify-center items-center rounded-lg bg-slate-900 text-emerald-400 font-black text-xs sm:text-sm px-2 py-1 shadow-sm">
+                        {{ fila.pts }}
+                    </span>
+                </td>
             </tr>
+            {% endwith %}
             {% empty %}
-            <tr><td class="px-4 py-6 text-center text-slate-500">Sin partidos jugados en esta división.</td></tr>
+            <tr>
+                <td colspan="11" class="py-12 text-center text-slate-400 text-sm">
+                    No hay equipos participantes registrados en esta división.
+                </td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+
+<!-- Leyenda de Zonas de Competición -->
+<div class="px-5 py-3.5 bg-slate-50/90 border-t border-slate-100 text-[11px] text-slate-500 flex flex-wrap items-center gap-4">
+    <span class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Leyenda:</span>
+    {% if division.nivel == 1 %}
+    <div class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-blue-500"></span> Champions League (1-4)</div>
+    <div class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-amber-500"></span> Europa League (5)</div>
+    <div class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span> Conference League (6)</div>
+    <div class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-rose-500"></span> Descenso (18-20)</div>
+    {% else %}
+    <div class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span> Ascenso Directo (1-2)</div>
+    <div class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-blue-500"></span> Playoff de Ascenso (3-6)</div>
+    <div class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-rose-500"></span> Descenso (19-22)</div>
+    {% endif %}
+</div>
 {% else %}
-<p class="px-4 py-6 text-sm text-slate-500">No hay partidos jugados para calcular la clasificación.</p>
+<p class="px-6 py-10 text-sm text-slate-400 text-center">No hay datos de clasificación para esta división.</p>
 {% endif %}

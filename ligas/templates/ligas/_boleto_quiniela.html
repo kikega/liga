@@ -1,0 +1,165 @@
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <!-- Bloque 1X2 (Partidos 1 al 14) -->
+    <div class="lg:col-span-2 space-y-3">
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="px-5 py-4 bg-slate-900 text-white flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="text-emerald-400 font-extrabold text-sm">1X2</span>
+                    <h2 class="font-bold text-sm">Bloque Principal (14 Partidos)</h2>
+                </div>
+                <div class="text-xs text-slate-300 font-medium">
+                    {{ n_dobles }} Doble{{ n_dobles|pluralize }} · {{ n_triples }} Triple{{ n_triples|pluralize }}
+                </div>
+            </div>
+
+            <div class="divide-y divide-slate-100">
+                {% for fila in boleto.filas %}
+                <div class="p-4 hover:bg-slate-50/80 transition flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <!-- Número y Equipos -->
+                    <div class="flex items-center gap-3 min-w-0 flex-1">
+                        <span class="grid place-items-center h-7 w-7 rounded-lg bg-slate-100 text-xs font-black text-slate-700 shrink-0">
+                            {{ fila.numero }}
+                        </span>
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center gap-2 text-sm font-bold text-slate-800 truncate">
+                                {% include "ligas/_escudo.html" with equipo=fila.local %}
+                                <span class="truncate">{{ fila.local.nombre }}</span>
+                                <span class="text-slate-300 text-xs font-normal">vs</span>
+                                <span class="truncate">{{ fila.visitante.nombre }}</span>
+                                {% include "ligas/_escudo.html" with equipo=fila.visitante %}
+                            </div>
+                            <!-- Mini barras de probabilidad -->
+                            <div class="flex items-center gap-3 text-[11px] text-slate-500 mt-1 font-medium">
+                                <span>1: <strong class="text-slate-800">{{ fila.prob_local_pct }}%</strong></span>
+                                <span>X: <strong class="text-slate-800">{{ fila.prob_empate_pct }}%</strong></span>
+                                <span>2: <strong class="text-slate-800">{{ fila.prob_visitante_pct }}%</strong></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pronóstico y Signos Jugados -->
+                    <div class="flex items-center gap-2 self-end sm:self-center shrink-0">
+                        <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
+                            <span class="grid place-items-center h-8 w-8 rounded-lg text-xs font-extrabold transition
+                                         {% if '1' in fila.signos_jugados %}bg-emerald-600 text-white shadow-sm{% else %}text-slate-400 opacity-40{% endif %}">
+                                1
+                            </span>
+                            <span class="grid place-items-center h-8 w-8 rounded-lg text-xs font-extrabold transition
+                                         {% if 'X' in fila.signos_jugados %}bg-emerald-600 text-white shadow-sm{% else %}text-slate-400 opacity-40{% endif %}">
+                                X
+                            </span>
+                            <span class="grid place-items-center h-8 w-8 rounded-lg text-xs font-extrabold transition
+                                         {% if '2' in fila.signos_jugados %}bg-emerald-600 text-white shadow-sm{% else %}text-slate-400 opacity-40{% endif %}">
+                                2
+                            </span>
+                        </div>
+                        <span class="text-[10px] font-extrabold uppercase px-2 py-1 rounded-lg shrink-0
+                                     {% if fila.tipo_apuesta == 'TRIPLE' %}bg-purple-100 text-purple-800 border border-purple-200
+                                     {% elif fila.tipo_apuesta == 'DOBLE' %}bg-blue-100 text-blue-800 border border-blue-200
+                                     {% else %}bg-slate-100 text-slate-700 border border-slate-200{% endif %}">
+                            {{ fila.tipo_apuesta }}
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Columna Lateral: Pleno al 15 y Resumen -->
+    <div class="space-y-6">
+
+        <!-- Tarjeta del Pleno al 15 -->
+        {% if boleto.pleno_al_15 %}
+        {% with p15=boleto.pleno_al_15 %}
+        <div class="bg-gradient-to-br from-indigo-900 via-slate-900 to-indigo-950 text-white rounded-2xl shadow-md p-5 border border-indigo-800/40">
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                    <span class="text-amber-400 text-base font-black">⭐ 15</span>
+                    <h3 class="font-extrabold text-sm tracking-tight">Pleno al 15</h3>
+                </div>
+                <span class="text-[11px] font-bold text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+                    Dixon-Coles Poisson
+                </span>
+            </div>
+
+            <div class="text-xs text-indigo-200 mb-3">
+                {{ p15.local.nombre }} vs {{ p15.visitante.nombre }}
+            </div>
+
+            <div class="bg-white/10 rounded-xl p-4 text-center mb-4 backdrop-blur-sm border border-white/10">
+                <div class="text-[11px] uppercase font-bold text-indigo-300">Pronóstico Recomendado</div>
+                <div class="text-3xl font-black tracking-wider text-amber-300 my-1">
+                    {{ p15.pronostico_goles }}
+                </div>
+                <div class="text-[11px] text-slate-300">
+                    Marcador exacto más probable: <strong>{{ p15.marcador_exacto.0 }} - {{ p15.marcador_exacto.1 }}</strong> ({{ p15.marcador_prob }}%)
+                </div>
+            </div>
+
+            <div class="space-y-2 text-xs">
+                <div class="font-bold text-indigo-200 text-[11px] uppercase">Goles esperados (0, 1, 2, M):</div>
+                <div class="grid grid-cols-2 gap-2 text-[11px]">
+                    <div class="bg-white/5 p-2 rounded-lg">
+                        <div class="font-bold text-white truncate mb-1">{{ p15.local.nombre }}</div>
+                        <div class="flex justify-between text-slate-300">
+                            <span>0: {{ p15.cat_local.0|floatformat:2 }}</span>
+                            <span>1: {{ p15.cat_local.1|floatformat:2 }}</span>
+                        </div>
+                        <div class="flex justify-between text-slate-300">
+                            <span>2: {{ p15.cat_local.2|floatformat:2 }}</span>
+                            <span>M: {{ p15.cat_local.M|floatformat:2 }}</span>
+                        </div>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-lg">
+                        <div class="font-bold text-white truncate mb-1">{{ p15.visitante.nombre }}</div>
+                        <div class="flex justify-between text-slate-300">
+                            <span>0: {{ p15.cat_visit.0|floatformat:2 }}</span>
+                            <span>1: {{ p15.cat_visit.1|floatformat:2 }}</span>
+                        </div>
+                        <div class="flex justify-between text-slate-300">
+                            <span>2: {{ p15.cat_visit.2|floatformat:2 }}</span>
+                            <span>M: {{ p15.cat_visit.M|floatformat:2 }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endwith %}
+        {% endif %}
+
+        <!-- Resumen de Apuesta y Acciones -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
+            <h3 class="font-extrabold text-sm text-slate-900">Resumen de la Combinación</h3>
+            
+            <div class="space-y-2 text-xs text-slate-600">
+                <div class="flex justify-between py-1 border-b border-slate-100">
+                    <span>Partidos Fijos:</span>
+                    <strong class="text-slate-800">{{ 14|add:"-"|add:n_dobles|add:"-"|add:n_triples }}</strong>
+                </div>
+                <div class="flex justify-between py-1 border-b border-slate-100">
+                    <span>Dobles cubiertos:</span>
+                    <strong class="text-blue-600">{{ n_dobles }}</strong>
+                </div>
+                <div class="flex justify-between py-1 border-b border-slate-100">
+                    <span>Triples cubiertos:</span>
+                    <strong class="text-purple-600">{{ n_triples }}</strong>
+                </div>
+                <div class="flex justify-between py-1 border-b border-slate-100">
+                    <span>Apuestas simples (Columnas):</span>
+                    <strong class="text-slate-900 font-extrabold">{{ boleto.total_columnas }}</strong>
+                </div>
+                <div class="flex justify-between py-2 text-sm font-extrabold text-slate-900 bg-emerald-50 px-3 rounded-xl border border-emerald-100">
+                    <span>Importe total:</span>
+                    <span class="text-emerald-700">{{ boleto.coste_total }} €</span>
+                </div>
+            </div>
+
+            <button onclick="window.print()"
+                    class="w-full inline-flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-xl px-4 py-2.5 text-xs transition">
+                🖨️ Imprimir / Guardar Boleto
+            </button>
+        </div>
+    </div>
+</div>

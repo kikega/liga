@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "usuarios",
     "ligas",
 ]
 
@@ -112,9 +113,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "es-es"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Madrid"
 
 USE_I18N = True
 
@@ -131,6 +132,11 @@ STATIC_URL = "static/"
 # 2. Nginx: location /static/ { alias /ruta/a/futbol/staticfiles/; }
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# Archivos subidos (escudos de equipos). En producción servir por Nginx:
+# location /media/ { alias /ruta/a/futbol/mediafiles/; }
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "mediafiles"
+
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
@@ -140,3 +146,10 @@ MAILERS = {
         "BACKEND": "django.core.mail.backends.console.EmailBackend",
     },
 }
+
+# Autenticación con modelo personalizado
+AUTH_USER_MODEL = "usuarios.Usuario"
+LOGIN_URL = "usuarios:login"
+LOGIN_REDIRECT_URL = "ligas:dashboard"
+LOGOUT_REDIRECT_URL = "usuarios:login"
+

@@ -1,0 +1,45 @@
+{% for grupo in grupos_resultados %}
+<div class="px-5 pt-3.5 pb-1">
+    <div class="inline-flex items-center gap-1 text-[11px] font-extrabold uppercase tracking-wider text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-md">
+        ⚽ {{ grupo.division.nombre }}
+    </div>
+</div>
+
+<ul class="divide-y divide-slate-100 pb-2">
+    {% for p in grupo.partidos %}
+    <li class="px-5 py-3 flex items-center justify-between gap-3 text-sm hover:bg-slate-50/80 transition">
+        <!-- Equipo Local -->
+        <div class="flex items-center gap-2.5 min-w-0 flex-1">
+            {% include "ligas/_escudo.html" with equipo=p.local %}
+            <span class="truncate font-bold text-slate-800 text-xs sm:text-sm">{{ p.local.nombre }}</span>
+        </div>
+
+        <!-- Marcador / Estado -->
+        <div class="shrink-0 text-center px-2">
+            {% if p.jugado %}
+            <span class="inline-flex items-center justify-center font-mono font-black tabular-nums tracking-widest rounded-xl bg-slate-900 text-white px-3 py-1 text-xs sm:text-sm shadow-xs">
+                {{ p.goles_local }}<span class="text-emerald-400 mx-1">:</span>{{ p.goles_visitante }}
+            </span>
+            {% else %}
+            <span class="text-slate-400 font-extrabold text-xs bg-slate-100 rounded-lg px-2.5 py-1">vs</span>
+            {% endif %}
+            {% if p.fecha %}
+            <div class="text-[10px] text-slate-400 mt-0.5">{{ p.fecha|date:"d/m" }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Equipo Visitante -->
+        <div class="flex items-center gap-2.5 min-w-0 flex-1 justify-end">
+            <span class="truncate font-bold text-slate-800 text-xs sm:text-sm text-right">{{ p.visitante.nombre }}</span>
+            {% include "ligas/_escudo.html" with equipo=p.visitante %}
+        </div>
+    </li>
+    {% empty %}
+    <li class="px-5 py-6 text-sm text-slate-400 text-center">Sin partidos registrados en esta división.</li>
+    {% endfor %}
+</ul>
+{% empty %}
+<div class="px-5 py-10 text-center text-sm text-slate-400">
+    No hay partidos registrados para esta jornada.
+</div>
+{% endfor %}

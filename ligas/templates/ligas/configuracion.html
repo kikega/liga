@@ -1,0 +1,227 @@
+{% extends "ligas/base.html" %}
+{% block title %}Configuración · Fútbol Predictivo{% endblock %}
+
+{% block content %}
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+    <div>
+        <h1 class="text-2xl font-extrabold text-slate-900">Configuración del Sistema</h1>
+        <p class="text-sm text-slate-500 mt-1">Gestión de jornadas de 1ª y 2ª División, próxima jornada de Quiniela y motor de IA.</p>
+    </div>
+    <div class="flex gap-2">
+        <a href="{% url 'ligas:equipos' %}"
+           class="inline-flex items-center gap-2 rounded-xl bg-white border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition">
+            🛡️ Ver Equipos (1ª & 2ª)
+        </a>
+        <a href="/admin/"
+           class="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 transition">
+            ⚙️ Django Admin
+        </a>
+    </div>
+</div>
+
+<!-- Panel de Control de Machine Learning -->
+<div class="mb-6 bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 rounded-2xl shadow-lg p-6 text-white flex flex-col md:flex-row md:items-center justify-between gap-6">
+    <div class="space-y-1">
+        <div class="flex items-center gap-2">
+            <span class="text-emerald-400 font-extrabold text-xs uppercase tracking-wider">🧠 Motor Predictivo</span>
+            <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                Elo + Dixon-Coles + GBDT
+            </span>
+        </div>
+        <h2 class="text-lg font-extrabold text-white">Re-entrenamiento Continuo de Modelos</h2>
+        <p class="text-xs text-slate-300 max-w-xl">
+            Ajusta los modelos con los <strong class="text-emerald-300">{{ total_partidos_historicos }} partidos jugados</strong> registrados en la base de datos para afinar las probabilidades 1X2.
+        </p>
+    </div>
+    <form method="post" action="{% url 'ligas:reentrenar_modelo' %}" class="shrink-0">
+        {% csrf_token %}
+        <button type="submit"
+                class="inline-flex items-center gap-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-3 text-sm shadow-md transition">
+            🔄 Re-entrenar Modelos Ahora
+        </button>
+    </form>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Columna Izquierda: Configuración de Jornada Activa & Crear Nueva Jornada -->
+    <div class="lg:col-span-1 space-y-6">
+        
+        <!-- Tarjeta 1: Selección de Próxima Jornada Activa -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="text-xl">🎟️</span>
+                <div>
+                    <h2 class="font-extrabold text-slate-900 text-base">Próxima Jornada Activa</h2>
+                    <p class="text-[11px] text-slate-500">Alimenta el Dashboard y el boleto de Quiniela.</p>
+                </div>
+            </div>
+
+            <form method="post" class="space-y-4 mt-4">
+                {% csrf_token %}
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Temporada</label>
+                    {{ form.temporada_actual }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Próxima Jornada a Predecir</label>
+                    {{ form.proxima_jornada }}
+                </div>
+                
+                <button type="submit"
+                        class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-2xl px-4 py-2.5 text-xs shadow transition">
+                    💾 Guardar Jornada Activa
+                </button>
+            </form>
+        </div>
+
+        <!-- Tarjeta 2: Crear Nueva Jornada (1ª y 2ª División) -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="text-xl">➕</span>
+                <div>
+                    <h2 class="font-extrabold text-slate-900 text-base">Crear Nueva Jornada</h2>
+                    <p class="text-[11px] text-slate-500">Para partidos de 1ª División, 2ª División o Quiniela mixta.</p>
+                </div>
+            </div>
+
+            <form method="post" class="space-y-4 mt-4">
+                {% csrf_token %}
+                <input type="hidden" name="accion" value="crear_jornada">
+                
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Temporada</label>
+                    {{ jornada_form.temporada }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Número de Jornada</label>
+                    {{ jornada_form.numero }}
+                    <p class="text-[11px] text-slate-400 mt-1">Si lo dejas en blanco, se asignará el siguiente número correlativo.</p>
+                </div>
+
+                {% if jornada_form.errors %}
+                <div class="rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs p-3">
+                    {{ jornada_form.errors }}
+                </div>
+                {% endif %}
+
+                <button type="submit"
+                        class="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-700 hover:to-emerald-600 text-white font-bold rounded-2xl px-4 py-2.5 text-xs shadow-md shadow-emerald-500/20 transition">
+                    ➕ Crear Jornada y Añadir Partidos
+                </button>
+            </form>
+        </div>
+
+        <!-- Tarjeta 3: Iniciar Nueva Temporada -->
+        <div class="bg-gradient-to-br from-indigo-900 to-indigo-950 rounded-3xl shadow-sm p-6 text-white">
+            <h3 class="font-black text-sm text-indigo-100 mb-1">🔄 Cambio de Temporada</h3>
+            <p class="text-xs text-indigo-200 mb-4">
+                Crea la temporada siguiente a {{ temporada|default:"la actual" }} aplicando ascensos y descensos automáticos entre 1ª y 2ª División.
+            </p>
+            <form method="post" onsubmit="return confirm('¿Comenzar una nueva temporada? La actual quedará archivada.')">
+                {% csrf_token %}
+                <input type="hidden" name="accion" value="nueva_temporada">
+                <button type="submit"
+                        class="w-full bg-white/10 hover:bg-white/20 text-white font-bold rounded-2xl px-4 py-2.5 text-xs border border-white/20 transition">
+                    ▶️ Iniciar Nueva Temporada
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Columna Derecha: Listado Completo de Jornadas -->
+    <div class="lg:col-span-2">
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+                <div class="flex items-center gap-2">
+                    <span class="text-lg">📋</span>
+                    <div>
+                        <h2 class="font-extrabold text-slate-900 text-base">Jornadas Registradas</h2>
+                        <p class="text-xs text-slate-500">{{ temporada|default:"Temporada actual" }} · {{ jornadas|length }} jornadas</p>
+                    </div>
+                </div>
+            </div>
+
+            {% if jornadas %}
+            <div class="divide-y divide-slate-100">
+                {% for j in jornadas %}
+                <div class="px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-slate-50/80 transition {% if j.id == config.proxima_jornada_id %}bg-emerald-50/30{% endif %}">
+                    <div class="flex items-center gap-3.5 min-w-0">
+                        <span class="grid place-items-center h-10 w-10 rounded-2xl text-sm font-black shrink-0
+                                     {% if j.id == config.proxima_jornada_id %}bg-emerald-500 text-white shadow-sm shadow-emerald-500/30{% else %}bg-slate-100 text-slate-700{% endif %}">
+                            {{ j.numero }}
+                        </span>
+                        
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="font-black text-slate-900 text-sm">Jornada {{ j.numero }}</span>
+                                {% if j.id == config.proxima_jornada_id %}
+                                <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-100 border border-emerald-300 rounded-full px-2.5 py-0.5 shadow-xs">
+                                    ⭐ Próxima Activa
+                                </span>
+                                {% endif %}
+                                {% if j.cerrada %}
+                                <span class="text-[10px] font-bold text-slate-500 bg-slate-100 border border-slate-200 rounded-full px-2 py-0.5">
+                                    Cerrada
+                                </span>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="flex items-center gap-2 mt-1 text-xs text-slate-500 flex-wrap">
+                                <span class="font-semibold text-slate-700">{{ j.total_partidos }} partidos</span>
+                                <span class="text-slate-300">·</span>
+                                <span class="text-emerald-700 font-medium">{{ j.partidos_jugados }} jugados</span>
+                                {% if j.partidos_div1 or j.partidos_div2 %}
+                                <span class="text-slate-300">·</span>
+                                <span class="text-[11px] text-slate-500">
+                                    {% if j.partidos_div1 %}<span class="text-indigo-600 font-medium">1ª Div: {{ j.partidos_div1 }}</span>{% endif %}
+                                    {% if j.partidos_div1 and j.partidos_div2 %} / {% endif %}
+                                    {% if j.partidos_div2 %}<span class="text-amber-600 font-medium">2ª Div: {{ j.partidos_div2 }}</span>{% endif %}
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 self-end sm:self-center shrink-0">
+                        {% if j.id != config.proxima_jornada_id %}
+                        <form method="post" action="{% url 'ligas:jornada_activar' j.id %}">
+                            {% csrf_token %}
+                            <button type="submit"
+                                    class="text-xs font-bold text-slate-600 hover:text-emerald-700 bg-white hover:bg-emerald-50 border border-slate-200 rounded-xl px-3 py-1.5 transition shadow-xs"
+                                    title="Establece esta jornada como la activa para la Quiniela y el Dashboard">
+                                ⭐ Activar
+                            </button>
+                        </form>
+                        {% endif %}
+
+                        {% if not j.cerrada and j.partidos_jugados > 0 %}
+                        <form method="post" action="{% url 'ligas:jornada_cerrar' j.id %}"
+                              onsubmit="return confirm('¿Cerrar Jornada {{ j.numero }} y re-entrenar el modelo con los resultados?')">
+                            {% csrf_token %}
+                            <button type="submit"
+                                    class="text-xs font-bold text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-xl px-3 py-1.5 transition"
+                                    title="Cierra la jornada y re-entrena el modelo">
+                                🏁 Cerrar
+                            </button>
+                        </form>
+                        {% endif %}
+
+                        <a href="{% url 'ligas:jornada_partidos_add' j.id %}"
+                           class="text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 rounded-xl px-3.5 py-1.5 transition shadow-xs">
+                            ✏️ Gestionar Partidos
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="px-6 py-16 text-center">
+                <span class="text-3xl mb-2 block">⚽</span>
+                <p class="text-sm font-bold text-slate-700">No hay jornadas registradas para esta temporada.</p>
+                <p class="text-xs text-slate-400 mt-1">Usa el panel de la izquierda para crear la Jornada 1.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

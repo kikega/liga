@@ -3,79 +3,155 @@
 {% block title %}Dashboard · {{ temporada.nombre }}{% endblock %}
 
 {% block content %}
-<div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-    <h1 class="text-2xl font-bold">Dashboard</h1>
-    {% if temporada %}
-        <form method="get" class="flex items-center gap-2">
-            <label class="text-sm text-slate-600" for="division">División</label>
-            <select name="division" id="division"
-                    onchange="this.form.submit()"
-                    class="border border-slate-300 rounded px-3 py-1.5 bg-white text-sm">
-                {% for d in divisiones %}
-                    <option value="{{ d.nivel }}" {% if d.id == division.id %}selected{% endif %}>
-                        {{ d.nombre }}
-                    </option>
-                {% endfor %}
-            </select>
-            <span class="text-sm text-slate-500">· Temporada <strong>{{ temporada.nombre }}</strong></span>
+<!-- Cabecera Hero con Ambiente de Estadio -->
+<div class="mb-8 bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-slate-700/50 relative overflow-hidden">
+    <!-- Efecto de luz ambiental decorativo -->
+    <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -left-10 -top-10 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+        <div>
+            <div class="inline-flex items-center gap-2 bg-emerald-500/20 text-emerald-300 text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider mb-3 border border-emerald-500/30">
+                <span>🇪🇸 LaLiga EA Sports & Hypermotion</span>
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight">Panel de Análisis y Clasificación</h1>
+            <p class="text-slate-300 mt-1 text-sm font-medium">
+                Temporada <strong class="text-emerald-400 font-extrabold">{{ temporada.nombre }}</strong>
+                {% if config.proxima_jornada %}
+                    · Próxima Jornada configurada: <strong class="text-amber-300 font-extrabold">J{{ config.proxima_jornada.numero }}</strong>
+                {% endif %}
+            </p>
+        </div>
+
+        <!-- Filtros Rápidos de Temporada, División y Jornada -->
+        <form method="get" class="flex flex-wrap items-center gap-3 bg-white/10 p-3 rounded-2xl backdrop-blur-md border border-white/10">
+            <div>
+                <label class="block text-[10px] font-bold text-slate-300 uppercase tracking-wider mb-1" for="temporada">Temporada</label>
+                <select name="temporada" id="temporada" onchange="this.form.submit()"
+                        class="border border-white/20 rounded-xl px-3 py-1.5 bg-slate-900/90 text-white font-bold text-xs shadow-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    {% for t in temporadas %}
+                        <option value="{{ t.id }}" {% if t.id == temporada.id %}selected{% endif %}>{{ t.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-[10px] font-bold text-slate-300 uppercase tracking-wider mb-1" for="division">División</label>
+                <select name="division" id="division" onchange="this.form.submit()"
+                        class="border border-white/20 rounded-xl px-3 py-1.5 bg-slate-900/90 text-white font-bold text-xs shadow-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    {% for d in divisiones %}
+                        <option value="{{ d.nivel }}" {% if d.id == division.id %}selected{% endif %}>{{ d.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            {% if jornadas %}
+            <div>
+                <label class="block text-[10px] font-bold text-slate-300 uppercase tracking-wider mb-1" for="jornada">Histórico</label>
+                <select name="jornada" id="jornada" onchange="this.form.submit()"
+                        class="border border-white/20 rounded-xl px-3 py-1.5 bg-slate-900/90 text-white font-bold text-xs shadow-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    {% for j in jornadas %}
+                        <option value="{{ j.numero }}" {% if jornada_sel and j.id == jornada_sel.id %}selected{% endif %}>
+                            J{{ j.numero }}{% if j.cerrada %} · finalizada{% endif %}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
         </form>
-    {% endif %}
+    </div>
 </div>
 
 {% if not temporada %}
-    <div class="bg-amber-50 border border-amber-200 text-amber-800 rounded-lg p-6">
-        <h2 class="font-semibold mb-2">No hay datos</h2>
-        <p class="text-sm mb-4">
-            La base de datos está vacía. Importa el histórico desde un CSV:
-        </p>
-        <code class="block bg-slate-900 text-emerald-300 rounded px-3 py-2 text-sm mb-2">
-            python manage.py import_csv --csv ruta/historico.csv
-        </code>
-        <p class="text-sm">y entrena el modelo con</p>
-        <code class="block bg-slate-900 text-emerald-300 rounded px-3 py-2 text-sm">
-            python manage.py train_model
-        </code>
-    </div>
+    {% include "ligas/_empty_state.html" %}
 {% else %}
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <section class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-            <div class="px-4 py-3 border-b border-slate-200 font-semibold">
-                Clasificación · {{ division.nombre }}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+    <!-- Sección Principal: Tabla de Clasificación General -->
+    <section class="lg:col-span-2 bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
+        <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+            <div class="flex items-center gap-2.5">
+                <span class="text-xl">📊</span>
+                <div>
+                    <h2 class="font-extrabold text-slate-900 text-base">Clasificación General</h2>
+                    <p class="text-xs text-slate-500 font-medium">{{ division.nombre }} · {{ temporada.nombre }}</p>
+                </div>
             </div>
-            {% include "ligas/_clasificacion.html" with clasificacion=clasificacion %}
+            <span class="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
+                {{ clasificacion|length }} equipos
+            </span>
+        </div>
+        
+        {% include "ligas/_clasificacion.html" with clasificacion=clasificacion division=division %}
+    </section>
+
+    <!-- Barra Lateral: Resultados y Próxima Jornada -->
+    <aside class="space-y-6">
+
+        <!-- Tarjeta Próxima Jornada con Botón de Quiniela y Predicción -->
+        {% if proxima_jornada %}
+        <section class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-emerald-950/90 to-slate-900 text-white">
+                <div class="flex items-center gap-2">
+                    <span class="text-lg">🔮</span>
+                    <h2 class="font-extrabold text-sm tracking-tight">Próxima Jornada J{{ proxima_jornada.numero }}</h2>
+                </div>
+                <span class="text-[10px] font-black uppercase text-emerald-300 bg-emerald-500/20 border border-emerald-400/30 rounded-full px-2.5 py-0.5">
+                    Pendiente
+                </span>
+            </div>
+            
+            <div class="p-5 space-y-4">
+                {% include "ligas/_proximos_partidos.html" with grupos_resultados=grupos_proxima_jornada %}
+                
+                <div id="predicciones-jornada" class="pt-1"></div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-slate-100">
+                    <button
+                        hx-post="{% url 'ligas:jornada_predecir' proxima_jornada.id %}"
+                        hx-target="#predicciones-jornada"
+                        hx-swap="innerHTML"
+                        hx-indicator="#pred-indicator"
+                        hx-disabled-elt="this"
+                        class="w-full inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-700 hover:to-emerald-600 text-white font-bold rounded-xl px-3 py-2.5 text-xs shadow-md shadow-emerald-500/20 transition"
+                    >
+                        <span id="pred-indicator" class="htmx-indicator inline-flex items-center">
+                            <svg class="animate-spin h-3.5 w-3.5 mr-1" viewBox="0 0 24 24" fill="none">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8v4a4 4 0 0 0-4 4H4z"></path>
+                            </svg>
+                        </span>
+                        🔮 Predecir ML
+                    </button>
+                    
+                    <a href="{% url 'ligas:quiniela' %}"
+                       class="w-full inline-flex items-center justify-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl px-3 py-2.5 text-xs shadow transition">
+                        🎟️ Quiniela 1X2
+                    </a>
+                </div>
+            </div>
         </section>
+        {% endif %}
 
-        <aside class="space-y-6">
-            {% if ultima_jornada %}
-                <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div class="px-4 py-3 border-b border-slate-200 font-semibold">
-                        Última jornada ({{ ultima_jornada.numero }})
-                    </div>
-                    {% include "ligas/_resultados_jornada.html" with jornada=ultima_jornada %}
-                </section>
-            {% endif %}
+        <!-- Resultados de la Jornada Seleccionada -->
+        {% if jornada_sel %}
+        <section class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+                <div class="flex items-center gap-2">
+                    <span class="text-lg">📅</span>
+                    <h2 class="font-bold text-slate-800 text-sm">Resultados J{{ jornada_sel.numero }}</h2>
+                </div>
+                {% if jornada_sel.cerrada %}
+                    <span class="text-[10px] font-extrabold uppercase text-slate-600 bg-slate-100 rounded-full px-2.5 py-0.5">Finalizada</span>
+                {% else %}
+                    <span class="text-[10px] font-extrabold uppercase text-emerald-600 bg-emerald-50 border border-emerald-200 rounded-full px-2.5 py-0.5">En Juego</span>
+                {% endif %}
+            </div>
+            {% include "ligas/_jornada_partidos.html" with grupos_resultados=grupos_resultados %}
+        </section>
+        {% endif %}
 
-            {% if proxima_jornada %}
-                <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div class="px-4 py-3 border-b border-slate-200 font-semibold">
-                        Próxima jornada ({{ proxima_jornada.numero }})
-                    </div>
-                    <div class="p-4 space-y-3">
-                        {% include "ligas/_proximos_partidos.html" with jornada=proxima_jornada %}
-                        <div id="predicciones-jornada" class="pt-2"></div>
-                        <button
-                            hx-post="{% url 'ligas:jornada_predecir' proxima_jornada.id %}"
-                            hx-target="#predicciones-jornada"
-                            hx-swap="innerHTML"
-                            hx-disabled-elt="this"
-                            class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg px-4 py-2.5 text-sm transition"
-                        >
-                            Predecir Resultados
-                        </button>
-                    </div>
-                </section>
-            {% endif %}
-        </aside>
-    </div>
+    </aside>
+</div>
 {% endif %}
 {% endblock %}

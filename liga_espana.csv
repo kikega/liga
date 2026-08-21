@@ -1,0 +1,1685 @@
+﻿temporada,division,fecha,hora,local,visitante,goles_local,goles_visitante,resultado,quiniela
+2024-2025,Primera,2024-08-15,18:00,Ath Bilbao,Getafe,1,1,Empate,X
+2024-2025,Primera,2024-08-15,20:30,Betis,Girona,1,1,Empate,X
+2024-2025,Primera,2024-08-16,18:00,Celta,Alaves,2,1,Local,1
+2024-2025,Primera,2024-08-16,20:30,Las Palmas,Sevilla,2,2,Empate,X
+2024-2025,Primera,2024-08-17,18:00,Osasuna,Leganes,1,1,Empate,X
+2024-2025,Primera,2024-08-17,20:30,Valencia,Barcelona,1,2,Visitante,2
+2024-2025,Primera,2024-08-18,18:00,Sociedad,Vallecano,1,2,Visitante,2
+2024-2025,Primera,2024-08-18,20:30,Mallorca,Real Madrid,1,1,Empate,X
+2024-2025,Primera,2024-08-19,18:00,Valladolid,Espanol,1,0,Local,1
+2024-2025,Primera,2024-08-19,20:30,Villarreal,Ath Madrid,2,2,Empate,X
+2024-2025,Primera,2024-08-23,18:00,Celta,Valencia,3,1,Local,1
+2024-2025,Primera,2024-08-23,20:30,Sevilla,Villarreal,1,2,Visitante,2
+2024-2025,Primera,2024-08-24,16:00,Osasuna,Mallorca,1,0,Local,1
+2024-2025,Primera,2024-08-24,18:00,Barcelona,Ath Bilbao,2,1,Local,1
+2024-2025,Primera,2024-08-24,20:30,Espanol,Sociedad,0,1,Visitante,2
+2024-2025,Primera,2024-08-24,20:30,Getafe,Vallecano,0,0,Empate,X
+2024-2025,Primera,2024-08-25,16:00,Real Madrid,Valladolid,3,0,Local,1
+2024-2025,Primera,2024-08-25,18:00,Leganes,Las Palmas,2,1,Local,1
+2024-2025,Primera,2024-08-25,18:15,Alaves,Betis,0,0,Empate,X
+2024-2025,Primera,2024-08-25,20:30,Ath Madrid,Girona,3,0,Local,1
+2024-2025,Primera,2024-08-26,20:30,Villarreal,Celta,4,3,Local,1
+2024-2025,Primera,2024-08-27,18:00,Mallorca,Sevilla,0,0,Empate,X
+2024-2025,Primera,2024-08-27,20:30,Vallecano,Barcelona,1,2,Visitante,2
+2024-2025,Primera,2024-08-28,18:00,Ath Bilbao,Valencia,1,0,Local,1
+2024-2025,Primera,2024-08-28,18:00,Valladolid,Leganes,0,0,Empate,X
+2024-2025,Primera,2024-08-28,20:30,Ath Madrid,Espanol,0,0,Empate,X
+2024-2025,Primera,2024-08-28,20:30,Sociedad,Alaves,1,2,Visitante,2
+2024-2025,Primera,2024-08-29,18:00,Girona,Osasuna,4,0,Local,1
+2024-2025,Primera,2024-08-29,20:30,Las Palmas,Real Madrid,1,1,Empate,X
+2024-2025,Primera,2024-08-31,16:00,Barcelona,Valladolid,7,0,Local,1
+2024-2025,Primera,2024-08-31,18:00,Ath Bilbao,Ath Madrid,0,1,Visitante,2
+2024-2025,Primera,2024-08-31,18:15,Espanol,Vallecano,2,1,Local,1
+2024-2025,Primera,2024-08-31,20:30,Leganes,Mallorca,0,1,Visitante,2
+2024-2025,Primera,2024-08-31,20:30,Valencia,Villarreal,1,1,Empate,X
+2024-2025,Primera,2024-09-01,16:00,Alaves,Las Palmas,2,0,Local,1
+2024-2025,Primera,2024-09-01,16:00,Osasuna,Celta,3,2,Local,1
+2024-2025,Primera,2024-09-01,18:00,Sevilla,Girona,0,2,Visitante,2
+2024-2025,Primera,2024-09-01,18:15,Getafe,Sociedad,0,0,Empate,X
+2024-2025,Primera,2024-09-01,20:30,Real Madrid,Betis,2,0,Local,1
+2024-2025,Primera,2024-09-13,20:00,Betis,Leganes,2,0,Local,1
+2024-2025,Primera,2024-09-14,13:00,Mallorca,Villarreal,1,2,Visitante,2
+2024-2025,Primera,2024-09-14,15:15,Espanol,Alaves,3,2,Local,1
+2024-2025,Primera,2024-09-14,17:30,Sevilla,Getafe,1,0,Local,1
+2024-2025,Primera,2024-09-14,20:00,Sociedad,Real Madrid,0,2,Visitante,2
+2024-2025,Primera,2024-09-15,13:00,Celta,Valladolid,3,1,Local,1
+2024-2025,Primera,2024-09-15,15:15,Girona,Barcelona,1,4,Visitante,2
+2024-2025,Primera,2024-09-15,17:30,Las Palmas,Ath Bilbao,2,3,Visitante,2
+2024-2025,Primera,2024-09-15,20:00,Ath Madrid,Valencia,3,0,Local,1
+2024-2025,Primera,2024-09-16,20:00,Vallecano,Osasuna,3,1,Local,1
+2024-2025,Primera,2024-09-17,18:00,Mallorca,Sociedad,1,0,Local,1
+2024-2025,Primera,2024-09-18,18:00,Betis,Getafe,2,1,Local,1
+2024-2025,Primera,2024-09-19,18:00,Leganes,Ath Bilbao,0,2,Visitante,2
+2024-2025,Primera,2024-09-20,20:00,Alaves,Sevilla,2,1,Local,1
+2024-2025,Primera,2024-09-21,13:00,Valladolid,Sociedad,0,0,Empate,X
+2024-2025,Primera,2024-09-21,15:15,Osasuna,Las Palmas,2,1,Local,1
+2024-2025,Primera,2024-09-21,17:30,Valencia,Girona,2,0,Local,1
+2024-2025,Primera,2024-09-21,20:00,Real Madrid,Espanol,4,1,Local,1
+2024-2025,Primera,2024-09-22,13:00,Getafe,Leganes,1,1,Empate,X
+2024-2025,Primera,2024-09-22,15:15,Ath Bilbao,Celta,3,1,Local,1
+2024-2025,Primera,2024-09-22,17:30,Villarreal,Barcelona,1,5,Visitante,2
+2024-2025,Primera,2024-09-22,20:00,Vallecano,Ath Madrid,1,1,Empate,X
+2024-2025,Primera,2024-09-23,20:00,Betis,Mallorca,1,2,Visitante,2
+2024-2025,Primera,2024-09-24,18:00,Sevilla,Valladolid,2,1,Local,1
+2024-2025,Primera,2024-09-24,18:00,Valencia,Osasuna,0,0,Empate,X
+2024-2025,Primera,2024-09-24,20:00,Real Madrid,Alaves,3,2,Local,1
+2024-2025,Primera,2024-09-25,18:00,Girona,Vallecano,0,0,Empate,X
+2024-2025,Primera,2024-09-25,20:00,Barcelona,Getafe,1,0,Local,1
+2024-2025,Primera,2024-09-26,18:00,Espanol,Villarreal,1,2,Visitante,2
+2024-2025,Primera,2024-09-26,18:00,Las Palmas,Betis,1,1,Empate,X
+2024-2025,Primera,2024-09-26,20:00,Celta,Ath Madrid,0,1,Visitante,2
+2024-2025,Primera,2024-09-27,20:00,Valladolid,Mallorca,1,2,Visitante,2
+2024-2025,Primera,2024-09-28,13:00,Getafe,Alaves,2,0,Local,1
+2024-2025,Primera,2024-09-28,15:15,Vallecano,Leganes,1,1,Empate,X
+2024-2025,Primera,2024-09-28,17:30,Sociedad,Valencia,3,0,Local,1
+2024-2025,Primera,2024-09-28,20:00,Osasuna,Barcelona,4,2,Local,1
+2024-2025,Primera,2024-09-29,13:00,Celta,Girona,1,1,Empate,X
+2024-2025,Primera,2024-09-29,15:15,Ath Bilbao,Sevilla,1,1,Empate,X
+2024-2025,Primera,2024-09-29,17:30,Betis,Espanol,1,0,Local,1
+2024-2025,Primera,2024-09-29,20:00,Ath Madrid,Real Madrid,1,1,Empate,X
+2024-2025,Primera,2024-09-30,20:00,Villarreal,Las Palmas,3,1,Local,1
+2024-2025,Primera,2024-10-04,20:00,Leganes,Valencia,0,0,Empate,X
+2024-2025,Primera,2024-10-05,13:00,Espanol,Mallorca,2,1,Local,1
+2024-2025,Primera,2024-10-05,15:15,Getafe,Osasuna,1,1,Empate,X
+2024-2025,Primera,2024-10-05,17:30,Las Palmas,Celta,0,1,Visitante,2
+2024-2025,Primera,2024-10-05,17:30,Valladolid,Vallecano,1,2,Visitante,2
+2024-2025,Primera,2024-10-05,20:00,Real Madrid,Villarreal,2,0,Local,1
+2024-2025,Primera,2024-10-06,13:00,Girona,Ath Bilbao,2,1,Local,1
+2024-2025,Primera,2024-10-06,15:15,Alaves,Barcelona,0,3,Visitante,2
+2024-2025,Primera,2024-10-06,17:30,Sevilla,Betis,1,0,Local,1
+2024-2025,Primera,2024-10-06,20:00,Sociedad,Ath Madrid,1,1,Empate,X
+2024-2025,Primera,2024-10-18,20:00,Alaves,Valladolid,2,3,Visitante,2
+2024-2025,Primera,2024-10-19,13:00,Ath Bilbao,Espanol,4,1,Local,1
+2024-2025,Primera,2024-10-19,15:15,Osasuna,Betis,1,2,Visitante,2
+2024-2025,Primera,2024-10-19,17:30,Girona,Sociedad,0,1,Visitante,2
+2024-2025,Primera,2024-10-19,20:00,Celta,Real Madrid,1,2,Visitante,2
+2024-2025,Primera,2024-10-20,13:00,Mallorca,Vallecano,1,0,Local,1
+2024-2025,Primera,2024-10-20,15:15,Ath Madrid,Leganes,3,1,Local,1
+2024-2025,Primera,2024-10-20,17:30,Villarreal,Getafe,1,1,Empate,X
+2024-2025,Primera,2024-10-20,20:00,Barcelona,Sevilla,5,1,Local,1
+2024-2025,Primera,2024-10-21,20:00,Valencia,Las Palmas,2,3,Visitante,2
+2024-2025,Primera,2024-10-25,20:00,Espanol,Sevilla,0,2,Visitante,2
+2024-2025,Primera,2024-10-26,13:00,Valladolid,Villarreal,1,2,Visitante,2
+2024-2025,Primera,2024-10-26,15:15,Vallecano,Alaves,1,0,Local,1
+2024-2025,Primera,2024-10-26,17:30,Las Palmas,Girona,1,0,Local,1
+2024-2025,Primera,2024-10-26,20:00,Real Madrid,Barcelona,0,4,Visitante,2
+2024-2025,Primera,2024-10-27,13:00,Leganes,Celta,3,0,Local,1
+2024-2025,Primera,2024-10-27,15:15,Getafe,Valencia,1,1,Empate,X
+2024-2025,Primera,2024-10-27,17:30,Betis,Ath Madrid,1,0,Local,1
+2024-2025,Primera,2024-10-27,20:00,Sociedad,Osasuna,0,2,Visitante,2
+2024-2025,Primera,2024-10-28,20:00,Mallorca,Ath Bilbao,0,0,Empate,X
+2024-2025,Primera,2024-11-01,20:00,Alaves,Mallorca,1,0,Local,1
+2024-2025,Primera,2024-11-02,13:00,Osasuna,Valladolid,1,0,Local,1
+2024-2025,Primera,2024-11-02,15:15,Girona,Leganes,4,3,Local,1
+2024-2025,Primera,2024-11-03,13:00,Ath Madrid,Las Palmas,2,0,Local,1
+2024-2025,Primera,2024-11-03,15:15,Barcelona,Espanol,3,1,Local,1
+2024-2025,Primera,2024-11-03,17:30,Sevilla,Sociedad,0,2,Visitante,2
+2024-2025,Primera,2024-11-03,20:00,Ath Bilbao,Betis,1,1,Empate,X
+2024-2025,Primera,2024-11-04,20:00,Celta,Getafe,1,0,Local,1
+2024-2025,Primera,2024-11-08,20:00,Vallecano,Las Palmas,1,3,Visitante,2
+2024-2025,Primera,2024-11-09,13:00,Real Madrid,Osasuna,4,0,Local,1
+2024-2025,Primera,2024-11-09,15:15,Villarreal,Alaves,3,0,Local,1
+2024-2025,Primera,2024-11-09,20:00,Leganes,Sevilla,1,0,Local,1
+2024-2025,Primera,2024-11-10,13:00,Betis,Celta,2,2,Empate,X
+2024-2025,Primera,2024-11-10,15:15,Mallorca,Ath Madrid,0,1,Visitante,2
+2024-2025,Primera,2024-11-10,17:30,Getafe,Girona,0,1,Visitante,2
+2024-2025,Primera,2024-11-10,17:30,Valladolid,Ath Bilbao,1,1,Empate,X
+2024-2025,Primera,2024-11-10,20:00,Sociedad,Barcelona,1,0,Local,1
+2024-2025,Primera,2024-11-22,20:00,Getafe,Valladolid,2,0,Local,1
+2024-2025,Primera,2024-11-23,13:00,Valencia,Betis,4,2,Local,1
+2024-2025,Primera,2024-11-23,15:15,Ath Madrid,Alaves,2,1,Local,1
+2024-2025,Primera,2024-11-23,17:30,Girona,Espanol,4,1,Local,1
+2024-2025,Primera,2024-11-23,17:30,Las Palmas,Mallorca,2,3,Visitante,2
+2024-2025,Primera,2024-11-23,20:00,Celta,Barcelona,2,2,Empate,X
+2024-2025,Primera,2024-11-24,13:00,Osasuna,Villarreal,2,2,Empate,X
+2024-2025,Primera,2024-11-24,15:15,Sevilla,Vallecano,1,0,Local,1
+2024-2025,Primera,2024-11-24,17:30,Leganes,Real Madrid,0,3,Visitante,2
+2024-2025,Primera,2024-11-24,20:00,Ath Bilbao,Sociedad,1,0,Local,1
+2024-2025,Primera,2024-11-29,20:00,Mallorca,Valencia,2,1,Local,1
+2024-2025,Primera,2024-11-30,13:00,Barcelona,Las Palmas,1,2,Visitante,2
+2024-2025,Primera,2024-11-30,15:15,Alaves,Leganes,1,1,Empate,X
+2024-2025,Primera,2024-11-30,17:30,Espanol,Celta,3,1,Local,1
+2024-2025,Primera,2024-11-30,20:00,Valladolid,Ath Madrid,0,5,Visitante,2
+2024-2025,Primera,2024-12-01,13:00,Villarreal,Girona,2,2,Empate,X
+2024-2025,Primera,2024-12-01,15:15,Real Madrid,Getafe,2,0,Local,1
+2024-2025,Primera,2024-12-01,17:30,Vallecano,Ath Bilbao,1,2,Visitante,2
+2024-2025,Primera,2024-12-01,20:00,Sociedad,Betis,2,0,Local,1
+2024-2025,Primera,2024-12-02,20:00,Sevilla,Osasuna,1,1,Empate,X
+2024-2025,Primera,2024-12-03,18:00,Mallorca,Barcelona,1,5,Visitante,2
+2024-2025,Primera,2024-12-04,20:00,Ath Bilbao,Real Madrid,2,1,Local,1
+2024-2025,Primera,2024-12-06,20:00,Celta,Mallorca,2,0,Local,1
+2024-2025,Primera,2024-12-07,13:00,Las Palmas,Valladolid,2,1,Local,1
+2024-2025,Primera,2024-12-07,15:15,Betis,Barcelona,2,2,Empate,X
+2024-2025,Primera,2024-12-07,17:30,Valencia,Vallecano,0,1,Visitante,2
+2024-2025,Primera,2024-12-07,20:00,Girona,Real Madrid,0,3,Visitante,2
+2024-2025,Primera,2024-12-08,13:00,Leganes,Sociedad,0,3,Visitante,2
+2024-2025,Primera,2024-12-08,15:15,Ath Bilbao,Villarreal,2,0,Local,1
+2024-2025,Primera,2024-12-08,17:30,Osasuna,Alaves,2,2,Empate,X
+2024-2025,Primera,2024-12-08,20:00,Ath Madrid,Sevilla,4,3,Local,1
+2024-2025,Primera,2024-12-09,20:00,Getafe,Espanol,1,0,Local,1
+2024-2025,Primera,2024-12-13,20:00,Valladolid,Valencia,1,0,Local,1
+2024-2025,Primera,2024-12-14,13:00,Espanol,Osasuna,0,0,Empate,X
+2024-2025,Primera,2024-12-14,15:15,Mallorca,Girona,2,1,Local,1
+2024-2025,Primera,2024-12-14,17:30,Sevilla,Celta,1,0,Local,1
+2024-2025,Primera,2024-12-14,20:00,Vallecano,Real Madrid,3,3,Empate,X
+2024-2025,Primera,2024-12-15,13:00,Ath Madrid,Getafe,1,0,Local,1
+2024-2025,Primera,2024-12-15,15:15,Alaves,Ath Bilbao,1,1,Empate,X
+2024-2025,Primera,2024-12-15,17:30,Sociedad,Las Palmas,0,0,Empate,X
+2024-2025,Primera,2024-12-15,17:30,Villarreal,Betis,1,2,Visitante,2
+2024-2025,Primera,2024-12-15,20:00,Barcelona,Leganes,0,1,Visitante,2
+2024-2025,Primera,2024-12-18,20:30,Espanol,Valencia,1,1,Empate,X
+2024-2025,Primera,2024-12-18,20:30,Villarreal,Vallecano,1,1,Empate,X
+2024-2025,Primera,2024-12-20,20:00,Girona,Valladolid,3,0,Local,1
+2024-2025,Primera,2024-12-21,13:00,Getafe,Mallorca,0,1,Visitante,2
+2024-2025,Primera,2024-12-21,15:15,Celta,Sociedad,2,0,Local,1
+2024-2025,Primera,2024-12-21,17:30,Osasuna,Ath Bilbao,1,2,Visitante,2
+2024-2025,Primera,2024-12-21,20:00,Barcelona,Ath Madrid,1,2,Visitante,2
+2024-2025,Primera,2024-12-22,13:00,Valencia,Alaves,2,2,Empate,X
+2024-2025,Primera,2024-12-22,15:15,Real Madrid,Sevilla,4,2,Local,1
+2024-2025,Primera,2024-12-22,17:30,Las Palmas,Espanol,1,0,Local,1
+2024-2025,Primera,2024-12-22,17:30,Leganes,Villarreal,2,5,Visitante,2
+2024-2025,Primera,2024-12-22,20:00,Betis,Vallecano,1,1,Empate,X
+2024-2025,Primera,2025-01-03,20:00,Valencia,Real Madrid,1,2,Visitante,2
+2024-2025,Primera,2025-01-10,20:00,Vallecano,Celta,2,1,Local,1
+2024-2025,Primera,2025-01-11,13:00,Alaves,Girona,0,1,Visitante,2
+2024-2025,Primera,2025-01-11,15:15,Valladolid,Betis,1,0,Local,1
+2024-2025,Primera,2025-01-11,17:30,Espanol,Leganes,1,1,Empate,X
+2024-2025,Primera,2025-01-11,20:00,Sevilla,Valencia,1,1,Empate,X
+2024-2025,Primera,2025-01-12,13:00,Las Palmas,Getafe,1,2,Visitante,2
+2024-2025,Primera,2025-01-12,15:15,Ath Madrid,Osasuna,1,0,Local,1
+2024-2025,Primera,2025-01-13,20:00,Sociedad,Villarreal,1,0,Local,1
+2024-2025,Primera,2025-01-17,20:00,Espanol,Valladolid,2,1,Local,1
+2024-2025,Primera,2025-01-18,13:00,Girona,Sevilla,1,2,Visitante,2
+2024-2025,Primera,2025-01-18,15:15,Leganes,Ath Madrid,1,0,Local,1
+2024-2025,Primera,2025-01-18,17:30,Betis,Alaves,1,3,Visitante,2
+2024-2025,Primera,2025-01-18,20:00,Getafe,Barcelona,1,1,Empate,X
+2024-2025,Primera,2025-01-19,13:00,Celta,Ath Bilbao,1,2,Visitante,2
+2024-2025,Primera,2025-01-19,15:15,Real Madrid,Las Palmas,4,1,Local,1
+2024-2025,Primera,2025-01-19,17:30,Osasuna,Vallecano,1,1,Empate,X
+2024-2025,Primera,2025-01-19,20:00,Valencia,Sociedad,1,0,Local,1
+2024-2025,Primera,2025-01-20,20:00,Villarreal,Mallorca,4,0,Local,1
+2024-2025,Primera,2025-01-24,20:00,Las Palmas,Osasuna,1,1,Empate,X
+2024-2025,Primera,2025-01-25,13:00,Mallorca,Betis,0,1,Visitante,2
+2024-2025,Primera,2025-01-25,15:15,Ath Madrid,Villarreal,1,1,Empate,X
+2024-2025,Primera,2025-01-25,17:30,Sevilla,Espanol,1,1,Empate,X
+2024-2025,Primera,2025-01-25,20:00,Valladolid,Real Madrid,0,3,Visitante,2
+2024-2025,Primera,2025-01-26,13:00,Vallecano,Girona,2,1,Local,1
+2024-2025,Primera,2025-01-26,15:15,Sociedad,Getafe,0,3,Visitante,2
+2024-2025,Primera,2025-01-26,17:30,Ath Bilbao,Leganes,0,0,Empate,X
+2024-2025,Primera,2025-01-26,20:00,Barcelona,Valencia,7,1,Local,1
+2024-2025,Primera,2025-01-27,20:00,Alaves,Celta,1,1,Empate,X
+2024-2025,Primera,2025-01-31,20:00,Leganes,Vallecano,0,1,Visitante,2
+2024-2025,Primera,2025-02-01,13:00,Getafe,Sevilla,0,0,Empate,X
+2024-2025,Primera,2025-02-01,15:15,Villarreal,Valladolid,5,1,Local,1
+2024-2025,Primera,2025-02-01,17:30,Ath Madrid,Mallorca,2,0,Local,1
+2024-2025,Primera,2025-02-01,20:00,Espanol,Real Madrid,1,0,Local,1
+2024-2025,Primera,2025-02-02,13:00,Barcelona,Alaves,1,0,Local,1
+2024-2025,Primera,2025-02-02,15:15,Valencia,Celta,2,1,Local,1
+2024-2025,Primera,2025-02-02,17:30,Osasuna,Sociedad,2,1,Local,1
+2024-2025,Primera,2025-02-02,20:00,Betis,Ath Bilbao,2,2,Empate,X
+2024-2025,Primera,2025-02-03,20:00,Girona,Las Palmas,2,1,Local,1
+2024-2025,Primera,2025-02-07,20:00,Vallecano,Valladolid,1,0,Local,1
+2024-2025,Primera,2025-02-08,13:00,Celta,Betis,3,2,Local,1
+2024-2025,Primera,2025-02-08,15:15,Ath Bilbao,Girona,3,0,Local,1
+2024-2025,Primera,2025-02-08,17:30,Las Palmas,Villarreal,1,2,Visitante,2
+2024-2025,Primera,2025-02-08,20:00,Real Madrid,Ath Madrid,1,1,Empate,X
+2024-2025,Primera,2025-02-09,13:00,Alaves,Getafe,0,1,Visitante,2
+2024-2025,Primera,2025-02-09,15:15,Valencia,Leganes,2,0,Local,1
+2024-2025,Primera,2025-02-09,17:30,Sociedad,Espanol,2,1,Local,1
+2024-2025,Primera,2025-02-09,20:00,Sevilla,Barcelona,1,4,Visitante,2
+2024-2025,Primera,2025-02-10,20:00,Mallorca,Osasuna,1,1,Empate,X
+2024-2025,Primera,2025-02-14,20:00,Girona,Getafe,1,2,Visitante,2
+2024-2025,Primera,2025-02-15,13:00,Leganes,Alaves,3,3,Empate,X
+2024-2025,Primera,2025-02-15,15:15,Osasuna,Real Madrid,1,1,Empate,X
+2024-2025,Primera,2025-02-15,17:30,Ath Madrid,Celta,1,1,Empate,X
+2024-2025,Primera,2025-02-15,20:00,Villarreal,Valencia,1,1,Empate,X
+2024-2025,Primera,2025-02-16,13:00,Espanol,Ath Bilbao,1,1,Empate,X
+2024-2025,Primera,2025-02-16,15:15,Valladolid,Sevilla,0,4,Visitante,2
+2024-2025,Primera,2025-02-16,17:30,Mallorca,Las Palmas,3,1,Local,1
+2024-2025,Primera,2025-02-16,20:00,Betis,Sociedad,3,0,Local,1
+2024-2025,Primera,2025-02-17,20:00,Barcelona,Vallecano,1,0,Local,1
+2024-2025,Primera,2025-02-21,20:00,Celta,Osasuna,1,0,Local,1
+2024-2025,Primera,2025-02-22,13:00,Alaves,Espanol,0,1,Visitante,2
+2024-2025,Primera,2025-02-22,15:15,Vallecano,Villarreal,0,1,Visitante,2
+2024-2025,Primera,2025-02-22,17:30,Valencia,Ath Madrid,0,3,Visitante,2
+2024-2025,Primera,2025-02-22,20:00,Las Palmas,Barcelona,0,2,Visitante,2
+2024-2025,Primera,2025-02-23,13:00,Ath Bilbao,Valladolid,7,1,Local,1
+2024-2025,Primera,2025-02-23,15:15,Real Madrid,Girona,2,0,Local,1
+2024-2025,Primera,2025-02-23,17:30,Getafe,Betis,1,2,Visitante,2
+2024-2025,Primera,2025-02-23,20:00,Sociedad,Leganes,3,0,Local,1
+2024-2025,Primera,2025-02-24,20:00,Sevilla,Mallorca,1,1,Empate,X
+2024-2025,Primera,2025-02-28,20:00,Valladolid,Las Palmas,1,1,Empate,X
+2024-2025,Primera,2025-03-01,13:00,Girona,Celta,2,2,Empate,X
+2024-2025,Primera,2025-03-01,15:15,Vallecano,Sevilla,1,1,Empate,X
+2024-2025,Primera,2025-03-01,17:30,Betis,Real Madrid,2,1,Local,1
+2024-2025,Primera,2025-03-01,20:00,Ath Madrid,Ath Bilbao,1,0,Local,1
+2024-2025,Primera,2025-03-02,13:00,Leganes,Getafe,1,0,Local,1
+2024-2025,Primera,2025-03-02,15:15,Barcelona,Sociedad,4,0,Local,1
+2024-2025,Primera,2025-03-02,17:30,Mallorca,Alaves,1,1,Empate,X
+2024-2025,Primera,2025-03-02,20:00,Osasuna,Valencia,3,3,Empate,X
+2024-2025,Primera,2025-03-08,13:00,Celta,Leganes,2,1,Local,1
+2024-2025,Primera,2025-03-08,15:15,Alaves,Villarreal,1,0,Local,1
+2024-2025,Primera,2025-03-08,17:30,Valencia,Valladolid,2,1,Local,1
+2024-2025,Primera,2025-03-09,13:00,Getafe,Ath Madrid,2,1,Local,1
+2024-2025,Primera,2025-03-09,15:15,Real Madrid,Vallecano,2,1,Local,1
+2024-2025,Primera,2025-03-09,17:30,Ath Bilbao,Mallorca,1,1,Empate,X
+2024-2025,Primera,2025-03-09,17:30,Betis,Las Palmas,1,0,Local,1
+2024-2025,Primera,2025-03-09,20:00,Sociedad,Sevilla,0,1,Visitante,2
+2024-2025,Primera,2025-03-10,20:00,Espanol,Girona,1,1,Empate,X
+2024-2025,Primera,2025-03-14,20:00,Las Palmas,Alaves,2,2,Empate,X
+2024-2025,Primera,2025-03-15,13:00,Valladolid,Celta,0,1,Visitante,2
+2024-2025,Primera,2025-03-15,15:15,Mallorca,Espanol,2,1,Local,1
+2024-2025,Primera,2025-03-15,17:30,Villarreal,Real Madrid,1,2,Visitante,2
+2024-2025,Primera,2025-03-15,20:00,Girona,Valencia,1,1,Empate,X
+2024-2025,Primera,2025-03-16,13:00,Leganes,Betis,2,3,Visitante,2
+2024-2025,Primera,2025-03-16,15:15,Sevilla,Ath Bilbao,0,1,Visitante,2
+2024-2025,Primera,2025-03-16,17:30,Osasuna,Getafe,1,2,Visitante,2
+2024-2025,Primera,2025-03-16,17:30,Vallecano,Sociedad,2,2,Empate,X
+2024-2025,Primera,2025-03-16,20:00,Ath Madrid,Barcelona,2,4,Visitante,2
+2024-2025,Primera,2025-03-27,20:00,Barcelona,Osasuna,3,0,Local,1
+2024-2025,Primera,2025-03-29,13:00,Sociedad,Valladolid,2,1,Local,1
+2024-2025,Primera,2025-03-29,15:15,Espanol,Ath Madrid,1,1,Empate,X
+2024-2025,Primera,2025-03-29,17:30,Alaves,Vallecano,0,2,Visitante,2
+2024-2025,Primera,2025-03-29,20:00,Real Madrid,Leganes,3,2,Local,1
+2024-2025,Primera,2025-03-30,13:00,Getafe,Villarreal,1,2,Visitante,2
+2024-2025,Primera,2025-03-30,15:15,Barcelona,Girona,4,1,Local,1
+2024-2025,Primera,2025-03-30,17:30,Ath Bilbao,Osasuna,0,0,Empate,X
+2024-2025,Primera,2025-03-30,17:30,Valencia,Mallorca,1,0,Local,1
+2024-2025,Primera,2025-03-30,20:00,Betis,Sevilla,2,1,Local,1
+2024-2025,Primera,2025-03-31,20:00,Celta,Las Palmas,1,1,Empate,X
+2024-2025,Primera,2025-04-04,20:00,Vallecano,Espanol,0,4,Visitante,2
+2024-2025,Primera,2025-04-05,13:00,Girona,Alaves,0,1,Visitante,2
+2024-2025,Primera,2025-04-05,15:15,Real Madrid,Valencia,1,2,Visitante,2
+2024-2025,Primera,2025-04-05,17:30,Mallorca,Celta,1,2,Visitante,2
+2024-2025,Primera,2025-04-05,20:00,Barcelona,Betis,1,1,Empate,X
+2024-2025,Primera,2025-04-06,13:00,Las Palmas,Sociedad,1,3,Visitante,2
+2024-2025,Primera,2025-04-06,15:15,Sevilla,Ath Madrid,1,2,Visitante,2
+2024-2025,Primera,2025-04-06,17:30,Valladolid,Getafe,0,4,Visitante,2
+2024-2025,Primera,2025-04-06,20:00,Villarreal,Ath Bilbao,0,0,Empate,X
+2024-2025,Primera,2025-04-07,20:00,Leganes,Osasuna,1,1,Empate,X
+2024-2025,Primera,2025-04-11,20:00,Valencia,Sevilla,1,0,Local,1
+2024-2025,Primera,2025-04-12,13:00,Sociedad,Mallorca,0,2,Visitante,2
+2024-2025,Primera,2025-04-12,15:15,Getafe,Las Palmas,1,3,Visitante,2
+2024-2025,Primera,2025-04-12,17:30,Celta,Espanol,0,2,Visitante,2
+2024-2025,Primera,2025-04-12,20:00,Leganes,Barcelona,0,1,Visitante,2
+2024-2025,Primera,2025-04-13,13:00,Osasuna,Girona,2,1,Local,1
+2024-2025,Primera,2025-04-13,15:15,Alaves,Real Madrid,0,1,Visitante,2
+2024-2025,Primera,2025-04-13,17:30,Betis,Villarreal,1,2,Visitante,2
+2024-2025,Primera,2025-04-13,20:00,Ath Bilbao,Vallecano,3,1,Local,1
+2024-2025,Primera,2025-04-14,20:00,Ath Madrid,Valladolid,4,2,Local,1
+2024-2025,Primera,2025-04-18,20:00,Espanol,Getafe,1,0,Local,1
+2024-2025,Primera,2025-04-19,13:00,Vallecano,Valencia,1,1,Empate,X
+2024-2025,Primera,2025-04-19,15:15,Barcelona,Celta,4,3,Local,1
+2024-2025,Primera,2025-04-19,17:30,Mallorca,Leganes,0,0,Empate,X
+2024-2025,Primera,2025-04-19,20:00,Las Palmas,Ath Madrid,1,0,Local,1
+2024-2025,Primera,2025-04-20,13:00,Valladolid,Osasuna,2,3,Visitante,2
+2024-2025,Primera,2025-04-20,15:15,Villarreal,Sociedad,2,2,Empate,X
+2024-2025,Primera,2025-04-20,17:30,Sevilla,Alaves,1,1,Empate,X
+2024-2025,Primera,2025-04-20,20:00,Real Madrid,Ath Bilbao,1,0,Local,1
+2024-2025,Primera,2025-04-21,20:00,Girona,Betis,1,3,Visitante,2
+2024-2025,Primera,2025-04-22,18:00,Valencia,Espanol,1,1,Empate,X
+2024-2025,Primera,2025-04-22,20:30,Barcelona,Mallorca,1,0,Local,1
+2024-2025,Primera,2025-04-23,18:00,Ath Bilbao,Las Palmas,1,0,Local,1
+2024-2025,Primera,2025-04-23,18:00,Celta,Villarreal,3,0,Local,1
+2024-2025,Primera,2025-04-23,20:30,Alaves,Sociedad,1,0,Local,1
+2024-2025,Primera,2025-04-23,20:30,Getafe,Real Madrid,0,1,Visitante,2
+2024-2025,Primera,2025-04-24,18:00,Leganes,Girona,1,1,Empate,X
+2024-2025,Primera,2025-04-24,18:00,Osasuna,Sevilla,1,0,Local,1
+2024-2025,Primera,2025-04-24,20:30,Ath Madrid,Vallecano,3,0,Local,1
+2024-2025,Primera,2025-04-24,20:30,Betis,Valladolid,5,1,Local,1
+2024-2025,Primera,2025-04-27,15:15,Villarreal,Espanol,1,0,Local,1
+2024-2025,Primera,2025-05-02,20:00,Vallecano,Getafe,1,0,Local,1
+2024-2025,Primera,2025-05-03,13:00,Alaves,Ath Madrid,0,0,Empate,X
+2024-2025,Primera,2025-05-03,15:15,Villarreal,Osasuna,4,2,Local,1
+2024-2025,Primera,2025-05-03,17:30,Las Palmas,Valencia,2,3,Visitante,2
+2024-2025,Primera,2025-05-03,20:00,Valladolid,Barcelona,1,2,Visitante,2
+2024-2025,Primera,2025-05-04,13:00,Real Madrid,Celta,3,2,Local,1
+2024-2025,Primera,2025-05-04,15:15,Sevilla,Leganes,2,2,Empate,X
+2024-2025,Primera,2025-05-04,17:30,Espanol,Betis,1,2,Visitante,2
+2024-2025,Primera,2025-05-04,20:00,Sociedad,Ath Bilbao,0,0,Empate,X
+2024-2025,Primera,2025-05-05,20:00,Girona,Mallorca,1,0,Local,1
+2024-2025,Primera,2025-05-09,20:00,Las Palmas,Vallecano,0,1,Visitante,2
+2024-2025,Primera,2025-05-10,13:00,Valencia,Getafe,3,0,Local,1
+2024-2025,Primera,2025-05-10,15:15,Celta,Sevilla,3,2,Local,1
+2024-2025,Primera,2025-05-10,17:30,Girona,Villarreal,0,1,Visitante,2
+2024-2025,Primera,2025-05-10,17:30,Mallorca,Valladolid,2,1,Local,1
+2024-2025,Primera,2025-05-10,20:00,Ath Madrid,Sociedad,4,0,Local,1
+2024-2025,Primera,2025-05-11,13:00,Leganes,Espanol,3,2,Local,1
+2024-2025,Primera,2025-05-11,15:15,Barcelona,Real Madrid,4,3,Local,1
+2024-2025,Primera,2025-05-11,17:30,Ath Bilbao,Alaves,1,0,Local,1
+2024-2025,Primera,2025-05-11,20:00,Betis,Osasuna,1,1,Empate,X
+2024-2025,Primera,2025-05-13,18:00,Valladolid,Girona,0,1,Visitante,2
+2024-2025,Primera,2025-05-13,19:00,Sociedad,Celta,0,1,Visitante,2
+2024-2025,Primera,2025-05-13,20:30,Sevilla,Las Palmas,1,0,Local,1
+2024-2025,Primera,2025-05-14,18:00,Alaves,Valencia,1,0,Local,1
+2024-2025,Primera,2025-05-14,18:00,Villarreal,Leganes,3,0,Local,1
+2024-2025,Primera,2025-05-14,20:30,Real Madrid,Mallorca,2,1,Local,1
+2024-2025,Primera,2025-05-15,18:00,Osasuna,Ath Madrid,2,0,Local,1
+2024-2025,Primera,2025-05-15,18:00,Vallecano,Betis,2,2,Empate,X
+2024-2025,Primera,2025-05-15,20:30,Espanol,Barcelona,0,2,Visitante,2
+2024-2025,Primera,2025-05-15,20:30,Getafe,Ath Bilbao,0,2,Visitante,2
+2024-2025,Primera,2025-05-18,18:00,Ath Madrid,Betis,4,1,Local,1
+2024-2025,Primera,2025-05-18,18:00,Barcelona,Villarreal,2,3,Visitante,2
+2024-2025,Primera,2025-05-18,18:00,Celta,Vallecano,1,2,Visitante,2
+2024-2025,Primera,2025-05-18,18:00,Las Palmas,Leganes,0,1,Visitante,2
+2024-2025,Primera,2025-05-18,18:00,Mallorca,Getafe,1,2,Visitante,2
+2024-2025,Primera,2025-05-18,18:00,Osasuna,Espanol,2,0,Local,1
+2024-2025,Primera,2025-05-18,18:00,Sevilla,Real Madrid,0,2,Visitante,2
+2024-2025,Primera,2025-05-18,18:00,Sociedad,Girona,3,2,Local,1
+2024-2025,Primera,2025-05-18,18:00,Valencia,Ath Bilbao,0,1,Visitante,2
+2024-2025,Primera,2025-05-18,18:00,Valladolid,Alaves,0,1,Visitante,2
+2024-2025,Primera,2025-05-23,20:00,Betis,Valencia,1,1,Empate,X
+2024-2025,Primera,2025-05-24,15:15,Real Madrid,Sociedad,2,0,Local,1
+2024-2025,Primera,2025-05-24,17:30,Espanol,Las Palmas,2,0,Local,1
+2024-2025,Primera,2025-05-24,17:30,Leganes,Valladolid,3,0,Local,1
+2024-2025,Primera,2025-05-24,20:00,Alaves,Osasuna,1,1,Empate,X
+2024-2025,Primera,2025-05-24,20:00,Getafe,Celta,1,2,Visitante,2
+2024-2025,Primera,2025-05-24,20:00,Vallecano,Mallorca,0,0,Empate,X
+2024-2025,Primera,2025-05-25,13:00,Girona,Ath Madrid,0,4,Visitante,2
+2024-2025,Primera,2025-05-25,15:15,Villarreal,Sevilla,4,2,Local,1
+2024-2025,Primera,2025-05-25,20:00,Ath Bilbao,Barcelona,0,3,Visitante,2
+2024-2025,Segunda,2024-08-15,19:30,Granada,2lbacete,1,2,Visitante,2
+2024-2025,Segunda,2024-08-16,18:00,Mirandes,Cordoba,1,0,Local,1
+2024-2025,Segunda,2024-08-16,20:30,Cadiz,Zaragoza,0,4,Visitante,2
+2024-2025,Segunda,2024-08-17,16:00,Eibar,Castellon,1,0,Local,1
+2024-2025,Segunda,2024-08-17,16:00,Ferrol,Malaga,2,2,Empate,X
+2024-2025,Segunda,2024-08-17,18:00,La Coruna,Oviedo,0,1,Visitante,2
+2024-2025,Segunda,2024-08-18,16:00,Santander,2lmeria,2,2,Empate,X
+2024-2025,Segunda,2024-08-18,16:00,Sp Gijon,Levante,1,2,Visitante,2
+2024-2025,Segunda,2024-08-18,18:30,Burgos,Cartagena,3,1,Local,1
+2024-2025,Segunda,2024-08-18,18:30,Elche,1uesca,0,1,Visitante,2
+2024-2025,Segunda,2024-08-19,19:30,Eldense,Tenerife,2,1,Local,1
+2024-2025,Segunda,2024-08-23,18:00,Santander,Eibar,2,2,Empate,X
+2024-2025,Segunda,2024-08-23,20:30,1uesca,La Coruna,2,1,Local,1
+2024-2025,Segunda,2024-08-24,16:00,Ferrol,Granada,0,1,Visitante,2
+2024-2025,Segunda,2024-08-24,16:00,Sp Gijon,Eldense,0,0,Empate,X
+2024-2025,Segunda,2024-08-24,18:00,Levante,Cadiz,1,1,Empate,X
+2024-2025,Segunda,2024-08-24,20:30,Malaga,Mirandes,1,1,Empate,X
+2024-2025,Segunda,2024-08-24,20:30,Tenerife,2lmeria,0,1,Visitante,2
+2024-2025,Segunda,2024-08-25,18:00,2lbacete,Elche,1,0,Local,1
+2024-2025,Segunda,2024-08-25,20:30,Castellon,Oviedo,0,0,Empate,X
+2024-2025,Segunda,2024-08-26,18:00,Cartagena,Zaragoza,1,2,Visitante,2
+2024-2025,Segunda,2024-08-26,20:30,Cordoba,Burgos,2,2,Empate,X
+2024-2025,Segunda,2024-08-30,18:00,Granada,1uesca,1,3,Visitante,2
+2024-2025,Segunda,2024-08-30,20:30,Oviedo,Santander,1,3,Visitante,2
+2024-2025,Segunda,2024-08-31,18:00,Cadiz,Tenerife,2,2,Empate,X
+2024-2025,Segunda,2024-08-31,20:30,2lmeria,Sp Gijon,1,1,Empate,X
+2024-2025,Segunda,2024-08-31,20:30,Malaga,2lbacete,2,1,Local,1
+2024-2025,Segunda,2024-09-01,16:00,Burgos,Castellon,0,2,Visitante,2
+2024-2025,Segunda,2024-09-01,16:00,La Coruna,Ferrol,1,0,Local,1
+2024-2025,Segunda,2024-09-01,18:00,Eldense,Cartagena,1,2,Visitante,2
+2024-2025,Segunda,2024-09-01,18:00,Mirandes,Zaragoza,0,0,Empate,X
+2024-2025,Segunda,2024-09-02,18:00,Eibar,Levante,2,2,Empate,X
+2024-2025,Segunda,2024-09-02,20:30,Elche,Cordoba,3,1,Local,1
+2024-2025,Segunda,2024-09-06,20:00,Tenerife,Santander,0,1,Visitante,2
+2024-2025,Segunda,2024-09-07,15:15,Granada,La Coruna,1,1,Empate,X
+2024-2025,Segunda,2024-09-07,17:30,1uesca,Burgos,0,1,Visitante,2
+2024-2025,Segunda,2024-09-07,17:30,Sp Gijon,Oviedo,3,1,Local,1
+2024-2025,Segunda,2024-09-07,20:00,Cordoba,Malaga,0,0,Empate,X
+2024-2025,Segunda,2024-09-08,13:00,Ferrol,Mirandes,0,0,Empate,X
+2024-2025,Segunda,2024-09-08,15:15,Cartagena,Levante,0,1,Visitante,2
+2024-2025,Segunda,2024-09-08,17:30,Eldense,2lmeria,1,0,Local,1
+2024-2025,Segunda,2024-09-08,17:30,Zaragoza,Elche,3,0,Local,1
+2024-2025,Segunda,2024-09-09,20:00,2lbacete,Eibar,0,1,Visitante,2
+2024-2025,Segunda,2024-09-09,20:00,Castellon,Cadiz,1,3,Visitante,2
+2024-2025,Segunda,2024-09-13,19:30,Cordoba,La Coruna,2,0,Local,1
+2024-2025,Segunda,2024-09-14,15:15,Eibar,Tenerife,1,0,Local,1
+2024-2025,Segunda,2024-09-14,15:15,Levante,Eldense,3,1,Local,1
+2024-2025,Segunda,2024-09-14,17:30,Malaga,1uesca,1,0,Local,1
+2024-2025,Segunda,2024-09-14,17:30,Santander,Sp Gijon,1,0,Local,1
+2024-2025,Segunda,2024-09-15,13:00,Mirandes,2lbacete,2,0,Local,1
+2024-2025,Segunda,2024-09-15,15:15,Oviedo,Cartagena,1,0,Local,1
+2024-2025,Segunda,2024-09-15,17:30,Burgos,Zaragoza,1,0,Local,1
+2024-2025,Segunda,2024-09-15,17:30,Cadiz,Ferrol,0,0,Empate,X
+2024-2025,Segunda,2024-09-15,20:00,Elche,Granada,2,2,Empate,X
+2024-2025,Segunda,2024-09-16,19:30,2lmeria,Castellon,2,5,Visitante,2
+2024-2025,Segunda,2024-09-20,19:30,Granada,Malaga,2,2,Empate,X
+2024-2025,Segunda,2024-09-21,15:15,Ferrol,2lbacete,1,4,Visitante,2
+2024-2025,Segunda,2024-09-21,17:30,Eldense,Oviedo,1,1,Empate,X
+2024-2025,Segunda,2024-09-21,17:30,La Coruna,Burgos,0,2,Visitante,2
+2024-2025,Segunda,2024-09-21,20:00,Zaragoza,Levante,2,1,Local,1
+2024-2025,Segunda,2024-09-22,13:00,Tenerife,Sp Gijon,1,1,Empate,X
+2024-2025,Segunda,2024-09-22,15:15,Cartagena,Cadiz,1,2,Visitante,2
+2024-2025,Segunda,2024-09-22,15:15,Castellon,Santander,0,1,Visitante,2
+2024-2025,Segunda,2024-09-22,17:30,Elche,Mirandes,1,0,Local,1
+2024-2025,Segunda,2024-09-22,20:00,2lmeria,Eibar,2,2,Empate,X
+2024-2025,Segunda,2024-09-23,19:30,1uesca,Cordoba,4,1,Local,1
+2024-2025,Segunda,2024-09-27,19:30,2lbacete,La Coruna,2,5,Visitante,2
+2024-2025,Segunda,2024-09-28,15:15,Cadiz,Eldense,1,2,Visitante,2
+2024-2025,Segunda,2024-09-28,15:15,Mirandes,1uesca,1,0,Local,1
+2024-2025,Segunda,2024-09-28,17:30,Sp Gijon,Zaragoza,1,0,Local,1
+2024-2025,Segunda,2024-09-28,20:00,Malaga,Elche,0,3,Visitante,2
+2024-2025,Segunda,2024-09-29,13:00,Levante,2lmeria,4,2,Local,1
+2024-2025,Segunda,2024-09-29,15:15,Burgos,Granada,2,2,Empate,X
+2024-2025,Segunda,2024-09-29,15:15,Castellon,Tenerife,2,1,Local,1
+2024-2025,Segunda,2024-09-29,17:30,Cordoba,Ferrol,3,1,Local,1
+2024-2025,Segunda,2024-09-29,17:30,Oviedo,Eibar,1,0,Local,1
+2024-2025,Segunda,2024-09-30,19:30,Santander,Cartagena,1,2,Visitante,2
+2024-2025,Segunda,2024-10-04,19:30,1uesca,Cadiz,3,1,Local,1
+2024-2025,Segunda,2024-10-05,13:00,Ferrol,Elche,1,0,Local,1
+2024-2025,Segunda,2024-10-05,15:15,Eibar,Sp Gijon,1,3,Visitante,2
+2024-2025,Segunda,2024-10-05,15:15,Mirandes,Granada,0,1,Visitante,2
+2024-2025,Segunda,2024-10-05,17:30,2lmeria,Burgos,2,0,Local,1
+2024-2025,Segunda,2024-10-05,17:30,Zaragoza,Santander,2,3,Visitante,2
+2024-2025,Segunda,2024-10-05,20:00,Tenerife,Cartagena,2,0,Local,1
+2024-2025,Segunda,2024-10-06,13:00,La Coruna,Malaga,0,0,Empate,X
+2024-2025,Segunda,2024-10-06,15:15,Eldense,Castellon,2,3,Visitante,2
+2024-2025,Segunda,2024-10-06,17:30,Levante,Oviedo,0,0,Empate,X
+2024-2025,Segunda,2024-10-06,20:00,2lbacete,Cordoba,1,1,Empate,X
+2024-2025,Segunda,2024-10-11,19:30,Tenerife,Zaragoza,2,3,Visitante,2
+2024-2025,Segunda,2024-10-12,15:15,Cartagena,Ferrol,0,1,Visitante,2
+2024-2025,Segunda,2024-10-12,17:30,Cadiz,Malaga,2,2,Empate,X
+2024-2025,Segunda,2024-10-12,17:30,Eibar,Eldense,1,0,Local,1
+2024-2025,Segunda,2024-10-13,13:00,1uesca,2lbacete,2,2,Empate,X
+2024-2025,Segunda,2024-10-13,15:15,Oviedo,2lmeria,3,2,Local,1
+2024-2025,Segunda,2024-10-13,15:15,Santander,Levante,1,0,Local,1
+2024-2025,Segunda,2024-10-13,17:30,Burgos,Mirandes,0,1,Visitante,2
+2024-2025,Segunda,2024-10-13,17:30,Granada,Cordoba,1,0,Local,1
+2024-2025,Segunda,2024-10-13,20:00,Elche,La Coruna,0,0,Empate,X
+2024-2025,Segunda,2024-10-14,19:30,Sp Gijon,Castellon,2,1,Local,1
+2024-2025,Segunda,2024-10-18,19:30,Cordoba,Cartagena,2,1,Local,1
+2024-2025,Segunda,2024-10-19,15:15,La Coruna,Eldense,1,1,Empate,X
+2024-2025,Segunda,2024-10-19,15:15,Malaga,Oviedo,0,0,Empate,X
+2024-2025,Segunda,2024-10-19,17:30,Castellon,Levante,2,0,Local,1
+2024-2025,Segunda,2024-10-19,17:30,Granada,Tenerife,4,0,Local,1
+2024-2025,Segunda,2024-10-19,20:00,Mirandes,Eibar,1,0,Local,1
+2024-2025,Segunda,2024-10-20,13:00,Cadiz,Santander,0,1,Visitante,2
+2024-2025,Segunda,2024-10-20,15:15,Ferrol,1uesca,0,0,Empate,X
+2024-2025,Segunda,2024-10-20,17:30,Elche,Sp Gijon,2,1,Local,1
+2024-2025,Segunda,2024-10-20,17:30,Zaragoza,2lmeria,1,2,Visitante,2
+2024-2025,Segunda,2024-10-21,19:30,2lbacete,Burgos,2,0,Local,1
+2024-2025,Segunda,2024-10-22,18:00,Oviedo,Mirandes,4,1,Local,1
+2024-2025,Segunda,2024-10-22,20:00,Castellon,Granada,2,3,Visitante,2
+2024-2025,Segunda,2024-10-23,18:00,Eibar,Cadiz,1,0,Local,1
+2024-2025,Segunda,2024-10-23,18:00,Eldense,Zaragoza,2,3,Visitante,2
+2024-2025,Segunda,2024-10-23,20:00,Cartagena,Elche,0,0,Empate,X
+2024-2025,Segunda,2024-10-23,20:00,Santander,Cordoba,2,0,Local,1
+2024-2025,Segunda,2024-10-24,18:00,2lmeria,2lbacete,3,1,Local,1
+2024-2025,Segunda,2024-10-24,18:00,Levante,La Coruna,2,1,Local,1
+2024-2025,Segunda,2024-10-24,20:00,Burgos,Ferrol,1,1,Empate,X
+2024-2025,Segunda,2024-10-24,20:00,Sp Gijon,1uesca,2,1,Local,1
+2024-2025,Segunda,2024-10-24,20:00,Tenerife,Malaga,0,0,Empate,X
+2024-2025,Segunda,2024-10-26,15:15,Cadiz,Oviedo,2,0,Local,1
+2024-2025,Segunda,2024-10-26,15:15,Mirandes,Cartagena,3,1,Local,1
+2024-2025,Segunda,2024-10-26,17:30,Cordoba,Eldense,2,0,Local,1
+2024-2025,Segunda,2024-10-26,17:30,Zaragoza,Castellon,1,2,Visitante,2
+2024-2025,Segunda,2024-10-27,13:00,Malaga,Eibar,1,0,Local,1
+2024-2025,Segunda,2024-10-27,15:15,Elche,Burgos,1,0,Local,1
+2024-2025,Segunda,2024-10-27,15:15,La Coruna,Santander,1,2,Visitante,2
+2024-2025,Segunda,2024-10-27,17:30,2lbacete,Sp Gijon,3,3,Empate,X
+2024-2025,Segunda,2024-10-27,17:30,1uesca,2lmeria,2,2,Empate,X
+2024-2025,Segunda,2024-10-27,20:00,Granada,Levante,1,2,Visitante,2
+2024-2025,Segunda,2024-10-28,19:30,Ferrol,Tenerife,1,1,Empate,X
+2024-2025,Segunda,2024-11-02,13:00,Eibar,Elche,0,2,Visitante,2
+2024-2025,Segunda,2024-11-02,15:15,Cartagena,La Coruna,1,5,Visitante,2
+2024-2025,Segunda,2024-11-02,15:15,Sp Gijon,Cadiz,2,0,Local,1
+2024-2025,Segunda,2024-11-02,17:30,Santander,2lbacete,1,1,Empate,X
+2024-2025,Segunda,2024-11-02,17:30,Zaragoza,Granada,2,1,Local,1
+2024-2025,Segunda,2024-11-03,13:00,Oviedo,Burgos,3,1,Local,1
+2024-2025,Segunda,2024-11-03,17:30,Tenerife,Mirandes,1,0,Local,1
+2024-2025,Segunda,2024-11-08,19:30,Elche,2lmeria,1,2,Visitante,2
+2024-2025,Segunda,2024-11-09,15:15,Mirandes,Cadiz,2,2,Empate,X
+2024-2025,Segunda,2024-11-09,17:30,Granada,Eldense,3,2,Local,1
+2024-2025,Segunda,2024-11-09,17:30,1uesca,Zaragoza,1,1,Empate,X
+2024-2025,Segunda,2024-11-09,20:00,Malaga,Cartagena,1,0,Local,1
+2024-2025,Segunda,2024-11-10,13:00,Cordoba,Castellon,2,2,Empate,X
+2024-2025,Segunda,2024-11-10,15:15,Burgos,Sp Gijon,0,2,Visitante,2
+2024-2025,Segunda,2024-11-10,15:15,Ferrol,Santander,1,2,Visitante,2
+2024-2025,Segunda,2024-11-10,17:30,2lbacete,Oviedo,2,2,Empate,X
+2024-2025,Segunda,2024-11-11,19:30,La Coruna,Eibar,1,0,Local,1
+2024-2025,Segunda,2024-11-16,13:00,Eibar,Ferrol,2,0,Local,1
+2024-2025,Segunda,2024-11-16,15:15,Castellon,Mirandes,1,3,Visitante,2
+2024-2025,Segunda,2024-11-16,15:15,Eldense,2lbacete,2,0,Local,1
+2024-2025,Segunda,2024-11-16,17:30,Levante,Elche,1,1,Empate,X
+2024-2025,Segunda,2024-11-16,17:30,Santander,Burgos,2,0,Local,1
+2024-2025,Segunda,2024-11-16,20:00,Sp Gijon,Granada,1,2,Visitante,2
+2024-2025,Segunda,2024-11-17,15:15,Cadiz,Cordoba,2,0,Local,1
+2024-2025,Segunda,2024-11-17,15:15,Oviedo,Tenerife,3,1,Local,1
+2024-2025,Segunda,2024-11-17,17:30,2lmeria,La Coruna,2,1,Local,1
+2024-2025,Segunda,2024-11-17,17:30,Cartagena,1uesca,1,0,Local,1
+2024-2025,Segunda,2024-11-17,20:00,Zaragoza,Malaga,0,0,Empate,X
+2024-2025,Segunda,2024-11-20,19:00,Eldense,1uesca,2,1,Local,1
+2024-2025,Segunda,2024-11-22,19:30,Ferrol,Levante,0,0,Empate,X
+2024-2025,Segunda,2024-11-23,13:00,Cartagena,2lmeria,1,2,Visitante,2
+2024-2025,Segunda,2024-11-23,15:15,Granada,Cadiz,0,0,Empate,X
+2024-2025,Segunda,2024-11-23,17:30,Burgos,Eibar,1,0,Local,1
+2024-2025,Segunda,2024-11-23,17:30,Cordoba,Zaragoza,2,2,Empate,X
+2024-2025,Segunda,2024-11-23,20:00,Malaga,Santander,0,0,Empate,X
+2024-2025,Segunda,2024-11-24,13:00,2lbacete,Tenerife,2,1,Local,1
+2024-2025,Segunda,2024-11-24,15:15,La Coruna,Sp Gijon,1,1,Empate,X
+2024-2025,Segunda,2024-11-24,15:15,Mirandes,Eldense,1,0,Local,1
+2024-2025,Segunda,2024-11-24,17:30,1uesca,Castellon,1,1,Empate,X
+2024-2025,Segunda,2024-11-24,20:00,Elche,Oviedo,4,0,Local,1
+2024-2025,Segunda,2024-11-26,19:30,2lmeria,Cordoba,4,0,Local,1
+2024-2025,Segunda,2024-11-27,18:00,Castellon,Ferrol,0,0,Empate,X
+2024-2025,Segunda,2024-11-27,18:00,Levante,Malaga,4,2,Local,1
+2024-2025,Segunda,2024-11-29,19:30,Oviedo,1uesca,0,3,Visitante,2
+2024-2025,Segunda,2024-11-30,15:15,2lmeria,Granada,2,1,Local,1
+2024-2025,Segunda,2024-11-30,15:15,Zaragoza,2lbacete,0,1,Visitante,2
+2024-2025,Segunda,2024-11-30,17:30,Cadiz,La Coruna,2,4,Visitante,2
+2024-2025,Segunda,2024-11-30,17:30,Santander,Mirandes,0,1,Visitante,2
+2024-2025,Segunda,2024-11-30,20:00,Tenerife,Elche,1,1,Empate,X
+2024-2025,Segunda,2024-12-01,13:00,Castellon,Malaga,2,0,Local,1
+2024-2025,Segunda,2024-12-01,17:30,Eldense,Ferrol,0,0,Empate,X
+2024-2025,Segunda,2024-12-01,17:30,Levante,Burgos,3,1,Local,1
+2024-2025,Segunda,2024-12-01,20:00,Sp Gijon,Cordoba,2,0,Local,1
+2024-2025,Segunda,2024-12-02,19:30,Eibar,Cartagena,1,0,Local,1
+2024-2025,Segunda,2024-12-06,19:30,Mirandes,Levante,2,1,Local,1
+2024-2025,Segunda,2024-12-07,13:00,Elche,Cadiz,2,1,Local,1
+2024-2025,Segunda,2024-12-07,15:15,Granada,Santander,3,0,Local,1
+2024-2025,Segunda,2024-12-07,17:30,La Coruna,Zaragoza,1,1,Empate,X
+2024-2025,Segunda,2024-12-07,20:00,1uesca,Eibar,2,1,Local,1
+2024-2025,Segunda,2024-12-08,13:00,Ferrol,Oviedo,1,5,Visitante,2
+2024-2025,Segunda,2024-12-08,15:15,Malaga,2lmeria,1,1,Empate,X
+2024-2025,Segunda,2024-12-08,17:30,2lbacete,Castellon,0,0,Empate,X
+2024-2025,Segunda,2024-12-08,17:30,Burgos,Eldense,1,0,Local,1
+2024-2025,Segunda,2024-12-08,20:00,Cordoba,Tenerife,3,0,Local,1
+2024-2025,Segunda,2024-12-09,19:30,Cartagena,Sp Gijon,1,0,Local,1
+2024-2025,Segunda,2024-12-13,19:30,2lmeria,Mirandes,1,0,Local,1
+2024-2025,Segunda,2024-12-14,13:00,Levante,Cordoba,2,2,Empate,X
+2024-2025,Segunda,2024-12-14,15:15,Cadiz,2lbacete,1,0,Local,1
+2024-2025,Segunda,2024-12-14,15:15,Castellon,Cartagena,4,1,Local,1
+2024-2025,Segunda,2024-12-14,17:30,Eibar,Zaragoza,2,1,Local,1
+2024-2025,Segunda,2024-12-14,17:30,Eldense,Elche,0,0,Empate,X
+2024-2025,Segunda,2024-12-14,20:00,Oviedo,Granada,2,0,Local,1
+2024-2025,Segunda,2024-12-15,13:00,Sp Gijon,Ferrol,1,3,Visitante,2
+2024-2025,Segunda,2024-12-15,15:15,Burgos,Malaga,0,0,Empate,X
+2024-2025,Segunda,2024-12-15,17:30,Santander,1uesca,0,1,Visitante,2
+2024-2025,Segunda,2024-12-17,18:00,2lbacete,Levante,0,0,Empate,X
+2024-2025,Segunda,2024-12-17,18:00,Granada,Cartagena,4,1,Local,1
+2024-2025,Segunda,2024-12-17,20:15,Cordoba,Eibar,2,1,Local,1
+2024-2025,Segunda,2024-12-17,20:15,Zaragoza,Oviedo,2,3,Visitante,2
+2024-2025,Segunda,2024-12-18,18:00,Ferrol,2lmeria,1,4,Visitante,2
+2024-2025,Segunda,2024-12-18,20:15,Malaga,Eldense,3,0,Local,1
+2024-2025,Segunda,2024-12-18,20:15,Mirandes,Sp Gijon,1,1,Empate,X
+2024-2025,Segunda,2024-12-19,18:00,Cadiz,Burgos,1,1,Empate,X
+2024-2025,Segunda,2024-12-19,18:00,Elche,Santander,3,0,Local,1
+2024-2025,Segunda,2024-12-19,20:15,1uesca,Tenerife,1,0,Local,1
+2024-2025,Segunda,2024-12-19,20:15,La Coruna,Castellon,5,1,Local,1
+2024-2025,Segunda,2024-12-20,19:30,Cartagena,2lbacete,0,0,Empate,X
+2024-2025,Segunda,2024-12-21,13:00,Eibar,Granada,1,1,Empate,X
+2024-2025,Segunda,2024-12-21,15:15,Oviedo,Cordoba,2,3,Visitante,2
+2024-2025,Segunda,2024-12-21,17:30,Sp Gijon,Malaga,1,3,Visitante,2
+2024-2025,Segunda,2024-12-21,17:30,Zaragoza,Ferrol,1,0,Local,1
+2024-2025,Segunda,2024-12-22,13:00,Burgos,Tenerife,1,0,Local,1
+2024-2025,Segunda,2024-12-22,15:15,Castellon,Elche,0,2,Visitante,2
+2024-2025,Segunda,2024-12-22,17:30,2lmeria,Cadiz,1,1,Empate,X
+2024-2025,Segunda,2024-12-22,17:30,Santander,Eldense,2,2,Empate,X
+2024-2025,Segunda,2024-12-22,20:00,La Coruna,Mirandes,0,4,Visitante,2
+2024-2025,Segunda,2024-12-22,20:00,Levante,1uesca,1,1,Empate,X
+2024-2025,Segunda,2025-01-07,20:30,Tenerife,Levante,0,3,Visitante,2
+2024-2025,Segunda,2025-01-10,19:30,Granada,Burgos,0,0,Empate,X
+2024-2025,Segunda,2025-01-11,13:00,Ferrol,Cartagena,0,0,Empate,X
+2024-2025,Segunda,2025-01-11,15:15,2lbacete,Santander,2,2,Empate,X
+2024-2025,Segunda,2025-01-11,15:15,1uesca,Mirandes,1,0,Local,1
+2024-2025,Segunda,2025-01-11,17:30,Malaga,La Coruna,1,1,Empate,X
+2024-2025,Segunda,2025-01-11,17:30,Tenerife,Castellon,2,0,Local,1
+2024-2025,Segunda,2025-01-11,20:00,Oviedo,Sp Gijon,1,1,Empate,X
+2024-2025,Segunda,2025-01-12,13:00,Cordoba,2lmeria,0,3,Visitante,2
+2024-2025,Segunda,2025-01-12,15:15,Cadiz,Levante,0,0,Empate,X
+2024-2025,Segunda,2025-01-12,15:15,Elche,Zaragoza,1,0,Local,1
+2024-2025,Segunda,2025-01-13,19:30,Eldense,Eibar,1,3,Visitante,2
+2024-2025,Segunda,2025-01-17,19:30,Cartagena,Oviedo,0,1,Visitante,2
+2024-2025,Segunda,2025-01-18,15:15,Eldense,Cadiz,1,4,Visitante,2
+2024-2025,Segunda,2025-01-18,17:30,Eibar,2lbacete,1,1,Empate,X
+2024-2025,Segunda,2025-01-18,17:30,Sp Gijon,Elche,1,1,Empate,X
+2024-2025,Segunda,2025-01-18,20:00,Levante,Granada,3,1,Local,1
+2024-2025,Segunda,2025-01-19,13:00,Burgos,La Coruna,0,1,Visitante,2
+2024-2025,Segunda,2025-01-19,15:15,Santander,Ferrol,6,0,Local,1
+2024-2025,Segunda,2025-01-19,17:30,Castellon,Cordoba,1,2,Visitante,2
+2024-2025,Segunda,2025-01-19,17:30,Zaragoza,Tenerife,2,2,Empate,X
+2024-2025,Segunda,2025-01-19,20:00,2lmeria,1uesca,0,0,Empate,X
+2024-2025,Segunda,2025-01-20,19:30,Mirandes,Malaga,3,2,Local,1
+2024-2025,Segunda,2025-01-24,19:30,Elche,Eibar,2,0,Local,1
+2024-2025,Segunda,2025-01-25,15:15,Cordoba,Santander,1,2,Visitante,2
+2024-2025,Segunda,2025-01-25,17:30,1uesca,Cartagena,4,0,Local,1
+2024-2025,Segunda,2025-01-25,17:30,La Coruna,Levante,1,2,Visitante,2
+2024-2025,Segunda,2025-01-25,20:00,Tenerife,Eldense,0,1,Visitante,2
+2024-2025,Segunda,2025-01-26,13:00,Granada,Sp Gijon,3,1,Local,1
+2024-2025,Segunda,2025-01-26,15:15,2lbacete,2lmeria,2,1,Local,1
+2024-2025,Segunda,2025-01-26,15:15,Oviedo,Castellon,1,0,Local,1
+2024-2025,Segunda,2025-01-26,17:30,Malaga,Zaragoza,1,2,Visitante,2
+2024-2025,Segunda,2025-01-27,19:30,Cadiz,Mirandes,3,1,Local,1
+2024-2025,Segunda,2025-01-29,20:00,Tenerife,La Coruna,0,0,Empate,X
+2024-2025,Segunda,2025-01-31,19:30,Eldense,Granada,0,3,Visitante,2
+2024-2025,Segunda,2025-02-01,13:00,Mirandes,Elche,3,0,Local,1
+2024-2025,Segunda,2025-02-01,15:15,Sp Gijon,Burgos,2,0,Local,1
+2024-2025,Segunda,2025-02-01,17:30,2lmeria,Oviedo,1,1,Empate,X
+2024-2025,Segunda,2025-02-01,20:00,Santander,Malaga,2,1,Local,1
+2024-2025,Segunda,2025-02-02,13:00,Castellon,1uesca,0,1,Visitante,2
+2024-2025,Segunda,2025-02-02,15:15,Eibar,La Coruna,0,1,Visitante,2
+2024-2025,Segunda,2025-02-02,17:30,Cartagena,Cordoba,0,1,Visitante,2
+2024-2025,Segunda,2025-02-02,17:30,Zaragoza,Cadiz,0,0,Empate,X
+2024-2025,Segunda,2025-02-02,20:00,Tenerife,2lbacete,3,1,Local,1
+2024-2025,Segunda,2025-02-03,19:30,Levante,Ferrol,0,1,Visitante,2
+2024-2025,Segunda,2025-02-07,19:30,2lbacete,Zaragoza,2,1,Local,1
+2024-2025,Segunda,2025-02-08,13:00,Ferrol,Castellon,1,3,Visitante,2
+2024-2025,Segunda,2025-02-08,15:15,Granada,Mirandes,0,0,Empate,X
+2024-2025,Segunda,2025-02-08,17:30,Malaga,Levante,1,1,Empate,X
+2024-2025,Segunda,2025-02-08,17:30,Sp Gijon,Eibar,0,0,Empate,X
+2024-2025,Segunda,2025-02-09,13:00,Elche,Tenerife,2,0,Local,1
+2024-2025,Segunda,2025-02-09,15:15,Burgos,Santander,2,1,Local,1
+2024-2025,Segunda,2025-02-09,15:15,Cordoba,1uesca,1,2,Visitante,2
+2024-2025,Segunda,2025-02-09,17:30,Cadiz,Cartagena,5,2,Local,1
+2024-2025,Segunda,2025-02-09,17:30,La Coruna,2lmeria,3,1,Local,1
+2024-2025,Segunda,2025-02-10,19:30,Oviedo,Eldense,0,0,Empate,X
+2024-2025,Segunda,2025-02-14,19:30,Mirandes,Ferrol,4,1,Local,1
+2024-2025,Segunda,2025-02-15,13:00,Castellon,Eibar,2,0,Local,1
+2024-2025,Segunda,2025-02-15,15:15,Cartagena,Malaga,0,1,Visitante,2
+2024-2025,Segunda,2025-02-15,17:30,Santander,Cadiz,2,3,Visitante,2
+2024-2025,Segunda,2025-02-15,20:00,Tenerife,Cordoba,2,3,Visitante,2
+2024-2025,Segunda,2025-02-16,13:00,Levante,Sp Gijon,0,0,Empate,X
+2024-2025,Segunda,2025-02-16,15:15,Eldense,La Coruna,2,0,Local,1
+2024-2025,Segunda,2025-02-16,15:15,1uesca,Granada,1,1,Empate,X
+2024-2025,Segunda,2025-02-16,17:30,Zaragoza,Burgos,0,1,Visitante,2
+2024-2025,Segunda,2025-02-16,20:00,Oviedo,2lbacete,1,0,Local,1
+2024-2025,Segunda,2025-02-17,19:30,2lmeria,Elche,1,1,Empate,X
+2024-2025,Segunda,2025-02-21,19:30,Malaga,Tenerife,1,0,Local,1
+2024-2025,Segunda,2025-02-22,13:00,Ferrol,Cordoba,0,1,Visitante,2
+2024-2025,Segunda,2025-02-22,15:15,Burgos,Oviedo,1,2,Visitante,2
+2024-2025,Segunda,2025-02-22,15:15,Eibar,Santander,2,2,Empate,X
+2024-2025,Segunda,2025-02-22,17:30,Granada,Zaragoza,2,2,Empate,X
+2024-2025,Segunda,2025-02-22,20:00,Sp Gijon,2lmeria,1,1,Empate,X
+2024-2025,Segunda,2025-02-23,13:00,La Coruna,1uesca,0,0,Empate,X
+2024-2025,Segunda,2025-02-23,15:15,Elche,Cartagena,2,1,Local,1
+2024-2025,Segunda,2025-02-23,17:30,2lbacete,Eldense,0,1,Visitante,2
+2024-2025,Segunda,2025-02-23,17:30,Levante,Mirandes,1,0,Local,1
+2024-2025,Segunda,2025-02-23,20:00,Cadiz,Castellon,0,0,Empate,X
+2024-2025,Segunda,2025-02-28,19:30,Cartagena,Eibar,0,2,Visitante,2
+2024-2025,Segunda,2025-03-01,15:15,Castellon,Burgos,2,1,Local,1
+2024-2025,Segunda,2025-03-01,15:15,1uesca,Ferrol,3,1,Local,1
+2024-2025,Segunda,2025-03-01,17:30,Zaragoza,Sp Gijon,1,1,Empate,X
+2024-2025,Segunda,2025-03-01,20:00,2lmeria,Malaga,2,2,Empate,X
+2024-2025,Segunda,2025-03-02,13:00,Cordoba,Granada,5,0,Local,1
+2024-2025,Segunda,2025-03-02,15:15,Oviedo,La Coruna,1,2,Visitante,2
+2024-2025,Segunda,2025-03-02,17:30,2lbacete,Cadiz,3,0,Local,1
+2024-2025,Segunda,2025-03-02,17:30,Eldense,Levante,1,2,Visitante,2
+2024-2025,Segunda,2025-03-02,20:00,Santander,Elche,2,0,Local,1
+2024-2025,Segunda,2025-03-03,19:30,Mirandes,Tenerife,2,0,Local,1
+2024-2025,Segunda,2025-03-05,19:00,Ferrol,Burgos,0,1,Visitante,2
+2024-2025,Segunda,2025-03-07,18:00,Eibar,2lmeria,1,0,Local,1
+2024-2025,Segunda,2025-03-07,20:00,La Coruna,Cordoba,1,1,Empate,X
+2024-2025,Segunda,2025-03-08,15:15,Mirandes,Oviedo,1,0,Local,1
+2024-2025,Segunda,2025-03-08,17:30,Elche,Castellon,3,1,Local,1
+2024-2025,Segunda,2025-03-08,17:30,Sp Gijon,Santander,1,1,Empate,X
+2024-2025,Segunda,2025-03-08,20:00,Zaragoza,Eldense,2,4,Visitante,2
+2024-2025,Segunda,2025-03-09,13:00,Tenerife,1uesca,2,0,Local,1
+2024-2025,Segunda,2025-03-09,15:15,Malaga,Cadiz,0,2,Visitante,2
+2024-2025,Segunda,2025-03-09,17:30,Levante,Cartagena,3,0,Local,1
+2024-2025,Segunda,2025-03-09,20:00,Granada,Ferrol,3,0,Local,1
+2024-2025,Segunda,2025-03-10,19:30,Burgos,2lbacete,1,0,Local,1
+2024-2025,Segunda,2025-03-14,19:30,Oviedo,Elche,1,1,Empate,X
+2024-2025,Segunda,2025-03-15,13:00,Ferrol,Eibar,0,0,Empate,X
+2024-2025,Segunda,2025-03-15,15:15,2lbacete,Malaga,2,0,Local,1
+2024-2025,Segunda,2025-03-15,15:15,Cartagena,Burgos,0,1,Visitante,2
+2024-2025,Segunda,2025-03-15,17:30,2lmeria,Zaragoza,4,1,Local,1
+2024-2025,Segunda,2025-03-15,20:00,Cordoba,Sp Gijon,1,1,Empate,X
+2024-2025,Segunda,2025-03-16,13:00,Eldense,Mirandes,2,2,Empate,X
+2024-2025,Segunda,2025-03-16,15:15,1uesca,Levante,1,2,Visitante,2
+2024-2025,Segunda,2025-03-16,15:15,Santander,Tenerife,2,1,Local,1
+2024-2025,Segunda,2025-03-16,17:30,Cadiz,Granada,1,0,Local,1
+2024-2025,Segunda,2025-03-17,19:30,Castellon,La Coruna,2,2,Empate,X
+2024-2025,Segunda,2025-03-21,19:30,Burgos,2lmeria,3,1,Local,1
+2024-2025,Segunda,2025-03-22,15:15,Elche,Eldense,2,0,Local,1
+2024-2025,Segunda,2025-03-22,17:30,Malaga,Ferrol,2,0,Local,1
+2024-2025,Segunda,2025-03-22,17:30,Mirandes,Santander,2,1,Local,1
+2024-2025,Segunda,2025-03-22,20:00,Granada,Oviedo,1,0,Local,1
+2024-2025,Segunda,2025-03-23,13:00,Levante,Castellon,3,2,Local,1
+2024-2025,Segunda,2025-03-23,15:15,Eibar,1uesca,2,1,Local,1
+2024-2025,Segunda,2025-03-23,15:15,Sp Gijon,2lbacete,0,2,Visitante,2
+2024-2025,Segunda,2025-03-23,17:30,La Coruna,Cartagena,2,2,Empate,X
+2024-2025,Segunda,2025-03-23,17:30,Tenerife,Cadiz,2,1,Local,1
+2024-2025,Segunda,2025-03-24,19:30,Zaragoza,Cordoba,1,1,Empate,X
+2024-2025,Segunda,2025-03-28,19:30,Tenerife,Granada,2,1,Local,1
+2024-2025,Segunda,2025-03-29,13:00,Eldense,Burgos,0,0,Empate,X
+2024-2025,Segunda,2025-03-29,15:15,Ferrol,La Coruna,0,1,Visitante,2
+2024-2025,Segunda,2025-03-29,17:30,Cartagena,Castellon,2,2,Empate,X
+2024-2025,Segunda,2025-03-29,17:30,Santander,Zaragoza,2,0,Local,1
+2024-2025,Segunda,2025-03-29,20:00,2lmeria,Levante,1,0,Local,1
+2024-2025,Segunda,2025-03-30,13:00,Cordoba,Elche,1,2,Visitante,2
+2024-2025,Segunda,2025-03-30,15:15,Oviedo,Malaga,2,1,Local,1
+2024-2025,Segunda,2025-03-30,17:30,2lbacete,Mirandes,3,2,Local,1
+2024-2025,Segunda,2025-03-30,17:30,1uesca,Sp Gijon,3,2,Local,1
+2024-2025,Segunda,2025-03-31,19:30,Cadiz,Eibar,0,0,Empate,X
+2024-2025,Segunda,2025-04-04,19:30,Castellon,2lbacete,2,2,Empate,X
+2024-2025,Segunda,2025-04-05,15:15,Eibar,Oviedo,1,1,Empate,X
+2024-2025,Segunda,2025-04-05,17:30,Cartagena,Eldense,0,1,Visitante,2
+2024-2025,Segunda,2025-04-05,17:30,Granada,2lmeria,3,1,Local,1
+2024-2025,Segunda,2025-04-05,20:00,Sp Gijon,Tenerife,1,3,Visitante,2
+2024-2025,Segunda,2025-04-06,13:00,Zaragoza,Mirandes,1,0,Local,1
+2024-2025,Segunda,2025-04-06,15:15,Levante,Santander,3,1,Local,1
+2024-2025,Segunda,2025-04-06,17:30,Burgos,1uesca,2,1,Local,1
+2024-2025,Segunda,2025-04-06,17:30,Malaga,Cordoba,0,1,Visitante,2
+2024-2025,Segunda,2025-04-06,20:00,La Coruna,Cadiz,1,0,Local,1
+2024-2025,Segunda,2025-04-07,19:30,Elche,Ferrol,1,0,Local,1
+2024-2025,Segunda,2025-04-11,19:30,Cordoba,Levante,2,2,Empate,X
+2024-2025,Segunda,2025-04-12,15:15,Zaragoza,Eibar,2,2,Empate,X
+2024-2025,Segunda,2025-04-12,17:30,Cadiz,Elche,0,1,Visitante,2
+2024-2025,Segunda,2025-04-12,17:30,Tenerife,Burgos,0,0,Empate,X
+2024-2025,Segunda,2025-04-12,20:00,Oviedo,Ferrol,3,0,Local,1
+2024-2025,Segunda,2025-04-13,13:00,2lbacete,Granada,0,2,Visitante,2
+2024-2025,Segunda,2025-04-13,15:15,Santander,Castellon,1,1,Empate,X
+2024-2025,Segunda,2025-04-13,17:30,Eldense,Sp Gijon,1,2,Visitante,2
+2024-2025,Segunda,2025-04-13,17:30,Mirandes,La Coruna,2,2,Empate,X
+2024-2025,Segunda,2025-04-13,20:00,2lmeria,Cartagena,2,1,Local,1
+2024-2025,Segunda,2025-04-14,19:30,1uesca,Malaga,1,0,Local,1
+2024-2025,Segunda,2025-04-18,18:00,Sp Gijon,Mirandes,3,1,Local,1
+2024-2025,Segunda,2025-04-18,20:00,Castellon,2lmeria,4,1,Local,1
+2024-2025,Segunda,2025-04-19,13:00,Ferrol,Eldense,1,0,Local,1
+2024-2025,Segunda,2025-04-19,15:15,1uesca,Santander,1,3,Visitante,2
+2024-2025,Segunda,2025-04-19,17:30,Levante,Zaragoza,5,2,Local,1
+2024-2025,Segunda,2025-04-19,20:00,Burgos,Cadiz,2,2,Empate,X
+2024-2025,Segunda,2025-04-20,13:00,Cartagena,Granada,2,3,Visitante,2
+2024-2025,Segunda,2025-04-20,15:15,Cordoba,Oviedo,0,0,Empate,X
+2024-2025,Segunda,2025-04-20,17:30,Elche,2lbacete,2,2,Empate,X
+2024-2025,Segunda,2025-04-20,20:00,La Coruna,Tenerife,0,0,Empate,X
+2024-2025,Segunda,2025-04-21,19:30,Eibar,Malaga,2,2,Empate,X
+2024-2025,Segunda,2025-04-25,19:30,Cadiz,Sp Gijon,1,0,Local,1
+2024-2025,Segunda,2025-04-26,13:00,2lbacete,Cartagena,3,1,Local,1
+2024-2025,Segunda,2025-04-26,15:15,Eldense,Cordoba,1,1,Empate,X
+2024-2025,Segunda,2025-04-26,15:15,Oviedo,Levante,1,0,Local,1
+2024-2025,Segunda,2025-04-26,17:30,Granada,Elche,1,1,Empate,X
+2024-2025,Segunda,2025-04-26,17:30,Mirandes,Burgos,2,1,Local,1
+2024-2025,Segunda,2025-04-27,15:15,Santander,La Coruna,2,1,Local,1
+2024-2025,Segunda,2025-04-27,17:30,Malaga,Castellon,1,0,Local,1
+2024-2025,Segunda,2025-04-27,17:30,Tenerife,Eibar,1,1,Empate,X
+2024-2025,Segunda,2025-04-27,20:00,Zaragoza,1uesca,1,1,Empate,X
+2024-2025,Segunda,2025-04-29,19:30,2lmeria,Ferrol,2,1,Local,1
+2024-2025,Segunda,2025-05-02,19:30,Cordoba,Cadiz,4,2,Local,1
+2024-2025,Segunda,2025-05-03,15:15,1uesca,Oviedo,1,2,Visitante,2
+2024-2025,Segunda,2025-05-03,17:30,Eibar,Mirandes,0,1,Visitante,2
+2024-2025,Segunda,2025-05-03,17:30,Malaga,Granada,1,0,Local,1
+2024-2025,Segunda,2025-05-03,20:00,Burgos,Elche,0,1,Visitante,2
+2024-2025,Segunda,2025-05-04,13:00,Levante,Tenerife,1,1,Empate,X
+2024-2025,Segunda,2025-05-04,15:15,Ferrol,Zaragoza,1,2,Visitante,2
+2024-2025,Segunda,2025-05-04,17:30,2lmeria,Eldense,5,0,Local,1
+2024-2025,Segunda,2025-05-04,17:30,Cartagena,Santander,1,0,Local,1
+2024-2025,Segunda,2025-05-04,20:00,La Coruna,2lbacete,5,1,Local,1
+2024-2025,Segunda,2025-05-05,19:30,Castellon,Sp Gijon,4,3,Local,1
+2024-2025,Segunda,2025-05-09,19:30,Cadiz,2lmeria,2,1,Local,1
+2024-2025,Segunda,2025-05-10,15:15,Mirandes,Castellon,3,2,Local,1
+2024-2025,Segunda,2025-05-10,15:15,Sp Gijon,La Coruna,2,1,Local,1
+2024-2025,Segunda,2025-05-10,17:30,Burgos,Cordoba,3,2,Local,1
+2024-2025,Segunda,2025-05-10,17:30,Elche,Levante,1,3,Visitante,2
+2024-2025,Segunda,2025-05-10,20:00,Zaragoza,Cartagena,3,2,Local,1
+2024-2025,Segunda,2025-05-11,13:00,Santander,Oviedo,1,1,Empate,X
+2024-2025,Segunda,2025-05-11,17:30,2lbacete,1uesca,3,2,Local,1
+2024-2025,Segunda,2025-05-11,17:30,Eldense,Malaga,1,0,Local,1
+2024-2025,Segunda,2025-05-11,20:00,Tenerife,Ferrol,0,0,Empate,X
+2024-2025,Segunda,2025-05-12,19:30,Granada,Eibar,0,2,Visitante,2
+2024-2025,Segunda,2025-05-16,19:30,Levante,2lbacete,1,0,Local,1
+2024-2025,Segunda,2025-05-17,15:15,Eibar,Burgos,1,0,Local,1
+2024-2025,Segunda,2025-05-17,15:15,La Coruna,Granada,2,3,Visitante,2
+2024-2025,Segunda,2025-05-17,17:30,Cartagena,Tenerife,1,0,Local,1
+2024-2025,Segunda,2025-05-17,17:30,1uesca,Elche,2,1,Local,1
+2024-2025,Segunda,2025-05-17,20:00,Malaga,Sp Gijon,2,1,Local,1
+2024-2025,Segunda,2025-05-18,13:00,Ferrol,Cadiz,1,0,Local,1
+2024-2025,Segunda,2025-05-18,15:15,Castellon,Eldense,1,1,Empate,X
+2024-2025,Segunda,2025-05-18,15:15,Oviedo,Zaragoza,1,0,Local,1
+2024-2025,Segunda,2025-05-18,20:00,2lmeria,Santander,2,0,Local,1
+2024-2025,Segunda,2025-05-19,19:30,Cordoba,Mirandes,1,2,Visitante,2
+2024-2025,Segunda,2025-05-24,17:30,2lbacete,Ferrol,2,0,Local,1
+2024-2025,Segunda,2025-05-25,17:30,Burgos,Levante,2,3,Visitante,2
+2024-2025,Segunda,2025-05-25,17:30,Cadiz,1uesca,4,0,Local,1
+2024-2025,Segunda,2025-05-25,17:30,Eibar,Cordoba,4,1,Local,1
+2024-2025,Segunda,2025-05-25,17:30,Elche,Malaga,2,0,Local,1
+2024-2025,Segunda,2025-05-25,17:30,Eldense,Santander,3,3,Empate,X
+2024-2025,Segunda,2025-05-25,17:30,Granada,Castellon,2,1,Local,1
+2024-2025,Segunda,2025-05-25,17:30,Mirandes,2lmeria,0,0,Empate,X
+2024-2025,Segunda,2025-05-25,17:30,Sp Gijon,Cartagena,3,2,Local,1
+2024-2025,Segunda,2025-05-25,17:30,Tenerife,Oviedo,0,1,Visitante,2
+2024-2025,Segunda,2025-05-25,17:30,Zaragoza,La Coruna,1,0,Local,1
+2024-2025,Segunda,2025-05-30,19:30,Castellon,Zaragoza,4,1,Local,1
+2024-2025,Segunda,2025-05-31,15:15,Ferrol,Sp Gijon,0,2,Visitante,2
+2024-2025,Segunda,2025-05-31,17:30,Malaga,Burgos,2,2,Empate,X
+2024-2025,Segunda,2025-06-01,17:30,2lmeria,Tenerife,2,0,Local,1
+2024-2025,Segunda,2025-06-01,17:30,Cartagena,Mirandes,1,3,Visitante,2
+2024-2025,Segunda,2025-06-01,17:30,1uesca,Eldense,3,2,Local,1
+2024-2025,Segunda,2025-06-01,17:30,La Coruna,Elche,0,4,Visitante,2
+2024-2025,Segunda,2025-06-01,17:30,Levante,Eibar,1,0,Local,1
+2024-2025,Segunda,2025-06-01,17:30,Oviedo,Cadiz,2,1,Local,1
+2024-2025,Segunda,2025-06-01,17:30,Santander,Granada,2,1,Local,1
+2024-2025,Segunda,2025-06-01,20:00,Cordoba,2lbacete,1,1,Empate,X
+2025-2026,Primera,2025-08-15,18:00,Girona,Vallecano,1,3,Visitante,2
+2025-2026,Primera,2025-08-15,20:30,Villarreal,Oviedo,2,0,Local,1
+2025-2026,Primera,2025-08-16,18:30,Mallorca,Barcelona,0,3,Visitante,2
+2025-2026,Primera,2025-08-16,20:30,Alaves,Levante,2,1,Local,1
+2025-2026,Primera,2025-08-16,20:30,Valencia,Sociedad,1,1,Empate,X
+2025-2026,Primera,2025-08-17,16:00,Celta,Getafe,0,2,Visitante,2
+2025-2026,Primera,2025-08-17,18:30,Ath Bilbao,Sevilla,3,2,Local,1
+2025-2026,Primera,2025-08-17,20:30,Espanol,Ath Madrid,2,1,Local,1
+2025-2026,Primera,2025-08-18,20:00,Elche,Betis,1,1,Empate,X
+2025-2026,Primera,2025-08-19,20:00,Real Madrid,Osasuna,1,0,Local,1
+2025-2026,Primera,2025-08-22,20:30,Betis,Alaves,1,0,Local,1
+2025-2026,Primera,2025-08-23,16:00,Mallorca,Celta,1,1,Empate,X
+2025-2026,Primera,2025-08-23,18:30,Ath Madrid,Elche,1,1,Empate,X
+2025-2026,Primera,2025-08-23,20:30,Levante,Barcelona,2,3,Visitante,2
+2025-2026,Primera,2025-08-24,16:00,Osasuna,Valencia,1,0,Local,1
+2025-2026,Primera,2025-08-24,18:30,Sociedad,Espanol,2,2,Empate,X
+2025-2026,Primera,2025-08-24,18:30,Villarreal,Girona,5,0,Local,1
+2025-2026,Primera,2025-08-24,20:30,Oviedo,Real Madrid,0,3,Visitante,2
+2025-2026,Primera,2025-08-25,18:30,Ath Bilbao,Vallecano,1,0,Local,1
+2025-2026,Primera,2025-08-25,20:30,Sevilla,Getafe,1,2,Visitante,2
+2025-2026,Primera,2025-08-27,20:00,Celta,Betis,1,1,Empate,X
+2025-2026,Primera,2025-08-29,18:30,Elche,Levante,2,0,Local,1
+2025-2026,Primera,2025-08-29,20:30,Valencia,Getafe,3,0,Local,1
+2025-2026,Primera,2025-08-30,16:00,Alaves,Ath Madrid,1,1,Empate,X
+2025-2026,Primera,2025-08-30,18:00,Oviedo,Sociedad,1,0,Local,1
+2025-2026,Primera,2025-08-30,18:30,Girona,Sevilla,0,2,Visitante,2
+2025-2026,Primera,2025-08-30,20:30,Real Madrid,Mallorca,2,1,Local,1
+2025-2026,Primera,2025-08-31,16:00,Celta,Villarreal,1,1,Empate,X
+2025-2026,Primera,2025-08-31,18:00,Betis,Ath Bilbao,1,2,Visitante,2
+2025-2026,Primera,2025-08-31,18:30,Espanol,Osasuna,1,0,Local,1
+2025-2026,Primera,2025-08-31,20:30,Vallecano,Barcelona,1,1,Empate,X
+2025-2026,Primera,2025-09-12,20:00,Sevilla,Elche,2,2,Empate,X
+2025-2026,Primera,2025-09-13,13:00,Getafe,Oviedo,2,0,Local,1
+2025-2026,Primera,2025-09-13,15:15,Sociedad,Real Madrid,1,2,Visitante,2
+2025-2026,Primera,2025-09-13,17:30,Ath Bilbao,Alaves,0,1,Visitante,2
+2025-2026,Primera,2025-09-13,20:00,Ath Madrid,Villarreal,2,0,Local,1
+2025-2026,Primera,2025-09-14,13:00,Celta,Girona,1,1,Empate,X
+2025-2026,Primera,2025-09-14,15:15,Levante,Betis,2,2,Empate,X
+2025-2026,Primera,2025-09-14,17:30,Osasuna,Vallecano,2,0,Local,1
+2025-2026,Primera,2025-09-14,20:00,Barcelona,Valencia,6,0,Local,1
+2025-2026,Primera,2025-09-15,20:00,Espanol,Mallorca,3,2,Local,1
+2025-2026,Primera,2025-09-19,20:00,Betis,Sociedad,3,1,Local,1
+2025-2026,Primera,2025-09-20,13:00,Girona,Levante,0,4,Visitante,2
+2025-2026,Primera,2025-09-20,15:15,Real Madrid,Espanol,2,0,Local,1
+2025-2026,Primera,2025-09-20,17:30,Alaves,Sevilla,1,2,Visitante,2
+2025-2026,Primera,2025-09-20,17:30,Villarreal,Osasuna,2,1,Local,1
+2025-2026,Primera,2025-09-20,20:00,Valencia,Ath Bilbao,2,0,Local,1
+2025-2026,Primera,2025-09-21,13:00,Vallecano,Celta,1,1,Empate,X
+2025-2026,Primera,2025-09-21,15:15,Mallorca,Ath Madrid,1,1,Empate,X
+2025-2026,Primera,2025-09-21,17:30,Elche,Oviedo,1,0,Local,1
+2025-2026,Primera,2025-09-21,20:00,Barcelona,Getafe,3,0,Local,1
+2025-2026,Primera,2025-09-23,18:00,Ath Bilbao,Girona,1,1,Empate,X
+2025-2026,Primera,2025-09-23,18:00,Espanol,Valencia,2,2,Empate,X
+2025-2026,Primera,2025-09-23,20:30,Levante,Real Madrid,1,4,Visitante,2
+2025-2026,Primera,2025-09-23,20:30,Sevilla,Villarreal,1,2,Visitante,2
+2025-2026,Primera,2025-09-24,18:00,Getafe,Alaves,1,1,Empate,X
+2025-2026,Primera,2025-09-24,20:30,Ath Madrid,Vallecano,3,2,Local,1
+2025-2026,Primera,2025-09-24,20:30,Sociedad,Mallorca,1,0,Local,1
+2025-2026,Primera,2025-09-25,18:30,Osasuna,Elche,1,1,Empate,X
+2025-2026,Primera,2025-09-25,20:30,Oviedo,Barcelona,1,3,Visitante,2
+2025-2026,Primera,2025-09-26,20:00,Girona,Espanol,0,0,Empate,X
+2025-2026,Primera,2025-09-27,13:00,Getafe,Levante,1,1,Empate,X
+2025-2026,Primera,2025-09-27,15:15,Ath Madrid,Real Madrid,5,2,Local,1
+2025-2026,Primera,2025-09-27,17:30,Mallorca,Alaves,1,0,Local,1
+2025-2026,Primera,2025-09-27,20:00,Villarreal,Ath Bilbao,1,0,Local,1
+2025-2026,Primera,2025-09-28,13:00,Vallecano,Sevilla,0,1,Visitante,2
+2025-2026,Primera,2025-09-28,15:15,Elche,Celta,2,1,Local,1
+2025-2026,Primera,2025-09-28,17:30,Barcelona,Sociedad,2,1,Local,1
+2025-2026,Primera,2025-09-28,20:00,Betis,Osasuna,2,0,Local,1
+2025-2026,Primera,2025-09-30,19:00,Valencia,Oviedo,1,2,Visitante,2
+2025-2026,Primera,2025-10-03,20:00,Osasuna,Getafe,2,1,Local,1
+2025-2026,Primera,2025-10-04,13:00,Oviedo,Levante,0,2,Visitante,2
+2025-2026,Primera,2025-10-04,15:15,Girona,Valencia,2,1,Local,1
+2025-2026,Primera,2025-10-04,17:30,Ath Bilbao,Mallorca,2,1,Local,1
+2025-2026,Primera,2025-10-04,20:00,Real Madrid,Villarreal,3,1,Local,1
+2025-2026,Primera,2025-10-05,13:00,Alaves,Elche,3,1,Local,1
+2025-2026,Primera,2025-10-05,15:15,Sevilla,Barcelona,4,1,Local,1
+2025-2026,Primera,2025-10-05,17:30,Espanol,Betis,1,2,Visitante,2
+2025-2026,Primera,2025-10-05,17:30,Sociedad,Vallecano,0,1,Visitante,2
+2025-2026,Primera,2025-10-05,20:00,Celta,Ath Madrid,1,1,Empate,X
+2025-2026,Primera,2025-10-17,20:00,Oviedo,Espanol,0,2,Visitante,2
+2025-2026,Primera,2025-10-18,13:00,Sevilla,Mallorca,1,3,Visitante,2
+2025-2026,Primera,2025-10-18,15:15,Barcelona,Girona,2,1,Local,1
+2025-2026,Primera,2025-10-18,17:30,Villarreal,Betis,2,2,Empate,X
+2025-2026,Primera,2025-10-18,20:00,Ath Madrid,Osasuna,1,0,Local,1
+2025-2026,Primera,2025-10-19,13:00,Elche,Ath Bilbao,0,0,Empate,X
+2025-2026,Primera,2025-10-19,15:15,Celta,Sociedad,1,1,Empate,X
+2025-2026,Primera,2025-10-19,17:30,Levante,Vallecano,0,3,Visitante,2
+2025-2026,Primera,2025-10-19,20:00,Getafe,Real Madrid,0,1,Visitante,2
+2025-2026,Primera,2025-10-20,20:00,Alaves,Valencia,0,0,Empate,X
+2025-2026,Primera,2025-10-24,20:00,Sociedad,Sevilla,2,1,Local,1
+2025-2026,Primera,2025-10-25,13:00,Girona,Oviedo,3,3,Empate,X
+2025-2026,Primera,2025-10-25,15:15,Espanol,Elche,1,0,Local,1
+2025-2026,Primera,2025-10-25,17:30,Ath Bilbao,Getafe,0,1,Visitante,2
+2025-2026,Primera,2025-10-25,20:00,Valencia,Villarreal,0,2,Visitante,2
+2025-2026,Primera,2025-10-26,13:00,Mallorca,Levante,1,1,Empate,X
+2025-2026,Primera,2025-10-26,15:15,Real Madrid,Barcelona,2,1,Local,1
+2025-2026,Primera,2025-10-26,17:30,Osasuna,Celta,2,3,Visitante,2
+2025-2026,Primera,2025-10-26,20:00,Vallecano,Alaves,1,0,Local,1
+2025-2026,Primera,2025-10-27,20:00,Betis,Ath Madrid,0,2,Visitante,2
+2025-2026,Primera,2025-10-31,20:00,Getafe,Girona,2,1,Local,1
+2025-2026,Primera,2025-11-01,13:00,Villarreal,Vallecano,4,0,Local,1
+2025-2026,Primera,2025-11-01,15:15,Ath Madrid,Sevilla,3,0,Local,1
+2025-2026,Primera,2025-11-01,17:30,Sociedad,Ath Bilbao,3,2,Local,1
+2025-2026,Primera,2025-11-01,20:00,Real Madrid,Valencia,4,0,Local,1
+2025-2026,Primera,2025-11-02,13:00,Levante,Celta,1,2,Visitante,2
+2025-2026,Primera,2025-11-02,15:15,Alaves,Espanol,2,1,Local,1
+2025-2026,Primera,2025-11-02,17:30,Barcelona,Elche,3,1,Local,1
+2025-2026,Primera,2025-11-02,20:00,Betis,Mallorca,3,0,Local,1
+2025-2026,Primera,2025-11-03,20:00,Oviedo,Osasuna,0,0,Empate,X
+2025-2026,Primera,2025-11-07,20:00,Elche,Sociedad,1,1,Empate,X
+2025-2026,Primera,2025-11-08,13:00,Girona,Alaves,1,0,Local,1
+2025-2026,Primera,2025-11-08,15:15,Sevilla,Osasuna,1,0,Local,1
+2025-2026,Primera,2025-11-08,17:30,Ath Madrid,Levante,3,1,Local,1
+2025-2026,Primera,2025-11-08,20:00,Espanol,Villarreal,0,2,Visitante,2
+2025-2026,Primera,2025-11-09,13:00,Ath Bilbao,Oviedo,1,0,Local,1
+2025-2026,Primera,2025-11-09,15:15,Vallecano,Real Madrid,0,0,Empate,X
+2025-2026,Primera,2025-11-09,17:30,Mallorca,Getafe,1,0,Local,1
+2025-2026,Primera,2025-11-09,17:30,Valencia,Betis,1,1,Empate,X
+2025-2026,Primera,2025-11-09,20:00,Celta,Barcelona,2,4,Visitante,2
+2025-2026,Primera,2025-11-21,20:00,Valencia,Levante,1,0,Local,1
+2025-2026,Primera,2025-11-22,13:00,Alaves,Celta,0,1,Visitante,2
+2025-2026,Primera,2025-11-22,15:15,Barcelona,Ath Bilbao,4,0,Local,1
+2025-2026,Primera,2025-11-22,17:30,Osasuna,Sociedad,1,3,Visitante,2
+2025-2026,Primera,2025-11-22,20:00,Villarreal,Mallorca,2,1,Local,1
+2025-2026,Primera,2025-11-23,13:00,Oviedo,Vallecano,0,0,Empate,X
+2025-2026,Primera,2025-11-23,15:15,Betis,Girona,1,1,Empate,X
+2025-2026,Primera,2025-11-23,17:30,Getafe,Ath Madrid,0,1,Visitante,2
+2025-2026,Primera,2025-11-23,20:00,Elche,Real Madrid,2,2,Empate,X
+2025-2026,Primera,2025-11-24,20:00,Espanol,Sevilla,2,1,Local,1
+2025-2026,Primera,2025-11-28,20:00,Getafe,Elche,1,0,Local,1
+2025-2026,Primera,2025-11-29,13:00,Mallorca,Osasuna,2,2,Empate,X
+2025-2026,Primera,2025-11-29,15:15,Barcelona,Alaves,3,1,Local,1
+2025-2026,Primera,2025-11-29,17:30,Levante,Ath Bilbao,0,2,Visitante,2
+2025-2026,Primera,2025-11-29,20:00,Ath Madrid,Oviedo,2,0,Local,1
+2025-2026,Primera,2025-11-30,13:00,Sociedad,Villarreal,2,3,Visitante,2
+2025-2026,Primera,2025-11-30,15:15,Sevilla,Betis,0,2,Visitante,2
+2025-2026,Primera,2025-11-30,17:30,Celta,Espanol,0,1,Visitante,2
+2025-2026,Primera,2025-11-30,20:00,Girona,Real Madrid,1,1,Empate,X
+2025-2026,Primera,2025-12-01,20:00,Vallecano,Valencia,1,1,Empate,X
+2025-2026,Primera,2025-12-02,20:00,Barcelona,Ath Madrid,3,1,Local,1
+2025-2026,Primera,2025-12-03,18:00,Ath Bilbao,Real Madrid,0,3,Visitante,2
+2025-2026,Primera,2025-12-05,20:00,Oviedo,Mallorca,0,0,Empate,X
+2025-2026,Primera,2025-12-06,13:00,Villarreal,Getafe,2,0,Local,1
+2025-2026,Primera,2025-12-06,15:15,Alaves,Sociedad,1,0,Local,1
+2025-2026,Primera,2025-12-06,17:30,Betis,Barcelona,3,5,Visitante,2
+2025-2026,Primera,2025-12-06,20:00,Ath Bilbao,Ath Madrid,1,0,Local,1
+2025-2026,Primera,2025-12-07,13:00,Elche,Girona,3,0,Local,1
+2025-2026,Primera,2025-12-07,15:15,Valencia,Sevilla,1,1,Empate,X
+2025-2026,Primera,2025-12-07,17:30,Espanol,Vallecano,1,0,Local,1
+2025-2026,Primera,2025-12-07,20:00,Real Madrid,Celta,0,2,Visitante,2
+2025-2026,Primera,2025-12-08,20:00,Osasuna,Levante,2,0,Local,1
+2025-2026,Primera,2025-12-12,20:00,Sociedad,Girona,1,2,Visitante,2
+2025-2026,Primera,2025-12-13,13:00,Ath Madrid,Valencia,2,1,Local,1
+2025-2026,Primera,2025-12-13,15:15,Mallorca,Elche,3,1,Local,1
+2025-2026,Primera,2025-12-13,17:30,Barcelona,Osasuna,2,0,Local,1
+2025-2026,Primera,2025-12-13,20:00,Getafe,Espanol,0,1,Visitante,2
+2025-2026,Primera,2025-12-14,13:00,Sevilla,Oviedo,4,0,Local,1
+2025-2026,Primera,2025-12-14,15:15,Celta,Ath Bilbao,2,0,Local,1
+2025-2026,Primera,2025-12-14,20:00,Alaves,Real Madrid,1,2,Visitante,2
+2025-2026,Primera,2025-12-15,20:00,Vallecano,Betis,0,0,Empate,X
+2025-2026,Primera,2025-12-19,20:00,Valencia,Mallorca,1,1,Empate,X
+2025-2026,Primera,2025-12-20,13:00,Oviedo,Celta,0,0,Empate,X
+2025-2026,Primera,2025-12-20,15:15,Levante,Sociedad,1,1,Empate,X
+2025-2026,Primera,2025-12-20,17:30,Osasuna,Alaves,3,0,Local,1
+2025-2026,Primera,2025-12-20,20:00,Real Madrid,Sevilla,2,0,Local,1
+2025-2026,Primera,2025-12-21,13:00,Girona,Ath Madrid,0,3,Visitante,2
+2025-2026,Primera,2025-12-21,15:15,Villarreal,Barcelona,0,2,Visitante,2
+2025-2026,Primera,2025-12-21,17:30,Elche,Vallecano,4,0,Local,1
+2025-2026,Primera,2025-12-21,20:00,Betis,Getafe,4,0,Local,1
+2025-2026,Primera,2025-12-22,20:00,Ath Bilbao,Espanol,1,2,Visitante,2
+2025-2026,Primera,2026-01-02,20:00,Vallecano,Getafe,1,1,Empate,X
+2025-2026,Primera,2026-01-03,13:00,Celta,Valencia,4,1,Local,1
+2025-2026,Primera,2026-01-03,15:15,Osasuna,Ath Bilbao,1,1,Empate,X
+2025-2026,Primera,2026-01-03,17:30,Elche,Villarreal,1,3,Visitante,2
+2025-2026,Primera,2026-01-03,20:00,Espanol,Barcelona,0,2,Visitante,2
+2025-2026,Primera,2026-01-04,13:00,Sevilla,Levante,0,3,Visitante,2
+2025-2026,Primera,2026-01-04,15:15,Real Madrid,Betis,5,1,Local,1
+2025-2026,Primera,2026-01-04,17:30,Alaves,Oviedo,1,1,Empate,X
+2025-2026,Primera,2026-01-04,17:30,Mallorca,Girona,1,2,Visitante,2
+2025-2026,Primera,2026-01-04,20:00,Sociedad,Ath Madrid,1,1,Empate,X
+2025-2026,Primera,2026-01-09,20:00,Getafe,Sociedad,1,2,Visitante,2
+2025-2026,Primera,2026-01-10,13:00,Oviedo,Betis,1,1,Empate,X
+2025-2026,Primera,2026-01-10,15:15,Villarreal,Alaves,3,1,Local,1
+2025-2026,Primera,2026-01-10,17:30,Girona,Osasuna,1,0,Local,1
+2025-2026,Primera,2026-01-10,20:00,Valencia,Elche,1,1,Empate,X
+2025-2026,Primera,2026-01-11,13:00,Vallecano,Mallorca,2,1,Local,1
+2025-2026,Primera,2026-01-11,15:15,Levante,Espanol,1,1,Empate,X
+2025-2026,Primera,2026-01-12,20:00,Sevilla,Celta,0,1,Visitante,2
+2025-2026,Primera,2026-01-16,20:00,Espanol,Girona,0,2,Visitante,2
+2025-2026,Primera,2026-01-17,13:00,Real Madrid,Levante,2,0,Local,1
+2025-2026,Primera,2026-01-17,15:15,Mallorca,Ath Bilbao,3,2,Local,1
+2025-2026,Primera,2026-01-17,17:30,Osasuna,Oviedo,3,2,Local,1
+2025-2026,Primera,2026-01-17,20:00,Betis,Villarreal,2,0,Local,1
+2025-2026,Primera,2026-01-18,13:00,Getafe,Valencia,0,1,Visitante,2
+2025-2026,Primera,2026-01-18,15:15,Ath Madrid,Alaves,1,0,Local,1
+2025-2026,Primera,2026-01-18,17:30,Celta,Vallecano,3,0,Local,1
+2025-2026,Primera,2026-01-18,20:00,Sociedad,Barcelona,2,1,Local,1
+2025-2026,Primera,2026-01-19,20:00,Elche,Sevilla,2,2,Empate,X
+2025-2026,Primera,2026-01-23,20:00,Levante,Elche,3,2,Local,1
+2025-2026,Primera,2026-01-24,13:00,Vallecano,Osasuna,1,3,Visitante,2
+2025-2026,Primera,2026-01-24,15:15,Valencia,Espanol,3,2,Local,1
+2025-2026,Primera,2026-01-24,17:30,Sevilla,Ath Bilbao,2,1,Local,1
+2025-2026,Primera,2026-01-24,20:00,Villarreal,Real Madrid,0,2,Visitante,2
+2025-2026,Primera,2026-01-25,13:00,Ath Madrid,Mallorca,3,0,Local,1
+2025-2026,Primera,2026-01-25,15:15,Barcelona,Oviedo,3,0,Local,1
+2025-2026,Primera,2026-01-25,17:30,Sociedad,Celta,3,1,Local,1
+2025-2026,Primera,2026-01-25,20:00,Alaves,Betis,2,1,Local,1
+2025-2026,Primera,2026-01-26,20:00,Girona,Getafe,1,1,Empate,X
+2025-2026,Primera,2026-01-30,20:00,Espanol,Alaves,1,2,Visitante,2
+2025-2026,Primera,2026-01-31,13:00,Oviedo,Girona,1,0,Local,1
+2025-2026,Primera,2026-01-31,15:15,Osasuna,Villarreal,2,2,Empate,X
+2025-2026,Primera,2026-01-31,17:30,Levante,Ath Madrid,0,0,Empate,X
+2025-2026,Primera,2026-01-31,20:00,Elche,Barcelona,1,3,Visitante,2
+2025-2026,Primera,2026-02-01,13:00,Real Madrid,Vallecano,2,1,Local,1
+2025-2026,Primera,2026-02-01,15:15,Betis,Valencia,2,1,Local,1
+2025-2026,Primera,2026-02-01,17:30,Getafe,Celta,0,0,Empate,X
+2025-2026,Primera,2026-02-01,20:00,Ath Bilbao,Sociedad,1,1,Empate,X
+2025-2026,Primera,2026-02-02,20:00,Mallorca,Sevilla,4,1,Local,1
+2025-2026,Primera,2026-02-06,20:00,Celta,Osasuna,1,2,Visitante,2
+2025-2026,Primera,2026-02-07,15:15,Barcelona,Mallorca,3,0,Local,1
+2025-2026,Primera,2026-02-07,20:00,Sociedad,Elche,3,1,Local,1
+2025-2026,Primera,2026-02-08,13:00,Alaves,Getafe,0,2,Visitante,2
+2025-2026,Primera,2026-02-08,15:15,Ath Bilbao,Levante,4,2,Local,1
+2025-2026,Primera,2026-02-08,15:15,Sevilla,Girona,1,1,Empate,X
+2025-2026,Primera,2026-02-08,17:30,Ath Madrid,Betis,0,1,Visitante,2
+2025-2026,Primera,2026-02-08,20:00,Valencia,Real Madrid,0,2,Visitante,2
+2025-2026,Primera,2026-02-09,20:00,Villarreal,Espanol,4,1,Local,1
+2025-2026,Primera,2026-02-13,20:00,Elche,Osasuna,0,0,Empate,X
+2025-2026,Primera,2026-02-14,13:00,Espanol,Celta,2,2,Empate,X
+2025-2026,Primera,2026-02-14,15:15,Getafe,Villarreal,2,1,Local,1
+2025-2026,Primera,2026-02-14,17:30,Sevilla,Alaves,1,1,Empate,X
+2025-2026,Primera,2026-02-14,20:00,Real Madrid,Sociedad,4,1,Local,1
+2025-2026,Primera,2026-02-15,13:00,Oviedo,Ath Bilbao,1,2,Visitante,2
+2025-2026,Primera,2026-02-15,15:15,Vallecano,Ath Madrid,3,0,Local,1
+2025-2026,Primera,2026-02-15,17:30,Levante,Valencia,0,2,Visitante,2
+2025-2026,Primera,2026-02-15,20:00,Mallorca,Betis,1,2,Visitante,2
+2025-2026,Primera,2026-02-16,20:00,Girona,Barcelona,2,1,Local,1
+2025-2026,Primera,2026-02-18,19:00,Levante,Villarreal,0,1,Visitante,2
+2025-2026,Primera,2026-02-20,20:00,Ath Bilbao,Elche,2,1,Local,1
+2025-2026,Primera,2026-02-21,13:00,Sociedad,Oviedo,3,3,Empate,X
+2025-2026,Primera,2026-02-21,15:15,Betis,Vallecano,1,1,Empate,X
+2025-2026,Primera,2026-02-21,17:30,Osasuna,Real Madrid,2,1,Local,1
+2025-2026,Primera,2026-02-21,20:00,Ath Madrid,Espanol,4,2,Local,1
+2025-2026,Primera,2026-02-22,13:00,Getafe,Sevilla,0,1,Visitante,2
+2025-2026,Primera,2026-02-22,15:15,Barcelona,Levante,3,0,Local,1
+2025-2026,Primera,2026-02-22,17:30,Celta,Mallorca,2,0,Local,1
+2025-2026,Primera,2026-02-22,20:00,Villarreal,Valencia,2,1,Local,1
+2025-2026,Primera,2026-02-23,20:00,Alaves,Girona,2,2,Empate,X
+2025-2026,Primera,2026-02-27,20:00,Levante,Alaves,2,0,Local,1
+2025-2026,Primera,2026-02-28,13:00,Vallecano,Ath Bilbao,1,1,Empate,X
+2025-2026,Primera,2026-02-28,15:15,Barcelona,Villarreal,4,1,Local,1
+2025-2026,Primera,2026-02-28,17:30,Mallorca,Sociedad,0,1,Visitante,2
+2025-2026,Primera,2026-02-28,20:00,Oviedo,Ath Madrid,0,1,Visitante,2
+2025-2026,Primera,2026-03-01,13:00,Elche,Espanol,2,2,Empate,X
+2025-2026,Primera,2026-03-01,15:15,Valencia,Osasuna,1,0,Local,1
+2025-2026,Primera,2026-03-01,17:30,Betis,Sevilla,2,2,Empate,X
+2025-2026,Primera,2026-03-01,20:00,Girona,Celta,1,2,Visitante,2
+2025-2026,Primera,2026-03-02,20:00,Real Madrid,Getafe,0,1,Visitante,2
+2025-2026,Primera,2026-03-04,18:00,Vallecano,Oviedo,3,0,Local,1
+2025-2026,Primera,2026-03-06,20:00,Celta,Real Madrid,1,2,Visitante,2
+2025-2026,Primera,2026-03-07,13:00,Osasuna,Mallorca,2,2,Empate,X
+2025-2026,Primera,2026-03-07,15:15,Levante,Girona,1,1,Empate,X
+2025-2026,Primera,2026-03-07,17:30,Ath Madrid,Sociedad,3,2,Local,1
+2025-2026,Primera,2026-03-07,20:00,Ath Bilbao,Barcelona,0,1,Visitante,2
+2025-2026,Primera,2026-03-08,13:00,Villarreal,Elche,2,1,Local,1
+2025-2026,Primera,2026-03-08,15:15,Getafe,Betis,2,0,Local,1
+2025-2026,Primera,2026-03-08,17:30,Sevilla,Vallecano,1,1,Empate,X
+2025-2026,Primera,2026-03-08,20:00,Valencia,Alaves,3,2,Local,1
+2025-2026,Primera,2026-03-09,20:00,Espanol,Oviedo,1,1,Empate,X
+2025-2026,Primera,2026-03-13,20:00,Alaves,Villarreal,1,1,Empate,X
+2025-2026,Primera,2026-03-14,13:00,Girona,Ath Bilbao,3,0,Local,1
+2025-2026,Primera,2026-03-14,15:15,Ath Madrid,Getafe,1,0,Local,1
+2025-2026,Primera,2026-03-14,17:30,Oviedo,Valencia,1,0,Local,1
+2025-2026,Primera,2026-03-14,20:00,Real Madrid,Elche,4,1,Local,1
+2025-2026,Primera,2026-03-15,13:00,Mallorca,Espanol,2,1,Local,1
+2025-2026,Primera,2026-03-15,15:15,Barcelona,Sevilla,5,2,Local,1
+2025-2026,Primera,2026-03-15,17:30,Betis,Celta,1,1,Empate,X
+2025-2026,Primera,2026-03-15,20:00,Sociedad,Osasuna,3,1,Local,1
+2025-2026,Primera,2026-03-16,20:00,Vallecano,Levante,1,1,Empate,X
+2025-2026,Primera,2026-03-20,20:00,Villarreal,Sociedad,3,1,Local,1
+2025-2026,Primera,2026-03-21,13:00,Elche,Mallorca,2,1,Local,1
+2025-2026,Primera,2026-03-21,15:15,Espanol,Getafe,1,2,Visitante,2
+2025-2026,Primera,2026-03-21,17:30,Levante,Oviedo,4,2,Local,1
+2025-2026,Primera,2026-03-21,17:30,Osasuna,Girona,1,0,Local,1
+2025-2026,Primera,2026-03-21,20:00,Sevilla,Valencia,0,2,Visitante,2
+2025-2026,Primera,2026-03-22,13:00,Barcelona,Vallecano,1,0,Local,1
+2025-2026,Primera,2026-03-22,15:15,Celta,Alaves,3,4,Visitante,2
+2025-2026,Primera,2026-03-22,17:30,Ath Bilbao,Betis,2,1,Local,1
+2025-2026,Primera,2026-03-22,20:00,Real Madrid,Ath Madrid,3,2,Local,1
+2025-2026,Primera,2026-04-03,20:00,Vallecano,Elche,1,0,Local,1
+2025-2026,Primera,2026-04-04,13:00,Sociedad,Levante,2,0,Local,1
+2025-2026,Primera,2026-04-04,15:15,Mallorca,Real Madrid,2,1,Local,1
+2025-2026,Primera,2026-04-04,17:30,Betis,Espanol,0,0,Empate,X
+2025-2026,Primera,2026-04-04,20:00,Ath Madrid,Barcelona,1,2,Visitante,2
+2025-2026,Primera,2026-04-05,13:00,Getafe,Ath Bilbao,2,0,Local,1
+2025-2026,Primera,2026-04-05,15:15,Valencia,Celta,2,3,Visitante,2
+2025-2026,Primera,2026-04-05,17:30,Oviedo,Sevilla,1,0,Local,1
+2025-2026,Primera,2026-04-05,20:00,Alaves,Osasuna,2,2,Empate,X
+2025-2026,Primera,2026-04-06,20:00,Girona,Villarreal,1,0,Local,1
+2025-2026,Primera,2026-04-10,20:00,Real Madrid,Girona,1,1,Empate,X
+2025-2026,Primera,2026-04-11,13:00,Sociedad,Alaves,3,3,Empate,X
+2025-2026,Primera,2026-04-11,15:15,Elche,Valencia,1,0,Local,1
+2025-2026,Primera,2026-04-11,17:30,Barcelona,Espanol,4,1,Local,1
+2025-2026,Primera,2026-04-11,20:00,Sevilla,Ath Madrid,2,1,Local,1
+2025-2026,Primera,2026-04-12,13:00,Osasuna,Betis,1,1,Empate,X
+2025-2026,Primera,2026-04-12,15:15,Mallorca,Vallecano,3,0,Local,1
+2025-2026,Primera,2026-04-12,17:30,Celta,Oviedo,0,3,Visitante,2
+2025-2026,Primera,2026-04-12,20:00,Ath Bilbao,Villarreal,1,2,Visitante,2
+2025-2026,Primera,2026-04-13,20:00,Levante,Getafe,1,0,Local,1
+2025-2026,Primera,2026-04-21,18:00,Ath Bilbao,Osasuna,1,0,Local,1
+2025-2026,Primera,2026-04-21,18:00,Mallorca,Valencia,1,1,Empate,X
+2025-2026,Primera,2026-04-21,20:30,Girona,Betis,2,3,Visitante,2
+2025-2026,Primera,2026-04-21,20:30,Real Madrid,Alaves,2,1,Local,1
+2025-2026,Primera,2026-04-22,18:00,Elche,Ath Madrid,3,2,Local,1
+2025-2026,Primera,2026-04-22,19:00,Sociedad,Getafe,0,1,Visitante,2
+2025-2026,Primera,2026-04-22,20:30,Barcelona,Celta,1,0,Local,1
+2025-2026,Primera,2026-04-23,18:00,Levante,Sevilla,2,0,Local,1
+2025-2026,Primera,2026-04-23,19:00,Vallecano,Espanol,1,0,Local,1
+2025-2026,Primera,2026-04-23,20:30,Oviedo,Villarreal,1,1,Empate,X
+2025-2026,Primera,2026-04-24,20:00,Betis,Real Madrid,1,1,Empate,X
+2025-2026,Primera,2026-04-25,13:00,Alaves,Mallorca,2,1,Local,1
+2025-2026,Primera,2026-04-25,15:15,Getafe,Barcelona,0,2,Visitante,2
+2025-2026,Primera,2026-04-25,17:30,Valencia,Girona,2,1,Local,1
+2025-2026,Primera,2026-04-25,20:00,Ath Madrid,Ath Bilbao,3,2,Local,1
+2025-2026,Primera,2026-04-26,13:00,Vallecano,Sociedad,3,3,Empate,X
+2025-2026,Primera,2026-04-26,15:15,Oviedo,Elche,1,2,Visitante,2
+2025-2026,Primera,2026-04-26,17:30,Osasuna,Sevilla,2,1,Local,1
+2025-2026,Primera,2026-04-26,20:00,Villarreal,Celta,2,1,Local,1
+2025-2026,Primera,2026-04-27,20:00,Espanol,Levante,0,0,Empate,X
+2025-2026,Primera,2026-05-01,20:00,Girona,Mallorca,0,1,Visitante,2
+2025-2026,Primera,2026-05-02,13:00,Villarreal,Levante,5,1,Local,1
+2025-2026,Primera,2026-05-02,15:15,Valencia,Ath Madrid,0,2,Visitante,2
+2025-2026,Primera,2026-05-02,17:30,Alaves,Ath Bilbao,2,4,Visitante,2
+2025-2026,Primera,2026-05-02,20:00,Osasuna,Barcelona,1,2,Visitante,2
+2025-2026,Primera,2026-05-03,13:00,Celta,Elche,3,1,Local,1
+2025-2026,Primera,2026-05-03,15:15,Getafe,Vallecano,0,2,Visitante,2
+2025-2026,Primera,2026-05-03,17:30,Betis,Oviedo,3,0,Local,1
+2025-2026,Primera,2026-05-03,20:00,Espanol,Real Madrid,0,2,Visitante,2
+2025-2026,Primera,2026-05-04,20:00,Sevilla,Sociedad,1,0,Local,1
+2025-2026,Primera,2026-05-08,20:00,Levante,Osasuna,3,2,Local,1
+2025-2026,Primera,2026-05-09,13:00,Elche,Alaves,1,1,Empate,X
+2025-2026,Primera,2026-05-09,15:15,Sevilla,Espanol,2,1,Local,1
+2025-2026,Primera,2026-05-09,17:30,Ath Madrid,Celta,0,1,Visitante,2
+2025-2026,Primera,2026-05-09,20:00,Sociedad,Betis,2,2,Empate,X
+2025-2026,Primera,2026-05-10,13:00,Mallorca,Villarreal,1,1,Empate,X
+2025-2026,Primera,2026-05-10,15:15,Ath Bilbao,Valencia,0,1,Visitante,2
+2025-2026,Primera,2026-05-10,17:30,Oviedo,Getafe,0,0,Empate,X
+2025-2026,Primera,2026-05-10,20:00,Barcelona,Real Madrid,2,0,Local,1
+2025-2026,Primera,2026-05-11,20:00,Vallecano,Girona,1,1,Empate,X
+2025-2026,Primera,2026-05-12,18:00,Celta,Levante,2,3,Visitante,2
+2025-2026,Primera,2026-05-12,19:00,Betis,Elche,2,1,Local,1
+2025-2026,Primera,2026-05-12,20:30,Osasuna,Ath Madrid,1,2,Visitante,2
+2025-2026,Primera,2026-05-13,18:00,Espanol,Ath Bilbao,2,0,Local,1
+2025-2026,Primera,2026-05-13,18:00,Villarreal,Sevilla,2,3,Visitante,2
+2025-2026,Primera,2026-05-13,20:30,Alaves,Barcelona,1,0,Local,1
+2025-2026,Primera,2026-05-13,20:30,Getafe,Mallorca,3,1,Local,1
+2025-2026,Primera,2026-05-14,18:00,Valencia,Vallecano,1,1,Empate,X
+2025-2026,Primera,2026-05-14,19:00,Girona,Sociedad,1,1,Empate,X
+2025-2026,Primera,2026-05-14,20:30,Real Madrid,Oviedo,2,0,Local,1
+2025-2026,Primera,2026-05-17,18:00,Ath Bilbao,Celta,1,1,Empate,X
+2025-2026,Primera,2026-05-17,18:00,Ath Madrid,Girona,1,0,Local,1
+2025-2026,Primera,2026-05-17,18:00,Elche,Getafe,1,0,Local,1
+2025-2026,Primera,2026-05-17,18:00,Levante,Mallorca,2,0,Local,1
+2025-2026,Primera,2026-05-17,18:00,Osasuna,Espanol,1,2,Visitante,2
+2025-2026,Primera,2026-05-17,18:00,Oviedo,Alaves,0,1,Visitante,2
+2025-2026,Primera,2026-05-17,18:00,Sevilla,Real Madrid,0,1,Visitante,2
+2025-2026,Primera,2026-05-17,18:00,Sociedad,Valencia,3,4,Visitante,2
+2025-2026,Primera,2026-05-17,18:00,Vallecano,Villarreal,2,0,Local,1
+2025-2026,Primera,2026-05-17,20:15,Barcelona,Betis,3,1,Local,1
+2025-2026,Primera,2026-05-23,20:00,Alaves,Vallecano,1,2,Visitante,2
+2025-2026,Primera,2026-05-23,20:00,Betis,Levante,2,1,Local,1
+2025-2026,Primera,2026-05-23,20:00,Celta,Sevilla,1,0,Local,1
+2025-2026,Primera,2026-05-23,20:00,Espanol,Sociedad,1,1,Empate,X
+2025-2026,Primera,2026-05-23,20:00,Getafe,Osasuna,1,0,Local,1
+2025-2026,Primera,2026-05-23,20:00,Girona,Elche,1,1,Empate,X
+2025-2026,Primera,2026-05-23,20:00,Mallorca,Oviedo,3,0,Local,1
+2025-2026,Primera,2026-05-23,20:00,Real Madrid,Ath Bilbao,4,2,Local,1
+2025-2026,Primera,2026-05-23,20:00,Valencia,Barcelona,3,1,Local,1
+2025-2026,Primera,2026-05-24,20:00,Villarreal,Ath Madrid,5,1,Local,1
+2025-2026,Segunda,2025-08-15,20:30,Burgos,Cultural Leonesa,5,1,Local,1
+2025-2026,Segunda,2025-08-15,20:30,Valladolid,Ceuta,3,0,Local,1
+2025-2026,Segunda,2025-08-16,16:00,Santander,Castellon,3,1,Local,1
+2025-2026,Segunda,2025-08-16,18:30,Malaga,Eibar,1,1,Empate,X
+2025-2026,Segunda,2025-08-16,20:30,Granada,La Coruna,1,3,Visitante,2
+2025-2026,Segunda,2025-08-17,16:00,Sociedad B,Zaragoza,1,0,Local,1
+2025-2026,Segunda,2025-08-17,18:30,Cadiz,Mirandes,1,0,Local,1
+2025-2026,Segunda,2025-08-17,20:30,1uesca,Leganes,1,1,Empate,X
+2025-2026,Segunda,2025-08-17,20:30,Las Palmas,2ndorra,1,1,Empate,X
+2025-2026,Segunda,2025-08-18,18:00,Sp Gijon,Cordoba,2,1,Local,1
+2025-2026,Segunda,2025-08-18,20:30,2lmeria,2lbacete,4,4,Empate,X
+2025-2026,Segunda,2025-08-22,18:30,Eibar,Granada,3,0,Local,1
+2025-2026,Segunda,2025-08-22,20:30,Castellon,Valladolid,0,1,Visitante,2
+2025-2026,Segunda,2025-08-22,20:30,Leganes,Cadiz,1,1,Empate,X
+2025-2026,Segunda,2025-08-23,16:00,Mirandes,1uesca,0,1,Visitante,2
+2025-2026,Segunda,2025-08-23,18:00,Ceuta,Sp Gijon,0,1,Visitante,2
+2025-2026,Segunda,2025-08-23,20:30,Zaragoza,2ndorra,1,3,Visitante,2
+2025-2026,Segunda,2025-08-24,16:00,La Coruna,Burgos,0,0,Empate,X
+2025-2026,Segunda,2025-08-24,18:30,Cultural Leonesa,2lmeria,0,1,Visitante,2
+2025-2026,Segunda,2025-08-24,20:30,Malaga,Sociedad B,1,0,Local,1
+2025-2026,Segunda,2025-08-25,18:30,2lbacete,Santander,2,3,Visitante,2
+2025-2026,Segunda,2025-08-25,20:30,Cordoba,Las Palmas,1,3,Visitante,2
+2025-2026,Segunda,2025-08-29,18:30,Sociedad B,2lmeria,2,2,Empate,X
+2025-2026,Segunda,2025-08-29,20:30,Sp Gijon,Cultural Leonesa,1,0,Local,1
+2025-2026,Segunda,2025-08-30,16:00,Santander,Ceuta,4,1,Local,1
+2025-2026,Segunda,2025-08-30,18:00,Valladolid,Cordoba,0,0,Empate,X
+2025-2026,Segunda,2025-08-30,20:30,Castellon,Zaragoza,1,1,Empate,X
+2025-2026,Segunda,2025-08-31,16:00,2ndorra,Burgos,2,1,Local,1
+2025-2026,Segunda,2025-08-31,16:00,Cadiz,2lbacete,2,1,Local,1
+2025-2026,Segunda,2025-08-31,18:30,Las Palmas,Malaga,0,1,Visitante,2
+2025-2026,Segunda,2025-08-31,20:30,Granada,Mirandes,1,2,Visitante,2
+2025-2026,Segunda,2025-09-01,18:30,1uesca,Eibar,2,1,Local,1
+2025-2026,Segunda,2025-09-01,20:30,Leganes,La Coruna,2,2,Empate,X
+2025-2026,Segunda,2025-09-05,18:30,2lbacete,Mirandes,1,4,Visitante,2
+2025-2026,Segunda,2025-09-05,20:30,Cordoba,Castellon,2,1,Local,1
+2025-2026,Segunda,2025-09-06,15:15,La Coruna,Sp Gijon,1,0,Local,1
+2025-2026,Segunda,2025-09-06,17:30,Zaragoza,Valladolid,1,1,Empate,X
+2025-2026,Segunda,2025-09-06,20:00,Malaga,Granada,2,2,Empate,X
+2025-2026,Segunda,2025-09-07,13:00,Ceuta,1uesca,2,1,Local,1
+2025-2026,Segunda,2025-09-07,15:15,Burgos,Las Palmas,0,0,Empate,X
+2025-2026,Segunda,2025-09-07,15:15,Sociedad B,Cadiz,3,3,Empate,X
+2025-2026,Segunda,2025-09-07,17:30,2lmeria,Santander,2,3,Visitante,2
+2025-2026,Segunda,2025-09-07,17:30,Cultural Leonesa,Leganes,0,0,Empate,X
+2025-2026,Segunda,2025-09-08,19:30,Eibar,2ndorra,2,0,Local,1
+2025-2026,Segunda,2025-09-12,19:30,Las Palmas,Sociedad B,2,1,Local,1
+2025-2026,Segunda,2025-09-13,15:15,Cadiz,Eibar,1,0,Local,1
+2025-2026,Segunda,2025-09-13,15:15,Mirandes,La Coruna,1,5,Visitante,2
+2025-2026,Segunda,2025-09-13,17:30,1uesca,Malaga,1,0,Local,1
+2025-2026,Segunda,2025-09-13,20:00,Valladolid,2lmeria,3,1,Local,1
+2025-2026,Segunda,2025-09-14,13:00,2ndorra,Cordoba,3,1,Local,1
+2025-2026,Segunda,2025-09-14,15:15,Santander,Cultural Leonesa,2,4,Visitante,2
+2025-2026,Segunda,2025-09-14,17:30,Castellon,Ceuta,3,3,Empate,X
+2025-2026,Segunda,2025-09-14,17:30,Sp Gijon,Burgos,2,3,Visitante,2
+2025-2026,Segunda,2025-09-14,20:00,Granada,Leganes,0,2,Visitante,2
+2025-2026,Segunda,2025-09-15,19:30,Zaragoza,2lbacete,0,0,Empate,X
+2025-2026,Segunda,2025-09-19,19:30,La Coruna,1uesca,4,0,Local,1
+2025-2026,Segunda,2025-09-20,15:15,Cultural Leonesa,Castellon,1,3,Visitante,2
+2025-2026,Segunda,2025-09-20,17:30,2ndorra,Mirandes,1,1,Empate,X
+2025-2026,Segunda,2025-09-20,17:30,Leganes,Las Palmas,0,1,Visitante,2
+2025-2026,Segunda,2025-09-20,20:00,2lmeria,Sp Gijon,2,1,Local,1
+2025-2026,Segunda,2025-09-21,13:00,Ceuta,Zaragoza,1,0,Local,1
+2025-2026,Segunda,2025-09-21,15:15,2lbacete,Valladolid,2,0,Local,1
+2025-2026,Segunda,2025-09-21,17:30,Eibar,Sociedad B,2,1,Local,1
+2025-2026,Segunda,2025-09-21,17:30,Malaga,Cadiz,0,1,Visitante,2
+2025-2026,Segunda,2025-09-21,20:00,Cordoba,Santander,2,2,Empate,X
+2025-2026,Segunda,2025-09-22,19:30,Burgos,Granada,1,1,Empate,X
+2025-2026,Segunda,2025-09-26,19:30,Mirandes,Zaragoza,0,1,Visitante,2
+2025-2026,Segunda,2025-09-27,17:30,Eibar,La Coruna,1,1,Empate,X
+2025-2026,Segunda,2025-09-27,17:30,Santander,2ndorra,1,2,Visitante,2
+2025-2026,Segunda,2025-09-27,20:00,Las Palmas,2lmeria,0,1,Visitante,2
+2025-2026,Segunda,2025-09-28,13:00,Sociedad B,Cordoba,1,1,Empate,X
+2025-2026,Segunda,2025-09-28,15:15,Burgos,Malaga,2,1,Local,1
+2025-2026,Segunda,2025-09-28,15:15,Cadiz,Ceuta,0,0,Empate,X
+2025-2026,Segunda,2025-09-28,17:30,Sp Gijon,2lbacete,3,4,Visitante,2
+2025-2026,Segunda,2025-09-28,17:30,Valladolid,Cultural Leonesa,0,1,Visitante,2
+2025-2026,Segunda,2025-09-28,20:00,1uesca,Granada,0,1,Visitante,2
+2025-2026,Segunda,2025-09-29,19:30,Leganes,Castellon,0,1,Visitante,2
+2025-2026,Segunda,2025-10-03,19:30,Ceuta,Eibar,1,0,Local,1
+2025-2026,Segunda,2025-10-04,15:15,La Coruna,2lmeria,1,1,Empate,X
+2025-2026,Segunda,2025-10-04,17:30,2ndorra,Leganes,1,2,Visitante,2
+2025-2026,Segunda,2025-10-04,17:30,1uesca,Burgos,2,1,Local,1
+2025-2026,Segunda,2025-10-04,20:00,Granada,Sociedad B,5,2,Local,1
+2025-2026,Segunda,2025-10-05,13:00,Zaragoza,Cordoba,0,1,Visitante,2
+2025-2026,Segunda,2025-10-05,15:15,Castellon,Sp Gijon,3,1,Local,1
+2025-2026,Segunda,2025-10-05,17:30,Santander,Malaga,3,0,Local,1
+2025-2026,Segunda,2025-10-05,17:30,Valladolid,Mirandes,1,1,Empate,X
+2025-2026,Segunda,2025-10-05,20:00,Las Palmas,Cadiz,1,0,Local,1
+2025-2026,Segunda,2025-10-06,19:30,Cultural Leonesa,2lbacete,0,0,Empate,X
+2025-2026,Segunda,2025-10-10,19:30,Granada,Las Palmas,0,0,Empate,X
+2025-2026,Segunda,2025-10-11,15:15,Mirandes,Leganes,0,0,Empate,X
+2025-2026,Segunda,2025-10-11,17:30,2lmeria,Zaragoza,4,2,Local,1
+2025-2026,Segunda,2025-10-11,17:30,Sociedad B,2ndorra,3,0,Local,1
+2025-2026,Segunda,2025-10-12,13:00,2lbacete,Ceuta,0,0,Empate,X
+2025-2026,Segunda,2025-10-12,15:15,Eibar,Castellon,0,0,Empate,X
+2025-2026,Segunda,2025-10-12,15:15,Sp Gijon,Santander,2,1,Local,1
+2025-2026,Segunda,2025-10-12,17:30,Burgos,Valladolid,0,1,Visitante,2
+2025-2026,Segunda,2025-10-12,17:30,Cadiz,1uesca,1,0,Local,1
+2025-2026,Segunda,2025-10-12,20:00,Malaga,La Coruna,3,0,Local,1
+2025-2026,Segunda,2025-10-13,19:30,Cordoba,Cultural Leonesa,1,0,Local,1
+2025-2026,Segunda,2025-10-17,19:30,2ndorra,Granada,0,0,Empate,X
+2025-2026,Segunda,2025-10-18,15:15,Ceuta,Mirandes,2,0,Local,1
+2025-2026,Segunda,2025-10-18,17:30,Zaragoza,Cultural Leonesa,0,5,Visitante,2
+2025-2026,Segunda,2025-10-19,13:00,Leganes,Malaga,2,0,Local,1
+2025-2026,Segunda,2025-10-19,15:15,Castellon,2lbacete,0,1,Visitante,2
+2025-2026,Segunda,2025-10-19,15:15,Valladolid,Sp Gijon,2,3,Visitante,2
+2025-2026,Segunda,2025-10-19,17:30,Cordoba,2lmeria,1,1,Empate,X
+2025-2026,Segunda,2025-10-19,17:30,Santander,La Coruna,2,1,Local,1
+2025-2026,Segunda,2025-10-19,20:00,Las Palmas,Eibar,3,1,Local,1
+2025-2026,Segunda,2025-10-20,19:30,Cadiz,Burgos,1,3,Visitante,2
+2025-2026,Segunda,2025-10-24,19:30,1uesca,Las Palmas,1,1,Empate,X
+2025-2026,Segunda,2025-10-25,13:00,Cultural Leonesa,Ceuta,0,1,Visitante,2
+2025-2026,Segunda,2025-10-25,15:15,2lbacete,Cordoba,1,3,Visitante,2
+2025-2026,Segunda,2025-10-25,15:15,Eibar,Leganes,0,0,Empate,X
+2025-2026,Segunda,2025-10-25,17:30,Burgos,Sociedad B,1,0,Local,1
+2025-2026,Segunda,2025-10-25,17:30,Granada,Cadiz,0,0,Empate,X
+2025-2026,Segunda,2025-10-25,20:00,Mirandes,Santander,1,3,Visitante,2
+2025-2026,Segunda,2025-10-26,13:00,Malaga,2ndorra,4,1,Local,1
+2025-2026,Segunda,2025-10-26,17:30,2lmeria,Castellon,1,0,Local,1
+2025-2026,Segunda,2025-10-26,17:30,Sp Gijon,Zaragoza,1,0,Local,1
+2025-2026,Segunda,2025-10-26,20:00,La Coruna,Valladolid,1,1,Empate,X
+2025-2026,Segunda,2025-10-31,19:30,Santander,Sociedad B,1,0,Local,1
+2025-2026,Segunda,2025-11-01,15:15,Cultural Leonesa,Mirandes,3,2,Local,1
+2025-2026,Segunda,2025-11-01,17:30,2lbacete,1uesca,2,1,Local,1
+2025-2026,Segunda,2025-11-01,17:30,Leganes,Burgos,1,2,Visitante,2
+2025-2026,Segunda,2025-11-01,20:00,2lmeria,Eibar,3,1,Local,1
+2025-2026,Segunda,2025-11-02,13:00,2ndorra,Cadiz,0,0,Empate,X
+2025-2026,Segunda,2025-11-02,15:15,Cordoba,Ceuta,2,0,Local,1
+2025-2026,Segunda,2025-11-02,15:15,Sp Gijon,Las Palmas,0,0,Empate,X
+2025-2026,Segunda,2025-11-02,17:30,Castellon,Malaga,2,1,Local,1
+2025-2026,Segunda,2025-11-02,20:00,Zaragoza,La Coruna,0,2,Visitante,2
+2025-2026,Segunda,2025-11-03,19:30,Valladolid,Granada,2,1,Local,1
+2025-2026,Segunda,2025-11-05,19:00,Sociedad B,1uesca,2,0,Local,1
+2025-2026,Segunda,2025-11-07,19:30,Mirandes,Sp Gijon,2,1,Local,1
+2025-2026,Segunda,2025-11-08,13:00,Sociedad B,Leganes,2,1,Local,1
+2025-2026,Segunda,2025-11-08,15:15,Eibar,2lbacete,3,2,Local,1
+2025-2026,Segunda,2025-11-08,15:15,1uesca,2ndorra,2,2,Empate,X
+2025-2026,Segunda,2025-11-08,17:30,La Coruna,Cultural Leonesa,3,0,Local,1
+2025-2026,Segunda,2025-11-08,20:00,Malaga,Cordoba,2,2,Empate,X
+2025-2026,Segunda,2025-11-09,13:00,Las Palmas,Santander,3,1,Local,1
+2025-2026,Segunda,2025-11-09,17:30,Granada,Zaragoza,3,1,Local,1
+2025-2026,Segunda,2025-11-09,20:00,Cadiz,Valladolid,0,0,Empate,X
+2025-2026,Segunda,2025-11-10,19:30,Burgos,Castellon,0,0,Empate,X
+2025-2026,Segunda,2025-11-14,19:30,Valladolid,Las Palmas,0,1,Visitante,2
+2025-2026,Segunda,2025-11-15,15:00,2lbacete,2ndorra,1,0,Local,1
+2025-2026,Segunda,2025-11-15,15:00,Castellon,Sociedad B,5,4,Local,1
+2025-2026,Segunda,2025-11-15,20:00,Santander,Granada,2,2,Empate,X
+2025-2026,Segunda,2025-11-16,13:00,Ceuta,Leganes,1,2,Visitante,2
+2025-2026,Segunda,2025-11-16,15:15,2lmeria,Cadiz,3,0,Local,1
+2025-2026,Segunda,2025-11-16,15:15,Sp Gijon,Eibar,1,1,Empate,X
+2025-2026,Segunda,2025-11-16,17:30,Cordoba,La Coruna,1,3,Visitante,2
+2025-2026,Segunda,2025-11-16,17:30,Mirandes,Burgos,0,2,Visitante,2
+2025-2026,Segunda,2025-11-16,20:00,Zaragoza,1uesca,1,0,Local,1
+2025-2026,Segunda,2025-11-17,19:30,Cultural Leonesa,Malaga,1,0,Local,1
+2025-2026,Segunda,2025-11-21,19:30,Las Palmas,2lbacete,2,1,Local,1
+2025-2026,Segunda,2025-11-22,15:15,2ndorra,Castellon,1,3,Visitante,2
+2025-2026,Segunda,2025-11-22,17:30,Eibar,Zaragoza,1,2,Visitante,2
+2025-2026,Segunda,2025-11-22,17:30,Leganes,2lmeria,0,3,Visitante,2
+2025-2026,Segunda,2025-11-22,20:00,Granada,Cordoba,1,1,Empate,X
+2025-2026,Segunda,2025-11-23,13:00,La Coruna,Ceuta,2,1,Local,1
+2025-2026,Segunda,2025-11-23,15:15,Cadiz,Cultural Leonesa,1,2,Visitante,2
+2025-2026,Segunda,2025-11-23,15:15,1uesca,Sp Gijon,2,0,Local,1
+2025-2026,Segunda,2025-11-23,17:30,Burgos,Santander,0,2,Visitante,2
+2025-2026,Segunda,2025-11-23,20:00,Malaga,Mirandes,3,2,Local,1
+2025-2026,Segunda,2025-11-24,19:30,Sociedad B,Valladolid,1,0,Local,1
+2025-2026,Segunda,2025-11-26,18:00,Ceuta,2lmeria,3,2,Local,1
+2025-2026,Segunda,2025-11-28,19:30,Sp Gijon,2ndorra,1,1,Empate,X
+2025-2026,Segunda,2025-11-29,13:00,Ceuta,Burgos,1,0,Local,1
+2025-2026,Segunda,2025-11-29,15:15,Cultural Leonesa,Granada,0,1,Visitante,2
+2025-2026,Segunda,2025-11-29,17:30,2lbacete,La Coruna,0,2,Visitante,2
+2025-2026,Segunda,2025-11-29,17:30,2lmeria,1uesca,0,0,Empate,X
+2025-2026,Segunda,2025-11-29,20:00,Valladolid,Malaga,1,1,Empate,X
+2025-2026,Segunda,2025-11-30,13:00,Zaragoza,Leganes,3,2,Local,1
+2025-2026,Segunda,2025-11-30,15:15,Santander,Eibar,4,0,Local,1
+2025-2026,Segunda,2025-11-30,17:30,Cordoba,Cadiz,1,2,Visitante,2
+2025-2026,Segunda,2025-11-30,17:30,Mirandes,Sociedad B,1,0,Local,1
+2025-2026,Segunda,2025-11-30,20:00,Castellon,Las Palmas,1,0,Local,1
+2025-2026,Segunda,2025-12-06,13:00,2ndorra,2lmeria,1,2,Visitante,2
+2025-2026,Segunda,2025-12-06,15:15,1uesca,Valladolid,1,4,Visitante,2
+2025-2026,Segunda,2025-12-06,17:30,Sociedad B,Sp Gijon,0,1,Visitante,2
+2025-2026,Segunda,2025-12-07,13:00,Cadiz,Santander,2,3,Visitante,2
+2025-2026,Segunda,2025-12-07,15:15,Leganes,Cordoba,0,0,Empate,X
+2025-2026,Segunda,2025-12-07,17:30,Eibar,Cultural Leonesa,1,2,Visitante,2
+2025-2026,Segunda,2025-12-07,17:30,La Coruna,Castellon,1,3,Visitante,2
+2025-2026,Segunda,2025-12-07,20:00,Granada,Ceuta,1,1,Empate,X
+2025-2026,Segunda,2025-12-08,15:15,Burgos,2lbacete,0,1,Visitante,2
+2025-2026,Segunda,2025-12-08,17:30,Las Palmas,Mirandes,0,0,Empate,X
+2025-2026,Segunda,2025-12-08,19:30,Malaga,Zaragoza,1,1,Empate,X
+2025-2026,Segunda,2025-12-12,19:30,Cultural Leonesa,1uesca,0,2,Visitante,2
+2025-2026,Segunda,2025-12-13,13:00,Cordoba,Eibar,0,0,Empate,X
+2025-2026,Segunda,2025-12-13,15:15,Sp Gijon,Granada,1,0,Local,1
+2025-2026,Segunda,2025-12-13,15:15,Valladolid,2ndorra,0,1,Visitante,2
+2025-2026,Segunda,2025-12-13,17:30,Santander,Leganes,1,1,Empate,X
+2025-2026,Segunda,2025-12-13,20:00,La Coruna,Sociedad B,0,3,Visitante,2
+2025-2026,Segunda,2025-12-13,20:00,Zaragoza,Cadiz,1,2,Visitante,2
+2025-2026,Segunda,2025-12-14,15:15,2lbacete,Malaga,1,3,Visitante,2
+2025-2026,Segunda,2025-12-14,17:30,2lmeria,Burgos,1,2,Visitante,2
+2025-2026,Segunda,2025-12-14,20:00,Ceuta,Las Palmas,1,1,Empate,X
+2025-2026,Segunda,2025-12-15,19:30,Castellon,Mirandes,3,1,Local,1
+2025-2026,Segunda,2025-12-19,19:30,Eibar,Valladolid,3,0,Local,1
+2025-2026,Segunda,2025-12-20,13:00,2ndorra,La Coruna,1,0,Local,1
+2025-2026,Segunda,2025-12-20,15:15,1uesca,Santander,1,1,Empate,X
+2025-2026,Segunda,2025-12-20,17:30,Leganes,Sp Gijon,0,1,Visitante,2
+2025-2026,Segunda,2025-12-20,20:00,Las Palmas,Cultural Leonesa,4,0,Local,1
+2025-2026,Segunda,2025-12-21,13:00,Malaga,2lmeria,2,1,Local,1
+2025-2026,Segunda,2025-12-21,15:15,Mirandes,Cordoba,1,2,Visitante,2
+2025-2026,Segunda,2025-12-21,15:15,Sociedad B,Ceuta,1,3,Visitante,2
+2025-2026,Segunda,2025-12-21,17:30,Burgos,Zaragoza,1,1,Empate,X
+2025-2026,Segunda,2025-12-21,17:30,Granada,2lbacete,1,1,Empate,X
+2025-2026,Segunda,2025-12-21,20:00,Cadiz,Castellon,2,0,Local,1
+2025-2026,Segunda,2026-01-02,19:30,Eibar,Mirandes,2,1,Local,1
+2025-2026,Segunda,2026-01-03,13:00,Cultural Leonesa,Sociedad B,1,1,Empate,X
+2025-2026,Segunda,2026-01-03,15:15,2lmeria,Granada,3,2,Local,1
+2025-2026,Segunda,2026-01-03,15:15,Castellon,1uesca,4,1,Local,1
+2025-2026,Segunda,2026-01-03,17:30,Valladolid,Santander,1,1,Empate,X
+2025-2026,Segunda,2026-01-03,20:00,Cordoba,Burgos,2,0,Local,1
+2025-2026,Segunda,2026-01-04,13:00,Sp Gijon,Malaga,1,3,Visitante,2
+2025-2026,Segunda,2026-01-04,15:15,Ceuta,2ndorra,2,1,Local,1
+2025-2026,Segunda,2026-01-04,17:30,2lbacete,Leganes,1,3,Visitante,2
+2025-2026,Segunda,2026-01-04,17:30,Zaragoza,Las Palmas,1,2,Visitante,2
+2025-2026,Segunda,2026-01-04,20:00,La Coruna,Cadiz,2,2,Empate,X
+2025-2026,Segunda,2026-01-09,19:30,Cadiz,Sp Gijon,3,2,Local,1
+2025-2026,Segunda,2026-01-10,13:00,Mirandes,2lmeria,2,2,Empate,X
+2025-2026,Segunda,2026-01-10,15:15,Sociedad B,2lbacete,0,0,Empate,X
+2025-2026,Segunda,2026-01-10,17:30,2ndorra,Cultural Leonesa,1,1,Empate,X
+2025-2026,Segunda,2026-01-10,17:30,Burgos,Eibar,1,0,Local,1
+2025-2026,Segunda,2026-01-10,17:30,Las Palmas,La Coruna,1,1,Empate,X
+2025-2026,Segunda,2026-01-10,20:00,Santander,Zaragoza,2,3,Visitante,2
+2025-2026,Segunda,2026-01-11,13:00,Leganes,Valladolid,3,0,Local,1
+2025-2026,Segunda,2026-01-11,15:15,Granada,Castellon,0,0,Empate,X
+2025-2026,Segunda,2026-01-11,15:15,Malaga,Ceuta,2,1,Local,1
+2025-2026,Segunda,2026-01-12,19:30,1uesca,Cordoba,1,2,Visitante,2
+2025-2026,Segunda,2026-01-16,19:30,Castellon,Leganes,2,0,Local,1
+2025-2026,Segunda,2026-01-17,13:00,Ceuta,Valladolid,0,3,Visitante,2
+2025-2026,Segunda,2026-01-17,15:15,Cultural Leonesa,Sp Gijon,2,4,Visitante,2
+2025-2026,Segunda,2026-01-17,17:30,Zaragoza,Sociedad B,1,1,Empate,X
+2025-2026,Segunda,2026-01-17,20:00,2lmeria,La Coruna,1,2,Visitante,2
+2025-2026,Segunda,2026-01-18,13:00,Mirandes,2ndorra,1,2,Visitante,2
+2025-2026,Segunda,2026-01-18,15:15,Santander,Las Palmas,4,1,Local,1
+2025-2026,Segunda,2026-01-18,17:30,2lbacete,Cadiz,1,0,Local,1
+2025-2026,Segunda,2026-01-18,17:30,Burgos,1uesca,1,0,Local,1
+2025-2026,Segunda,2026-01-18,20:00,Cordoba,Malaga,0,1,Visitante,2
+2025-2026,Segunda,2026-01-19,19:30,Granada,Eibar,0,0,Empate,X
+2025-2026,Segunda,2026-01-23,19:30,Malaga,Burgos,3,0,Local,1
+2025-2026,Segunda,2026-01-24,13:00,Valladolid,2lbacete,0,1,Visitante,2
+2025-2026,Segunda,2026-01-24,15:15,Leganes,Sociedad B,2,0,Local,1
+2025-2026,Segunda,2026-01-24,17:30,Las Palmas,Cordoba,1,2,Visitante,2
+2025-2026,Segunda,2026-01-24,17:30,Sp Gijon,Mirandes,3,0,Local,1
+2025-2026,Segunda,2026-01-24,20:00,Cadiz,Granada,1,2,Visitante,2
+2025-2026,Segunda,2026-01-25,13:00,2ndorra,1uesca,1,1,Empate,X
+2025-2026,Segunda,2026-01-25,15:15,Eibar,2lmeria,1,0,Local,1
+2025-2026,Segunda,2026-01-25,17:30,Zaragoza,Castellon,0,0,Empate,X
+2025-2026,Segunda,2026-01-25,20:00,La Coruna,Santander,0,1,Visitante,2
+2025-2026,Segunda,2026-01-26,19:30,Ceuta,Cultural Leonesa,3,1,Local,1
+2025-2026,Segunda,2026-01-30,19:30,Sociedad B,Las Palmas,1,1,Empate,X
+2025-2026,Segunda,2026-01-31,15:15,2lbacete,Zaragoza,2,0,Local,1
+2025-2026,Segunda,2026-01-31,15:15,Burgos,Leganes,2,1,Local,1
+2025-2026,Segunda,2026-01-31,17:30,Cultural Leonesa,La Coruna,0,1,Visitante,2
+2025-2026,Segunda,2026-01-31,20:00,Cordoba,Valladolid,3,1,Local,1
+2025-2026,Segunda,2026-02-01,13:00,2lmeria,Ceuta,4,2,Local,1
+2025-2026,Segunda,2026-02-01,15:15,Eibar,Sp Gijon,1,0,Local,1
+2025-2026,Segunda,2026-02-01,17:30,Castellon,2ndorra,2,0,Local,1
+2025-2026,Segunda,2026-02-01,17:30,1uesca,Cadiz,1,0,Local,1
+2025-2026,Segunda,2026-02-01,20:00,Granada,Santander,1,0,Local,1
+2025-2026,Segunda,2026-02-02,19:30,Mirandes,Malaga,2,1,Local,1
+2025-2026,Segunda,2026-02-06,19:30,Leganes,Granada,1,0,Local,1
+2025-2026,Segunda,2026-02-07,13:00,2ndorra,Sociedad B,1,2,Visitante,2
+2025-2026,Segunda,2026-02-07,15:15,Las Palmas,Burgos,0,0,Empate,X
+2025-2026,Segunda,2026-02-07,17:30,Zaragoza,Eibar,1,1,Empate,X
+2025-2026,Segunda,2026-02-08,13:00,Valladolid,Castellon,0,4,Visitante,2
+2025-2026,Segunda,2026-02-08,15:15,Cadiz,2lmeria,1,2,Visitante,2
+2025-2026,Segunda,2026-02-08,15:15,La Coruna,2lbacete,2,1,Local,1
+2025-2026,Segunda,2026-02-08,17:30,Sp Gijon,1uesca,2,1,Local,1
+2025-2026,Segunda,2026-02-08,20:00,Malaga,Cultural Leonesa,2,1,Local,1
+2025-2026,Segunda,2026-02-09,19:30,Santander,Mirandes,1,0,Local,1
+2025-2026,Segunda,2026-02-13,19:30,2lmeria,2ndorra,3,2,Local,1
+2025-2026,Segunda,2026-02-14,13:00,Cordoba,Leganes,2,1,Local,1
+2025-2026,Segunda,2026-02-14,15:15,Burgos,Cadiz,1,1,Empate,X
+2025-2026,Segunda,2026-02-14,17:30,Cultural Leonesa,Zaragoza,0,0,Empate,X
+2025-2026,Segunda,2026-02-14,20:00,Granada,Valladolid,5,1,Local,1
+2025-2026,Segunda,2026-02-15,13:00,Mirandes,Las Palmas,1,1,Empate,X
+2025-2026,Segunda,2026-02-15,15:15,Eibar,Santander,2,1,Local,1
+2025-2026,Segunda,2026-02-15,15:15,1uesca,Ceuta,2,0,Local,1
+2025-2026,Segunda,2026-02-15,17:30,2lbacete,Sp Gijon,1,1,Empate,X
+2025-2026,Segunda,2026-02-15,20:00,Castellon,La Coruna,2,0,Local,1
+2025-2026,Segunda,2026-02-16,19:30,Sociedad B,Malaga,2,1,Local,1
+2025-2026,Segunda,2026-02-20,19:30,Ceuta,Granada,2,1,Local,1
+2025-2026,Segunda,2026-02-21,13:00,Leganes,Cultural Leonesa,1,1,Empate,X
+2025-2026,Segunda,2026-02-21,15:15,1uesca,Mirandes,1,2,Visitante,2
+2025-2026,Segunda,2026-02-21,15:15,La Coruna,Eibar,1,0,Local,1
+2025-2026,Segunda,2026-02-21,17:30,2lmeria,Cordoba,2,1,Local,1
+2025-2026,Segunda,2026-02-21,20:00,Las Palmas,Castellon,1,1,Empate,X
+2025-2026,Segunda,2026-02-22,13:00,Sp Gijon,Valladolid,2,2,Empate,X
+2025-2026,Segunda,2026-02-22,15:15,2ndorra,Zaragoza,2,1,Local,1
+2025-2026,Segunda,2026-02-22,17:30,Santander,Burgos,1,0,Local,1
+2025-2026,Segunda,2026-02-22,20:00,Malaga,2lbacete,1,0,Local,1
+2025-2026,Segunda,2026-02-23,19:30,Cadiz,Sociedad B,0,2,Visitante,2
+2025-2026,Segunda,2026-02-25,18:00,Ceuta,Cordoba,3,2,Local,1
+2025-2026,Segunda,2026-02-27,19:30,2lbacete,2lmeria,1,1,Empate,X
+2025-2026,Segunda,2026-02-28,15:15,Zaragoza,Burgos,0,1,Visitante,2
+2025-2026,Segunda,2026-02-28,17:30,Granada,Malaga,0,1,Visitante,2
+2025-2026,Segunda,2026-02-28,17:30,Valladolid,1uesca,1,0,Local,1
+2025-2026,Segunda,2026-02-28,20:00,Castellon,Santander,1,3,Visitante,2
+2025-2026,Segunda,2026-03-01,13:00,Sociedad B,La Coruna,2,3,Visitante,2
+2025-2026,Segunda,2026-03-01,15:15,Mirandes,Ceuta,0,1,Visitante,2
+2025-2026,Segunda,2026-03-01,17:30,Cultural Leonesa,Las Palmas,0,3,Visitante,2
+2025-2026,Segunda,2026-03-01,20:00,Eibar,Cadiz,3,1,Local,1
+2025-2026,Segunda,2026-03-02,19:00,Sp Gijon,Leganes,0,0,Empate,X
+2025-2026,Segunda,2026-03-02,19:30,Cordoba,2ndorra,1,4,Visitante,2
+2025-2026,Segunda,2026-03-06,19:30,Cadiz,Zaragoza,0,1,Visitante,2
+2025-2026,Segunda,2026-03-07,15:15,1uesca,2lbacete,0,0,Empate,X
+2025-2026,Segunda,2026-03-07,15:15,Sociedad B,Castellon,4,2,Local,1
+2025-2026,Segunda,2026-03-07,17:30,Burgos,Mirandes,2,0,Local,1
+2025-2026,Segunda,2026-03-07,20:00,Malaga,Valladolid,3,3,Empate,X
+2025-2026,Segunda,2026-03-08,13:00,Las Palmas,Ceuta,4,0,Local,1
+2025-2026,Segunda,2026-03-08,15:15,2ndorra,Sp Gijon,1,0,Local,1
+2025-2026,Segunda,2026-03-08,17:30,Leganes,Eibar,0,1,Visitante,2
+2025-2026,Segunda,2026-03-08,17:30,Santander,Cordoba,4,3,Local,1
+2025-2026,Segunda,2026-03-08,20:00,La Coruna,Granada,0,2,Visitante,2
+2025-2026,Segunda,2026-03-09,19:30,2lmeria,Cultural Leonesa,3,0,Local,1
+2025-2026,Segunda,2026-03-13,19:30,Mirandes,Cadiz,0,2,Visitante,2
+2025-2026,Segunda,2026-03-14,15:15,Cultural Leonesa,Santander,1,2,Visitante,2
+2025-2026,Segunda,2026-03-14,17:30,Valladolid,Leganes,3,2,Local,1
+2025-2026,Segunda,2026-03-14,17:30,Zaragoza,2lmeria,2,0,Local,1
+2025-2026,Segunda,2026-03-14,20:00,Ceuta,La Coruna,1,2,Visitante,2
+2025-2026,Segunda,2026-03-15,13:00,Cordoba,Sociedad B,0,2,Visitante,2
+2025-2026,Segunda,2026-03-15,15:15,Granada,2ndorra,1,1,Empate,X
+2025-2026,Segunda,2026-03-15,17:30,Eibar,Burgos,0,0,Empate,X
+2025-2026,Segunda,2026-03-15,17:30,Malaga,1uesca,5,3,Local,1
+2025-2026,Segunda,2026-03-15,20:00,Sp Gijon,Castellon,4,1,Local,1
+2025-2026,Segunda,2026-03-16,19:30,2lbacete,Las Palmas,2,1,Local,1
+2025-2026,Segunda,2026-03-20,19:30,1uesca,2lmeria,1,3,Visitante,2
+2025-2026,Segunda,2026-03-21,13:00,Leganes,Ceuta,5,2,Local,1
+2025-2026,Segunda,2026-03-21,15:15,2ndorra,Eibar,0,1,Visitante,2
+2025-2026,Segunda,2026-03-21,15:15,Santander,2lbacete,0,4,Visitante,2
+2025-2026,Segunda,2026-03-21,17:30,Cadiz,Malaga,0,3,Visitante,2
+2025-2026,Segunda,2026-03-21,20:00,La Coruna,Zaragoza,2,1,Local,1
+2025-2026,Segunda,2026-03-22,13:00,Burgos,Cordoba,4,0,Local,1
+2025-2026,Segunda,2026-03-22,15:15,Mirandes,Valladolid,2,1,Local,1
+2025-2026,Segunda,2026-03-22,15:15,Sociedad B,Granada,0,2,Visitante,2
+2025-2026,Segunda,2026-03-22,17:30,Las Palmas,Sp Gijon,1,0,Local,1
+2025-2026,Segunda,2026-03-23,19:30,Castellon,Cultural Leonesa,1,1,Empate,X
+2025-2026,Segunda,2026-03-27,18:00,Cordoba,Mirandes,2,2,Empate,X
+2025-2026,Segunda,2026-03-28,13:00,Ceuta,Cadiz,2,1,Local,1
+2025-2026,Segunda,2026-03-28,15:15,Granada,1uesca,4,2,Local,1
+2025-2026,Segunda,2026-03-28,15:15,Valladolid,Burgos,0,1,Visitante,2
+2025-2026,Segunda,2026-03-28,17:30,Malaga,Leganes,0,0,Empate,X
+2025-2026,Segunda,2026-03-28,20:00,2lbacete,Castellon,1,1,Empate,X
+2025-2026,Segunda,2026-03-28,20:00,Sp Gijon,La Coruna,1,1,Empate,X
+2025-2026,Segunda,2026-03-29,13:00,Eibar,Las Palmas,3,1,Local,1
+2025-2026,Segunda,2026-03-29,15:15,Cultural Leonesa,2ndorra,0,4,Visitante,2
+2025-2026,Segunda,2026-03-29,17:30,Zaragoza,Santander,2,0,Local,1
+2025-2026,Segunda,2026-03-29,20:00,2lmeria,Sociedad B,5,1,Local,1
+2025-2026,Segunda,2026-03-31,18:00,Mirandes,2lbacete,1,1,Empate,X
+2025-2026,Segunda,2026-03-31,19:00,La Coruna,Cordoba,2,0,Local,1
+2025-2026,Segunda,2026-03-31,20:30,Valladolid,Cadiz,3,0,Local,1
+2025-2026,Segunda,2026-04-01,18:00,2ndorra,Malaga,3,3,Empate,X
+2025-2026,Segunda,2026-04-01,19:00,Burgos,Ceuta,1,1,Empate,X
+2025-2026,Segunda,2026-04-01,19:00,1uesca,Cultural Leonesa,1,1,Empate,X
+2025-2026,Segunda,2026-04-01,20:30,Santander,Sp Gijon,3,1,Local,1
+2025-2026,Segunda,2026-04-02,18:00,Las Palmas,Granada,2,0,Local,1
+2025-2026,Segunda,2026-04-02,19:00,Castellon,2lmeria,2,0,Local,1
+2025-2026,Segunda,2026-04-02,19:00,Sociedad B,Eibar,0,1,Visitante,2
+2025-2026,Segunda,2026-04-02,20:30,Leganes,Zaragoza,1,1,Empate,X
+2025-2026,Segunda,2026-04-04,13:00,Cadiz,Cordoba,1,3,Visitante,2
+2025-2026,Segunda,2026-04-04,15:15,2lbacete,Burgos,2,3,Visitante,2
+2025-2026,Segunda,2026-04-04,17:30,Cultural Leonesa,Valladolid,1,0,Local,1
+2025-2026,Segunda,2026-04-04,17:30,La Coruna,Malaga,1,1,Empate,X
+2025-2026,Segunda,2026-04-05,13:00,Eibar,Ceuta,3,0,Local,1
+2025-2026,Segunda,2026-04-05,15:15,2ndorra,Santander,6,2,Local,1
+2025-2026,Segunda,2026-04-05,17:30,2lmeria,Leganes,2,1,Local,1
+2025-2026,Segunda,2026-04-05,17:30,Las Palmas,1uesca,2,1,Local,1
+2025-2026,Segunda,2026-04-05,20:00,Zaragoza,Mirandes,1,2,Visitante,2
+2025-2026,Segunda,2026-04-06,18:00,Castellon,Granada,3,2,Local,1
+2025-2026,Segunda,2026-04-06,19:30,Sp Gijon,Sociedad B,1,0,Local,1
+2025-2026,Segunda,2026-04-10,19:30,Ceuta,Sociedad B,0,0,Empate,X
+2025-2026,Segunda,2026-04-11,15:15,Burgos,Sp Gijon,1,0,Local,1
+2025-2026,Segunda,2026-04-11,15:15,Leganes,2lbacete,2,1,Local,1
+2025-2026,Segunda,2026-04-11,17:30,Malaga,Las Palmas,2,0,Local,1
+2025-2026,Segunda,2026-04-11,20:00,Cordoba,Zaragoza,1,0,Local,1
+2025-2026,Segunda,2026-04-12,13:00,Granada,Cultural Leonesa,1,0,Local,1
+2025-2026,Segunda,2026-04-12,15:15,1uesca,La Coruna,1,1,Empate,X
+2025-2026,Segunda,2026-04-12,17:30,Cadiz,2ndorra,0,1,Visitante,2
+2025-2026,Segunda,2026-04-12,17:30,Mirandes,Castellon,2,2,Empate,X
+2025-2026,Segunda,2026-04-12,20:00,Santander,2lmeria,5,1,Local,1
+2025-2026,Segunda,2026-04-13,19:30,Valladolid,Eibar,0,0,Empate,X
+2025-2026,Segunda,2026-04-17,19:30,Sociedad B,Santander,1,3,Visitante,2
+2025-2026,Segunda,2026-04-17,20:00,Las Palmas,Leganes,2,0,Local,1
+2025-2026,Segunda,2026-04-18,15:15,Zaragoza,Ceuta,2,2,Empate,X
+2025-2026,Segunda,2026-04-18,17:30,Castellon,Burgos,3,1,Local,1
+2025-2026,Segunda,2026-04-18,17:30,Cultural Leonesa,Cordoba,1,2,Visitante,2
+2025-2026,Segunda,2026-04-19,13:00,2ndorra,Valladolid,1,0,Local,1
+2025-2026,Segunda,2026-04-19,15:15,Sp Gijon,Cadiz,3,0,Local,1
+2025-2026,Segunda,2026-04-19,17:30,2lbacete,Granada,4,1,Local,1
+2025-2026,Segunda,2026-04-19,17:30,Eibar,1uesca,2,1,Local,1
+2025-2026,Segunda,2026-04-19,20:00,2lmeria,Malaga,3,2,Local,1
+2025-2026,Segunda,2026-04-20,19:30,La Coruna,Mirandes,3,1,Local,1
+2025-2026,Segunda,2026-04-24,19:30,2lbacete,Eibar,0,3,Visitante,2
+2025-2026,Segunda,2026-04-25,15:15,Valladolid,Sociedad B,1,0,Local,1
+2025-2026,Segunda,2026-04-25,17:30,Burgos,La Coruna,1,1,Empate,X
+2025-2026,Segunda,2026-04-25,20:00,Malaga,Castellon,2,3,Visitante,2
+2025-2026,Segunda,2026-04-26,13:00,Cordoba,Sp Gijon,3,2,Local,1
+2025-2026,Segunda,2026-04-26,15:15,Granada,2lmeria,2,4,Visitante,2
+2025-2026,Segunda,2026-04-26,15:15,Mirandes,Cultural Leonesa,2,1,Local,1
+2025-2026,Segunda,2026-04-26,17:30,1uesca,Zaragoza,1,0,Local,1
+2025-2026,Segunda,2026-04-26,17:30,Leganes,2ndorra,0,4,Visitante,2
+2025-2026,Segunda,2026-04-26,20:00,Ceuta,Santander,0,0,Empate,X
+2025-2026,Segunda,2026-04-27,19:30,Cadiz,Las Palmas,1,2,Visitante,2
+2025-2026,Segunda,2026-05-01,15:15,2ndorra,2lbacete,0,1,Visitante,2
+2025-2026,Segunda,2026-05-01,17:30,La Coruna,Leganes,2,1,Local,1
+2025-2026,Segunda,2026-05-01,20:00,Zaragoza,Granada,0,1,Visitante,2
+2025-2026,Segunda,2026-05-02,15:15,Cultural Leonesa,Cadiz,2,2,Empate,X
+2025-2026,Segunda,2026-05-02,17:30,Castellon,Cordoba,1,2,Visitante,2
+2025-2026,Segunda,2026-05-02,20:00,Eibar,Malaga,2,4,Visitante,2
+2025-2026,Segunda,2026-05-03,13:00,Santander,1uesca,4,2,Local,1
+2025-2026,Segunda,2026-05-03,15:15,Sp Gijon,Ceuta,1,2,Visitante,2
+2025-2026,Segunda,2026-05-03,17:30,Sociedad B,Burgos,0,0,Empate,X
+2025-2026,Segunda,2026-05-03,20:00,Las Palmas,Valladolid,2,1,Local,1
+2025-2026,Segunda,2026-05-04,19:30,2lmeria,Mirandes,4,2,Local,1
+2025-2026,Segunda,2026-05-08,19:30,Cadiz,La Coruna,0,1,Visitante,2
+2025-2026,Segunda,2026-05-09,13:00,Ceuta,Castellon,1,1,Empate,X
+2025-2026,Segunda,2026-05-09,15:15,2lbacete,Cultural Leonesa,2,1,Local,1
+2025-2026,Segunda,2026-05-09,15:15,Burgos,2lmeria,0,0,Empate,X
+2025-2026,Segunda,2026-05-09,17:30,Valladolid,Zaragoza,2,0,Local,1
+2025-2026,Segunda,2026-05-09,20:00,Malaga,Sp Gijon,2,1,Local,1
+2025-2026,Segunda,2026-05-10,13:00,2ndorra,Las Palmas,5,1,Local,1
+2025-2026,Segunda,2026-05-10,15:15,Leganes,Santander,1,2,Visitante,2
+2025-2026,Segunda,2026-05-10,17:30,Cordoba,Granada,1,0,Local,1
+2025-2026,Segunda,2026-05-10,17:30,Mirandes,Eibar,0,1,Visitante,2
+2025-2026,Segunda,2026-05-11,19:30,1uesca,Sociedad B,1,2,Visitante,2
+2025-2026,Segunda,2026-05-15,19:30,Castellon,Cadiz,1,1,Empate,X
+2025-2026,Segunda,2026-05-15,20:00,Cordoba,2lbacete,1,2,Visitante,2
+2025-2026,Segunda,2026-05-16,13:00,Sociedad B,Mirandes,2,2,Empate,X
+2025-2026,Segunda,2026-05-16,15:15,Ceuta,Malaga,1,4,Visitante,2
+2025-2026,Segunda,2026-05-16,15:15,Cultural Leonesa,Eibar,2,1,Local,1
+2025-2026,Segunda,2026-05-16,17:30,2lmeria,Las Palmas,1,2,Visitante,2
+2025-2026,Segunda,2026-05-16,17:30,Granada,Burgos,0,1,Visitante,2
+2025-2026,Segunda,2026-05-16,17:30,Santander,Valladolid,4,1,Local,1
+2025-2026,Segunda,2026-05-17,13:00,La Coruna,2ndorra,2,1,Local,1
+2025-2026,Segunda,2026-05-17,20:15,Zaragoza,Sp Gijon,1,3,Visitante,2
+2025-2026,Segunda,2026-05-18,19:30,Leganes,1uesca,0,0,Empate,X
+2025-2026,Segunda,2026-05-24,15:15,2lbacete,Sociedad B,3,1,Local,1
+2025-2026,Segunda,2026-05-24,15:15,2ndorra,Ceuta,0,2,Visitante,2
+2025-2026,Segunda,2026-05-24,17:30,Cadiz,Leganes,3,0,Local,1
+2025-2026,Segunda,2026-05-24,17:30,Cultural Leonesa,Burgos,0,2,Visitante,2
+2025-2026,Segunda,2026-05-24,17:30,Eibar,Cordoba,2,0,Local,1
+2025-2026,Segunda,2026-05-24,17:30,1uesca,Castellon,0,1,Visitante,2
+2025-2026,Segunda,2026-05-24,17:30,Las Palmas,Zaragoza,1,1,Empate,X
+2025-2026,Segunda,2026-05-24,17:30,Malaga,Santander,1,1,Empate,X
+2025-2026,Segunda,2026-05-24,17:30,Mirandes,Granada,3,1,Local,1
+2025-2026,Segunda,2026-05-24,17:30,Sp Gijon,2lmeria,3,1,Local,1
+2025-2026,Segunda,2026-05-24,17:30,Valladolid,La Coruna,0,2,Visitante,2
+2025-2026,Segunda,2026-05-30,15:15,Ceuta,2lbacete,1,0,Local,1
+2025-2026,Segunda,2026-05-30,15:15,Sociedad B,Cultural Leonesa,1,1,Empate,X
+2025-2026,Segunda,2026-05-30,20:00,Granada,Sp Gijon,1,2,Visitante,2
+2025-2026,Segunda,2026-05-31,17:30,2lmeria,Valladolid,1,0,Local,1
+2025-2026,Segunda,2026-05-31,17:30,Burgos,2ndorra,1,0,Local,1
+2025-2026,Segunda,2026-05-31,17:30,Castellon,Eibar,2,1,Local,1
+2025-2026,Segunda,2026-05-31,17:30,La Coruna,Las Palmas,1,2,Visitante,2
+2025-2026,Segunda,2026-05-31,17:30,Santander,Cadiz,4,1,Local,1
+2025-2026,Segunda,2026-05-31,17:30,Zaragoza,Malaga,0,2,Visitante,2
+2025-2026,Segunda,2026-05-31,20:00,Cordoba,1uesca,1,1,Empate,X
+2025-2026,Segunda,2026-05-31,20:00,Leganes,Mirandes,1,0,Local,1
