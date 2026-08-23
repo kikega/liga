@@ -395,6 +395,116 @@ class Prediccion(models.Model):
         return self.acierto
 
 
+class Quiniela(models.Model):
+    """Boleto oficial de la Quiniela de 15 partidos (14 partidos 1X2 + Casilla 15 Pleno al 15)."""
+
+    temporada = models.ForeignKey(Temporada, on_delete=models.CASCADE, related_name="quinielas")
+    jornada = models.ForeignKey(
+        Jornada,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="quinielas",
+        help_text="Jornada deportiva asociada (opcional)",
+    )
+    numero = models.PositiveSmallIntegerField(help_text="Número de Quiniela / Jornada de Quiniela")
+    nombre = models.CharField(max_length=64, help_text="Nombre descriptivo de la Quiniela")
+    activa = models.BooleanField(default=True, help_text="Marcar como la Quiniela activa para el simulador")
+    cerrada = models.BooleanField(default=False, help_text="Resultados evaluados")
+    n_dobles = models.PositiveSmallIntegerField(default=2)
+    n_triples = models.PositiveSmallIntegerField(default=1)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-temporada__inicio", "-numero"]
+        unique_together = [("temporada", "numero")]
+
+    def __str__(self):
+        return f"{self.nombre} ({self.temporada})"
+
+    def save(self, *args, **kwargs):
+        if self.activa:
+            Quiniela.objects.filter(activa=True).exclude(pk=self.pk).update(activa=False)
+        super().save(*args, **kwargs)
+
+    @property
+    def total_casillas(self) -> int:
+        return self.casillas.count()
+
+    @property
+    def casilla_15(self):
+        return self.casillas.filter(posicion=15).select_related("partido__local", "partido__visitante").first()
+
+    @property
+    def casillas_1_14(self):
+        return self.casillas.filter(posicion__lte=14).select_related("partido__local", "partido__visitante", "partido__prediccion").order_by("posicion")
+
+    def evaluar_aciertos(self):
+        """Evalúa los aciertos de cada casilla según los resultados de los partidos."""
+        aciertos_14 = 0
+        partidos_jugados = 0
+        pleno_acierto = False
+
+        for casilla in self.casillas.select_related("partido"):
+            p = casilla.partido
+            if p.jugado:
+                partidos_jugados += 1
+                if casilla.posicion <= 14:
+                    signo_real = p.resultado
+                    casilla.resultado_real = signo_real
+                    signos = [s.strip() for s in casilla.signos_jugados.split(",") if s.strip()] if "," in casilla.signos_jugados else list(casilla.signos_jugados or casilla.signo_base)
+                    es_acierto = signo_real in signos
+                    casilla.acierto = es_acierto
+                    if es_acierto:
+                        aciertos_14 += 1
+                else:
+                    marcador_real = f"{p.goles_local if p.goles_local < 3 else 'M'}-{p.goles_visitante if p.goles_visitante < 3 else 'M'}"
+                    casilla.resultado_real = marcador_real
+                    es_acierto = (casilla.pronostico_pleno == marcador_real)
+                    casilla.acierto = es_acierto
+                    pleno_acierto = es_acierto
+                casilla.save(update_fields=["resultado_real", "acierto"])
+            else:
+                casilla.resultado_real = None
+                casilla.acierto = None
+                casilla.save(update_fields=["resultado_real", "acierto"])
+
+        total_casillas = self.casillas.count()
+        if partidos_jugados == total_casillas and total_casillas >= 15:
+            self.cerrada = True
+            self.save(update_fields=["cerrada"])
+
+        return {
+            "aciertos_14": aciertos_14,
+            "partidos_jugados": partidos_jugados,
+            "pleno_acierto": pleno_acierto,
+            "completa": partidos_jugados == total_casillas,
+        }
+
+
+class CasillaQuiniela(models.Model):
+    """Casilla individual de la Quiniela (Posiciones 1 a 15)."""
+
+    quiniela = models.ForeignKey(Quiniela, on_delete=models.CASCADE, related_name="casillas")
+    posicion = models.PositiveSmallIntegerField(help_text="Posición en el boleto (1 a 15)")
+    partido = models.ForeignKey(Partido, on_delete=models.CASCADE, related_name="casillas_quiniela")
+
+    signo_base = models.CharField(max_length=1, choices=RESULTADO_CHOICES, default=RESULTADO_LOCAL)
+    tipo_apuesta = models.CharField(max_length=10, choices=[("FIJO", "Fijo"), ("DOBLE", "Doble"), ("TRIPLE", "Triple")], default="FIJO")
+    signos_jugados = models.CharField(max_length=8, default="1", help_text="Signos jugados: '1', '1X', '1X2', etc.")
+    pronostico_pleno = models.CharField(max_length=8, null=True, blank=True, help_text="Para casilla 15: ej. '1-0', 'M-1'")
+
+    resultado_real = models.CharField(max_length=8, null=True, blank=True)
+    acierto = models.BooleanField(null=True, blank=True)
+
+    class Meta:
+        ordering = ["quiniela", "posicion"]
+        unique_together = [("quiniela", "posicion")]
+
+    def __str__(self):
+        return f"Casilla {self.posicion}: {self.partido} ({self.signos_jugados})"
+
+
 class Configuracion(models.Model):
     """Configuración global de la aplicación (patrón singleton, id=1)."""
 
@@ -413,6 +523,14 @@ class Configuracion(models.Model):
         blank=True,
         related_name="+",
         help_text="Próxima jornada para predecir resultados.",
+    )
+    quiniela_actual = models.ForeignKey(
+        Quiniela,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+        help_text="Quiniela activa para el simulador.",
     )
 
     class Meta:

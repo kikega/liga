@@ -5,7 +5,14 @@ from django.shortcuts import get_object_or_404, render
 
 from ligas.ml.dixon_coles import DixonColesModel
 from ligas.ml.predictor import Predictor, predecir_jornada
-from ligas.models import Configuracion, Division, Jornada, Prediccion, Temporada
+from ligas.models import (
+    Configuracion,
+    Division,
+    Jornada,
+    Prediccion,
+    Quiniela,
+    Temporada,
+)
 from ligas.quiniela import GeneradorQuiniela
 from ligas.services import clasificacion_por_division
 
@@ -181,83 +188,101 @@ def quiniela_view(request):
     """Simulador y generador inteligente de boletos para la Quiniela (1X2 + Pleno al 15)."""
     config = Configuracion.cargar()
     temporada = config.temporada_actual or _temporada_activa()
-    jornada = config.proxima_jornada
-    if jornada is None and temporada is not None:
-        jornada = (
-            Jornada.objects.filter(temporada=temporada)
-            .exclude(cerrada=True)
-            .order_by("numero")
-            .first()
+
+    # Obtener todas las quinielas de la temporada
+    todas_quinielas = list(
+        Quiniela.objects.filter(temporada=temporada).order_by("-numero")
+        if temporada
+        else Quiniela.objects.all().order_by("-numero")
+    )
+
+    # Identificar la quiniela solicitada
+    quiniela_id_param = request.GET.get("quiniela_id")
+    quiniela = None
+    if quiniela_id_param and quiniela_id_param.isdigit():
+        quiniela = Quiniela.objects.filter(pk=int(quiniela_id_param)).first()
+
+    if not quiniela:
+        quiniela = (
+            config.quiniela_actual
+            or Quiniela.objects.filter(activa=True).first()
+            or (todas_quinielas[0] if todas_quinielas else None)
         )
 
-    n_dobles = int(request.GET.get("dobles", 2))
-    n_triples = int(request.GET.get("triples", 1))
+    n_dobles = int(request.GET.get("dobles", quiniela.n_dobles if quiniela else 2))
+    n_triples = int(request.GET.get("triples", quiniela.n_triples if quiniela else 1))
 
-    partidos_data = []
-    if jornada:
-        partidos_qs = list(
-            jornada.partidos.select_related("local", "visitante", "prediccion").order_by("id")
-        )
-        # Cargar modelo Dixon-Coles si está disponible para Pleno al 15
-        dixon_coles = None
-        try:
-            predictor = Predictor.cargar()
-            dixon_coles = predictor.dixon_coles
-        except Exception:
-            dixon_coles = None
+    jornada = quiniela.jornada if quiniela else config.proxima_jornada
 
-        for p in partidos_qs:
-            if p.goles_local is not None and p.goles_visitante is not None:
-                # Si el partido ya se jugó, certeza del 100% en el signo ganador
-                prob_l = 1.0 if p.goles_local > p.goles_visitante else 0.0
-                prob_e = 1.0 if p.goles_local == p.goles_visitante else 0.0
-                prob_v = 1.0 if p.goles_local < p.goles_visitante else 0.0
-                marcador_str = f"{p.goles_local if p.goles_local < 3 else 'M'}-{p.goles_visitante if p.goles_visitante < 3 else 'M'}"
-                pleno_info = {
-                    "cat_local": {"0": 1.0 if p.goles_local == 0 else 0.0, "1": 1.0 if p.goles_local == 1 else 0.0, "2": 1.0 if p.goles_local == 2 else 0.0, "M": 1.0 if p.goles_local >= 3 else 0.0},
-                    "cat_visit": {"0": 1.0 if p.goles_visitante == 0 else 0.0, "1": 1.0 if p.goles_visitante == 1 else 0.0, "2": 1.0 if p.goles_visitante == 2 else 0.0, "M": 1.0 if p.goles_visitante >= 3 else 0.0},
-                    "marcador_probable": (p.goles_local, p.goles_visitante),
-                    "marcador_probable_prob": 1.0,
-                    "pleno_recomendado": marcador_str,
-                }
-            else:
-                pred = getattr(p, "prediccion", None)
-                prob_l = pred.prob_local if pred else 0.45
-                prob_e = pred.prob_empate if pred else 0.28
-                prob_v = pred.prob_visitante if pred else 0.27
-
-                pleno_info = None
-                if dixon_coles is not None:
-                    try:
-                        pleno_info = dixon_coles.predict_pleno_al_15(p.local_id, p.visitante_id)
-                    except Exception:
-                        pleno_info = None
-
-            partidos_data.append(
-                {
-                    "partido": p,
-                    "local": p.local,
-                    "visitante": p.visitante,
-                    "prob_local": prob_l,
-                    "prob_empate": prob_e,
-                    "prob_visitante": prob_v,
-                    "pleno_info": pleno_info,
-                }
+    if quiniela and quiniela.casillas.exists():
+        generador = GeneradorQuiniela(n_dobles=n_dobles, n_triples=n_triples)
+        boleto = generador.generar_desde_quiniela(quiniela)
+    else:
+        # Fallback si aún no hay quinielas creadas con casillas
+        partidos_data = []
+        if jornada:
+            partidos_qs = list(
+                jornada.partidos.select_related("local", "visitante", "prediccion").order_by("id")
             )
+            dixon_coles = None
+            try:
+                predictor = Predictor.cargar()
+                dixon_coles = predictor.dixon_coles
+            except Exception:
+                dixon_coles = None
 
-    generador = GeneradorQuiniela(n_dobles=n_dobles, n_triples=n_triples)
-    boleto = generador.generar_boleto(partidos_data)
+            for p in partidos_qs:
+                if p.goles_local is not None and p.goles_visitante is not None:
+                    prob_l = 1.0 if p.goles_local > p.goles_visitante else 0.0
+                    prob_e = 1.0 if p.goles_local == p.goles_visitante else 0.0
+                    prob_v = 1.0 if p.goles_local < p.goles_visitante else 0.0
+                    marcador_str = f"{p.goles_local if p.goles_local < 3 else 'M'}-{p.goles_visitante if p.goles_visitante < 3 else 'M'}"
+                    pleno_info = {
+                        "cat_local": {"0": 1.0 if p.goles_local == 0 else 0.0, "1": 1.0 if p.goles_local == 1 else 0.0, "2": 1.0 if p.goles_local == 2 else 0.0, "M": 1.0 if p.goles_local >= 3 else 0.0},
+                        "cat_visit": {"0": 1.0 if p.goles_visitante == 0 else 0.0, "1": 1.0 if p.goles_visitante == 1 else 0.0, "2": 1.0 if p.goles_visitante == 2 else 0.0, "M": 1.0 if p.goles_visitante >= 3 else 0.0},
+                        "marcador_probable": (p.goles_local, p.goles_visitante),
+                        "marcador_probable_prob": 1.0,
+                        "pleno_recomendado": marcador_str,
+                    }
+                else:
+                    pred = getattr(p, "prediccion", None)
+                    prob_l = pred.prob_local if pred else 0.45
+                    prob_e = pred.prob_empate if pred else 0.28
+                    prob_v = pred.prob_visitante if pred else 0.27
+
+                    pleno_info = None
+                    if dixon_coles is not None:
+                        try:
+                            pleno_info = dixon_coles.predict_pleno_al_15(p.local_id, p.visitante_id)
+                        except Exception:
+                            pleno_info = None
+
+                partidos_data.append(
+                    {
+                        "partido": p,
+                        "local": p.local,
+                        "visitante": p.visitante,
+                        "prob_local": prob_l,
+                        "prob_empate": prob_e,
+                        "prob_visitante": prob_v,
+                        "pleno_info": pleno_info,
+                    }
+                )
+
+        generador = GeneradorQuiniela(n_dobles=n_dobles, n_triples=n_triples)
+        boleto = generador.generar_boleto(partidos_data)
 
     contexto = {
         "config": config,
         "temporada": temporada,
         "jornada": jornada,
+        "quiniela": quiniela,
+        "todas_quinielas": todas_quinielas,
         "boleto": boleto,
         "n_dobles": n_dobles,
         "n_triples": n_triples,
     }
 
-    # Si es petición HTMX parcial (p. ej. cambio de selector de dobles/triples)
     if request.headers.get("HX-Request") and request.GET.get("partial") == "boleto":
         return render(request, "ligas/_boleto_quiniela.html", contexto)
 

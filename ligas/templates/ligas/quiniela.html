@@ -11,21 +11,39 @@
             </div>
             <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight">Simulador Inteligente de Quinielas</h1>
             <p class="text-slate-300 mt-1 text-sm font-medium">
-                Pronósticos optimizados por entropía de incertidumbre con <strong>Dixon-Coles</strong> y <strong>Gradient Boosting Calibrado</strong>.
+                Pronósticos de 1ª y 2ª División optimizados por entropía con <strong>Dixon-Coles</strong> y <strong>Gradient Boosting Calibrado</strong>.
             </p>
         </div>
 
-        {% if jornada %}
-        <div class="flex items-center gap-3 bg-white/10 p-3 rounded-2xl backdrop-blur-md border border-white/10 shrink-0">
-            <div class="text-xs text-slate-300 font-semibold px-2">
-                Jornada <span class="font-extrabold text-amber-300">J{{ jornada.numero }}</span> ({{ temporada.nombre }})
-            </div>
+        <div class="flex flex-wrap items-center gap-3 shrink-0">
+            <!-- Selector de Quiniela -->
+            {% if todas_quinielas %}
+            <form method="get" action="{% url 'ligas:quiniela' %}" class="bg-white/10 p-1.5 rounded-2xl backdrop-blur-md border border-white/10">
+                <select name="quiniela_id" onchange="this.form.submit()"
+                        class="bg-slate-900 text-white font-bold text-xs rounded-xl px-3 py-2 border border-white/20 focus:ring-2 focus:ring-emerald-400 focus:outline-none cursor-pointer">
+                    {% for q in todas_quinielas %}
+                    <option value="{{ q.id }}" {% if quiniela and quiniela.id == q.id %}selected{% endif %}>
+                        {{ q.nombre }} {% if q.activa %}⭐ (Activa){% endif %}
+                    </option>
+                    {% endfor %}
+                </select>
+            </form>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+            <a href="{% if quiniela %}{% url 'ligas:quiniela_confeccionar' quiniela.id %}{% else %}{% url 'ligas:quinielas_lista' %}{% endif %}"
+               class="inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl px-3.5 py-2 text-xs shadow-md transition">
+                ✏️ Confeccionar Partidos
+            </a>
+            {% endif %}
+
+            {% if jornada %}
             <button
                 hx-post="{% url 'ligas:jornada_predecir' jornada.id %}"
                 hx-target="#boleto-container"
                 hx-indicator="#quiniela-refresh-spin"
                 hx-disabled-elt="this"
-                class="inline-flex items-center gap-1.5 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold rounded-xl px-4 py-2 text-xs shadow-md transition"
+                class="inline-flex items-center gap-1.5 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold rounded-xl px-4 py-2 text-xs shadow-md transition cursor-pointer"
             >
                 <span id="quiniela-refresh-spin" class="htmx-indicator inline-flex items-center">
                     <svg class="animate-spin h-3.5 w-3.5 mr-1" viewBox="0 0 24 24" fill="none">
@@ -35,22 +53,29 @@
                 </span>
                 🔄 Actualizar Predicciones
             </button>
+            {% endif %}
         </div>
-        {% endif %}
     </div>
 </div>
 
-{% if not jornada or not boleto.filas %}
+{% if not boleto.filas %}
 <div class="bg-white rounded-3xl border border-slate-200 p-12 text-center shadow-sm max-w-2xl mx-auto">
     <div class="text-5xl mb-4">🎟️</div>
     <h2 class="text-xl font-extrabold text-slate-900 mb-2">No hay partidos configurados para la Quiniela</h2>
     <p class="text-sm text-slate-500 mb-6 max-w-md mx-auto">
-        Configura los partidos de la próxima jornada desde el panel de control para generar el boleto predictivo.
+        Confecciona el boleto seleccionando los 15 partidos de 1ª y 2ª División desde el gestor de Quinielas.
     </p>
-    <a href="{% url 'ligas:configuracion' %}"
+    {% if user.is_authenticated %}
+    <a href="{% url 'ligas:quinielas_lista' %}"
        class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-6 py-3 rounded-2xl shadow transition">
-        ⚙️ Ir a Configuración
+        ⚙️ Confeccionar Quiniela Oficial
     </a>
+    {% else %}
+    <a href="{% url 'ligas:dashboard' %}"
+       class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-6 py-3 rounded-2xl shadow transition">
+        ⚽ Volver al Dashboard
+    </a>
+    {% endif %}
 </div>
 {% else %}
 
@@ -61,6 +86,11 @@
           hx-swap="innerHTML"
           hx-push-url="true"
           class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+
+        {% if quiniela %}
+        <input type="hidden" name="quiniela_id" value="{{ quiniela.id }}">
+        {% endif %}
+        <input type="hidden" name="partial" value="boleto">
 
         <div class="flex items-center gap-4">
             <span class="text-2xl">⚙️</span>
@@ -76,9 +106,9 @@
             <!-- Selector de Dobles -->
             <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 px-3 py-2 rounded-2xl">
                 <label for="n_dobles" class="text-xs font-black text-blue-700 uppercase tracking-wider">Dobles:</label>
-                <select name="n_dobles" id="n_dobles"
+                <select name="dobles" id="n_dobles"
                         onchange="this.form.requestSubmit()"
-                        class="bg-white border border-slate-200 rounded-xl px-2.5 py-1 text-xs font-extrabold text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-xs">
+                        class="bg-white border border-slate-200 rounded-xl px-2.5 py-1 text-xs font-extrabold text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-xs cursor-pointer">
                     {% for n in "01234567"|make_list %}
                     <option value="{{ n }}" {% if n|add:"0" == n_dobles %}selected{% endif %}>{{ n }} Doble{{ n|pluralize }}</option>
                     {% endfor %}
@@ -88,9 +118,9 @@
             <!-- Selector de Triples -->
             <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 px-3 py-2 rounded-2xl">
                 <label for="n_triples" class="text-xs font-black text-purple-700 uppercase tracking-wider">Triples:</label>
-                <select name="n_triples" id="n_triples"
+                <select name="triples" id="n_triples"
                         onchange="this.form.requestSubmit()"
-                        class="bg-white border border-slate-200 rounded-xl px-2.5 py-1 text-xs font-extrabold text-slate-800 focus:ring-2 focus:ring-purple-500 focus:outline-none shadow-xs">
+                        class="bg-white border border-slate-200 rounded-xl px-2.5 py-1 text-xs font-extrabold text-slate-800 focus:ring-2 focus:ring-purple-500 focus:outline-none shadow-xs cursor-pointer">
                     {% for n in "01234"|make_list %}
                     <option value="{{ n }}" {% if n|add:"0" == n_triples %}selected{% endif %}>{{ n }} Triple{{ n|pluralize }}</option>
                     {% endfor %}
@@ -102,7 +132,7 @@
 
 <!-- Contenedor del Boleto Interactivo (Recargable por HTMX) -->
 <div id="boleto-container" class="space-y-6">
-    {% include "ligas/_boleto_quiniela.html" with boleto=boleto n_dobles=n_dobles n_triples=n_triples %}
+    {% include "ligas/_boleto_quiniela.html" with boleto=boleto n_dobles=n_dobles n_triples=n_triples quiniela=quiniela %}
 </div>
 
 {% endif %}

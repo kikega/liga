@@ -38,6 +38,50 @@
         }
         .swap-enter { animation: swapIn 300ms ease-out; }
 
+        /* Estilos y animación para el diálogo nativo de confirmación de la aplicación */
+        dialog#app-confirm-dialog {
+            margin: auto;
+            border: none;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+            max-width: 28rem;
+            width: calc(100% - 2rem);
+            padding: 0;
+            background: transparent;
+            opacity: 0;
+            transform: scale(0.96) translateY(6px);
+            transition: opacity 0.18s ease-out, transform 0.18s ease-out, overlay 0.18s ease-out allow-discrete, display 0.18s ease-out allow-discrete;
+        }
+
+        dialog#app-confirm-dialog[open] {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        @starting-style {
+            dialog#app-confirm-dialog[open] {
+                opacity: 0;
+                transform: scale(0.96) translateY(6px);
+            }
+        }
+
+        dialog#app-confirm-dialog::backdrop {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            transition: opacity 0.18s ease-out, overlay 0.18s ease-out allow-discrete, display 0.18s ease-out allow-discrete;
+        }
+
+        dialog#app-confirm-dialog[open]::backdrop {
+            opacity: 1;
+        }
+
+        @starting-style {
+            dialog#app-confirm-dialog[open]::backdrop {
+                opacity: 0;
+            }
+        }
+
         /* Tema Deportivo Personalizado para el Calendario Flatpickr */
         .flatpickr-calendar {
             background: #0f172a !important;
@@ -179,7 +223,7 @@
                         Dashboard
                     </a>
                     <a href="{% url 'ligas:quiniela' %}"
-                       class="px-3 py-2 rounded-lg hover:bg-white/10 transition {% if request.resolver_match.url_name == 'quiniela' %}bg-white/15 text-emerald-300 font-bold{% endif %}">
+                       class="px-3 py-2 rounded-lg hover:bg-white/10 transition {% if request.resolver_match.url_name in 'quiniela quinielas_lista quiniela_confeccionar' %}bg-white/15 text-emerald-300 font-bold{% endif %}">
                         🎟️ Quiniela
                     </a>
                     <a href="{% url 'ligas:predicciones' %}"
@@ -234,6 +278,33 @@
         </div>
     </footer>
 
+    <!-- Diálogo Modal de Confirmación Global de la Aplicación -->
+    <dialog id="app-confirm-dialog" class="m-auto rounded-3xl p-0 max-w-md w-[92vw] overflow-hidden">
+        <div class="bg-white rounded-3xl border border-slate-200/90 shadow-2xl p-6 sm:p-7 overflow-hidden">
+            <div class="flex items-start gap-4">
+                <div id="app-confirm-icon-container" class="h-12 w-12 rounded-2xl flex items-center justify-center text-2xl shrink-0 bg-amber-50 text-amber-600 border border-amber-200 shadow-2xs">
+                    <span id="app-confirm-icon">⚠️</span>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <h3 id="app-confirm-title" class="text-base font-extrabold text-slate-900 tracking-tight mb-1">
+                        Confirmar Acción
+                    </h3>
+                    <p id="app-confirm-message" class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        ¿Estás seguro de que deseas realizar esta acción?
+                    </p>
+                </div>
+            </div>
+            <div class="mt-6 flex items-center justify-end gap-2.5 pt-4 border-t border-slate-100">
+                <button id="app-confirm-cancel-btn" type="button" class="px-4 py-2.5 rounded-xl text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition cursor-pointer">
+                    Cancelar
+                </button>
+                <button id="app-confirm-ok-btn" type="button" class="px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 shadow-sm transition cursor-pointer">
+                    Confirmar
+                </button>
+            </div>
+        </div>
+    </dialog>
+
     <script>
         // Inyecta el token CSRF en todas las peticiones automáticas de HTMX
         document.body.addEventListener('htmx:configRequest', (event) => {
@@ -262,6 +333,183 @@
             });
         }
         document.addEventListener("DOMContentLoaded", initDatePickers);
+
+        // Sistema de Modal de Confirmación Global de la Aplicación
+        window.appConfirm = function(options) {
+            return new Promise((resolve) => {
+                const dialog = document.getElementById('app-confirm-dialog');
+                if (!dialog || typeof dialog.showModal !== 'function') {
+                    const msg = typeof options === 'string' ? options : (options?.message || '');
+                    resolve(window.confirm(msg));
+                    return;
+                }
+
+                const titleEl = document.getElementById('app-confirm-title');
+                const msgEl = document.getElementById('app-confirm-message');
+                const iconEl = document.getElementById('app-confirm-icon');
+                const iconBox = document.getElementById('app-confirm-icon-container');
+                const okBtn = document.getElementById('app-confirm-ok-btn');
+                const cancelBtn = document.getElementById('app-confirm-cancel-btn');
+
+                const opts = typeof options === 'string' ? { message: options } : (options || {});
+                const title = opts.title || 'Confirmar Acción';
+                const message = opts.message || '¿Deseas continuar?';
+                const okText = opts.confirmText || 'Confirmar';
+                const cancelText = opts.cancelText || 'Cancelar';
+                const type = opts.type || 'warning';
+
+                if (titleEl) titleEl.textContent = title;
+                if (msgEl) msgEl.textContent = message;
+                if (okBtn) okBtn.textContent = okText;
+                if (cancelBtn) cancelBtn.textContent = cancelText;
+
+                if (iconBox && iconEl) {
+                    if (type === 'danger') {
+                        iconEl.textContent = opts.icon || '🗑️';
+                        iconBox.className = 'h-12 w-12 rounded-2xl flex items-center justify-center text-2xl shrink-0 bg-rose-50 text-rose-600 border border-rose-200 shadow-2xs';
+                        if (okBtn) okBtn.className = 'px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 shadow-sm shadow-rose-600/20 transition cursor-pointer';
+                    } else if (type === 'info') {
+                        iconEl.textContent = opts.icon || 'ℹ️';
+                        iconBox.className = 'h-12 w-12 rounded-2xl flex items-center justify-center text-2xl shrink-0 bg-blue-50 text-blue-600 border border-blue-200 shadow-2xs';
+                        if (okBtn) okBtn.className = 'px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-sm transition cursor-pointer';
+                    } else if (type === 'success') {
+                        iconEl.textContent = opts.icon || '⭐';
+                        iconBox.className = 'h-12 w-12 rounded-2xl flex items-center justify-center text-2xl shrink-0 bg-emerald-50 text-emerald-600 border border-emerald-200 shadow-2xs';
+                        if (okBtn) okBtn.className = 'px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-sm shadow-emerald-600/20 transition cursor-pointer';
+                    } else {
+                        iconEl.textContent = opts.icon || '⚠️';
+                        iconBox.className = 'h-12 w-12 rounded-2xl flex items-center justify-center text-2xl shrink-0 bg-amber-50 text-amber-600 border border-amber-200 shadow-2xs';
+                        if (okBtn) okBtn.className = 'px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 shadow-sm transition cursor-pointer';
+                    }
+                }
+
+                let cleanup = () => {};
+
+                const onOk = () => {
+                    cleanup();
+                    dialog.close();
+                    resolve(true);
+                };
+
+                const onCancel = () => {
+                    cleanup();
+                    dialog.close();
+                    resolve(false);
+                };
+
+                const onDialogClick = (e) => {
+                    const rect = dialog.getBoundingClientRect();
+                    const isInDialog = (
+                        rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
+                        rect.left <= e.clientX && e.clientX <= rect.left + rect.width
+                    );
+                    if (!isInDialog) {
+                        onCancel();
+                    }
+                };
+
+                const onCancelEvent = (e) => {
+                    e.preventDefault();
+                    onCancel();
+                };
+
+                cleanup = () => {
+                    okBtn?.removeEventListener('click', onOk);
+                    cancelBtn?.removeEventListener('click', onCancel);
+                    dialog.removeEventListener('click', onDialogClick);
+                    dialog.removeEventListener('cancel', onCancelEvent);
+                };
+
+                okBtn?.addEventListener('click', onOk);
+                cancelBtn?.addEventListener('click', onCancel);
+                dialog.addEventListener('click', onDialogClick);
+                dialog.addEventListener('cancel', onCancelEvent);
+
+                dialog.showModal();
+                okBtn?.focus();
+            });
+        };
+
+        // Interceptor declarativo para clics en botones/enlaces con data-confirm
+        document.addEventListener('click', async (e) => {
+            const trigger = e.target.closest('[data-confirm]');
+            if (!trigger) return;
+
+            if (trigger.dataset.confirmed === 'true') {
+                delete trigger.dataset.confirmed;
+                return;
+            }
+
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            const message = trigger.getAttribute('data-confirm');
+            const title = trigger.getAttribute('data-confirm-title') || 'Confirmar Acción';
+            const confirmText = trigger.getAttribute('data-confirm-btn') || 'Confirmar';
+            const type = trigger.getAttribute('data-confirm-type') || 'warning';
+
+            const confirmed = await window.appConfirm({ message, title, confirmText, type });
+            if (confirmed) {
+                trigger.dataset.confirmed = 'true';
+                if (trigger.tagName === 'BUTTON' && (trigger.type === 'submit' || !trigger.type)) {
+                    const form = trigger.form || trigger.closest('form');
+                    if (form) {
+                        if (trigger.hasAttribute('formaction')) {
+                            form.action = trigger.getAttribute('formaction');
+                        }
+                        if (trigger.name) {
+                            let hidden = form.querySelector(`input[name="${trigger.name}"][data-temp-submit]`);
+                            if (!hidden) {
+                                hidden = document.createElement('input');
+                                hidden.type = 'hidden';
+                                hidden.name = trigger.name;
+                                hidden.dataset.tempSubmit = 'true';
+                                form.appendChild(hidden);
+                            }
+                            hidden.value = trigger.value;
+                        }
+                        if (typeof form.requestSubmit === 'function') {
+                            form.requestSubmit(trigger);
+                        } else {
+                            form.submit();
+                        }
+                    }
+                } else if (trigger.tagName === 'A' && trigger.href) {
+                    window.location.href = trigger.href;
+                } else {
+                    trigger.click();
+                }
+            }
+        }, true);
+
+        // Interceptor declarativo para formularios con data-confirm
+        document.addEventListener('submit', async (e) => {
+            const form = e.target;
+            if (!form.hasAttribute('data-confirm')) return;
+
+            if (form.dataset.confirmed === 'true') {
+                delete form.dataset.confirmed;
+                return;
+            }
+
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            const message = form.getAttribute('data-confirm');
+            const title = form.getAttribute('data-confirm-title') || 'Confirmar Acción';
+            const confirmText = form.getAttribute('data-confirm-btn') || 'Confirmar';
+            const type = form.getAttribute('data-confirm-type') || 'warning';
+
+            const confirmed = await window.appConfirm({ message, title, confirmText, type });
+            if (confirmed) {
+                form.dataset.confirmed = 'true';
+                if (typeof form.requestSubmit === 'function') {
+                    form.requestSubmit();
+                } else {
+                    form.submit();
+                }
+            }
+        }, true);
     </script>
 </body>
 </html>

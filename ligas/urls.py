@@ -23,4 +23,8 @@ urlpatterns = [
     path("configuracion/equipos/<int:equipo_id>/jugadores/nuevo/", config_views.jugador_nuevo, name="jugador_nuevo"),
     path("configuracion/jugador/<int:jugador_id>/toggle/", config_views.jugador_toggle, name="jugador_toggle"),
     path("configuracion/jugador/<int:jugador_id>/eliminar/", config_views.jugador_eliminar, name="jugador_eliminar"),
+    path("configuracion/quinielas/", config_views.quinielas_lista, name="quinielas_lista"),
+    path("configuracion/quiniela/<int:quiniela_id>/", config_views.quiniela_confeccionar, name="quiniela_confeccionar"),
+    path("configuracion/quiniela/<int:quiniela_id>/activar/", config_views.quiniela_activar, name="quiniela_activar"),
+    path("configuracion/quiniela/<int:quiniela_id>/eliminar/", config_views.quiniela_eliminar, name="quiniela_eliminar"),
 ]

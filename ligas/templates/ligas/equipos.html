@@ -128,22 +128,41 @@
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-200/60 text-xs">
-                    <form method="post" class="inline">
-                        {% csrf_token %}
-                        <input type="hidden" name="accion" value="cambiar_division">
-                        <input type="hidden" name="equipo_id" value="{{ equipo.id }}">
-                        <input type="hidden" name="division_id" value="{{ div2.id }}">
-                        <button type="submit"
-                                onclick="return confirm('¿Mover a {{ equipo.nombre }} a 2ª División?')"
-                                class="text-[11px] font-bold text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-lg px-2.5 py-1 transition"
-                                title="Mover a Segunda División">
-                            ↓ Mover a 2ª
-                        </button>
-                    </form>
+                <div class="flex items-center justify-between gap-1.5 pt-2 border-t border-slate-200/60 text-xs">
+                    <div class="flex items-center gap-1">
+                        <form method="post" class="inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="accion" value="cambiar_division">
+                            <input type="hidden" name="equipo_id" value="{{ equipo.id }}">
+                            <input type="hidden" name="division_id" value="{{ div2.id }}">
+                            <button type="submit"
+                                    data-confirm="¿Mover a {{ equipo.nombre }} a 2ª División para la temporada {{ temporada }}?"
+                                    data-confirm-title="Cambiar a Segunda División"
+                                    data-confirm-type="warning"
+                                    data-confirm-btn="Mover a 2ª"
+                                    class="text-[11px] font-bold text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-lg px-2 py-1 transition cursor-pointer"
+                                    title="Mover a Segunda División">
+                                ↓ A 2ª
+                            </button>
+                        </form>
+                        <form method="post" class="inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="accion" value="desasignar_division">
+                            <input type="hidden" name="equipo_id" value="{{ equipo.id }}">
+                            <button type="submit"
+                                    data-confirm="¿Desasignar división a {{ equipo.nombre }} para {{ temporada }}? El equipo pasará al listado de no asignados."
+                                    data-confirm-title="Desasignar Categoría"
+                                    data-confirm-type="danger"
+                                    data-confirm-btn="Quitar División"
+                                    class="text-[11px] font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-lg px-2 py-1 transition cursor-pointer"
+                                    title="Desasignar división (dejar sin división)">
+                                ✕ Quitar
+                            </button>
+                        </form>
+                    </div>
                     <a href="{% url 'ligas:equipo_editar' equipo.id %}"
-                       class="text-xs font-bold text-slate-600 hover:text-emerald-700 bg-white hover:bg-slate-100 border border-slate-200 rounded-lg px-3 py-1 transition">
-                        ✏️ Editar Ficha
+                       class="text-xs font-bold text-slate-600 hover:text-emerald-700 bg-white hover:bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 transition">
+                        ✏️ Editar
                     </a>
                 </div>
             </div>
@@ -191,22 +210,41 @@
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-200/60 text-xs">
-                    <form method="post" class="inline">
-                        {% csrf_token %}
-                        <input type="hidden" name="accion" value="cambiar_division">
-                        <input type="hidden" name="equipo_id" value="{{ equipo.id }}">
-                        <input type="hidden" name="division_id" value="{{ div1.id }}">
-                        <button type="submit"
-                                onclick="return confirm('¿Ascender a {{ equipo.nombre }} a 1ª División?')"
-                                class="text-[11px] font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-lg px-2.5 py-1 transition"
-                                title="Ascender a Primera División">
-                            ↑ Mover a 1ª
-                        </button>
-                    </form>
+                <div class="flex items-center justify-between gap-1.5 pt-2 border-t border-slate-200/60 text-xs">
+                    <div class="flex items-center gap-1">
+                        <form method="post" class="inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="accion" value="cambiar_division">
+                            <input type="hidden" name="equipo_id" value="{{ equipo.id }}">
+                            <input type="hidden" name="division_id" value="{{ div1.id }}">
+                            <button type="submit"
+                                    data-confirm="¿Ascender a {{ equipo.nombre }} a 1ª División para la temporada {{ temporada }}?"
+                                    data-confirm-title="Ascenso a Primera División"
+                                    data-confirm-type="success"
+                                    data-confirm-btn="Ascender a 1ª"
+                                    class="text-[11px] font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-lg px-2 py-1 transition cursor-pointer"
+                                    title="Ascender a Primera División">
+                                ↑ A 1ª
+                            </button>
+                        </form>
+                        <form method="post" class="inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="accion" value="desasignar_division">
+                            <input type="hidden" name="equipo_id" value="{{ equipo.id }}">
+                            <button type="submit"
+                                    data-confirm="¿Desasignar división a {{ equipo.nombre }} para {{ temporada }}? El equipo pasará al listado de no asignados."
+                                    data-confirm-title="Desasignar Categoría"
+                                    data-confirm-type="danger"
+                                    data-confirm-btn="Quitar División"
+                                    class="text-[11px] font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-lg px-2 py-1 transition cursor-pointer"
+                                    title="Desasignar división (dejar sin división)">
+                                ✕ Quitar
+                            </button>
+                        </form>
+                    </div>
                     <a href="{% url 'ligas:equipo_editar' equipo.id %}"
-                       class="text-xs font-bold text-slate-600 hover:text-emerald-700 bg-white hover:bg-slate-100 border border-slate-200 rounded-lg px-3 py-1 transition">
-                        ✏️ Editar Ficha
+                       class="text-xs font-bold text-slate-600 hover:text-emerald-700 bg-white hover:bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 transition">
+                        ✏️ Editar
                     </a>
                 </div>
             </div>

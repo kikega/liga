@@ -3,7 +3,18 @@ from django import forms
 from django.db.models import Max
 from django.utils.dateparse import parse_date, parse_datetime
 
-from ligas.models import Configuracion, Division, Equipo, Jornada, Jugador, Participacion, Partido, Temporada
+from ligas.models import (
+    CasillaQuiniela,
+    Configuracion,
+    Division,
+    Equipo,
+    Jornada,
+    Jugador,
+    Participacion,
+    Partido,
+    Quiniela,
+    Temporada,
+)
 
 FORM_INPUT = (
     "w-full border border-slate-300 rounded-xl px-3 py-2 bg-white text-xs sm:text-sm text-slate-800 "
@@ -144,10 +155,10 @@ class JornadaForm(forms.ModelForm):
 class EquipoForm(forms.ModelForm):
     division = forms.ModelChoiceField(
         queryset=Division.objects.all().order_by("nivel"),
-        empty_label="Selecciona división (1ª o 2ª)",
+        empty_label="— Sin división asignada (No participa) —",
         widget=forms.Select(attrs={"class": FORM_SELECT}),
         label="División en la Temporada Actual",
-        required=True,
+        required=False,
     )
 
     class Meta:
@@ -168,19 +179,23 @@ class EquipoForm(forms.ModelForm):
             if p:
                 self.fields["division"].initial = p.division_id
             else:
-                ultima = self.instance.participaciones.order_by("-temporada__inicio").first()
-                if ultima:
-                    self.fields["division"].initial = ultima.division_id
+                self.fields["division"].initial = None
 
     def save(self, commit=True):
         equipo = super().save(commit=commit)
         div = self.cleaned_data.get("division")
-        if div and self.temporada:
-            Participacion.objects.update_or_create(
-                temporada=self.temporada,
-                equipo=equipo,
-                defaults={"division": div},
-            )
+        if self.temporada:
+            if div:
+                Participacion.objects.update_or_create(
+                    temporada=self.temporada,
+                    equipo=equipo,
+                    defaults={"division": div},
+                )
+            else:
+                Participacion.objects.filter(
+                    temporada=self.temporada,
+                    equipo=equipo,
+                ).delete()
         return equipo
 
 
@@ -269,3 +284,66 @@ class PartidoRowForm(forms.Form):
 
     def clean_fecha(self):
         return parse_fecha_flexible(self.cleaned_data.get("fecha"))
+
+
+def obtener_partidos_choices(temporada=None, jornada=None):
+    """Devuelve los partidos disponibles para la Quiniela agrupados por división."""
+    qs = Partido.objects.select_related("local", "visitante", "jornada__temporada").prefetch_related(
+        "local__participaciones__division", "visitante__participaciones__division"
+    )
+    if jornada is not None:
+        qs = qs.filter(jornada=jornada)
+    elif temporada is not None:
+        qs = qs.filter(jornada__temporada=temporada)
+
+    partidos = list(qs.order_by("jornada__numero", "fecha", "id"))
+
+    partidos_div1 = [p for p in partidos if p.division_nivel == 1]
+    partidos_div2 = [p for p in partidos if p.division_nivel == 2]
+    otros = [p for p in partidos if p.division_nivel not in (1, 2)]
+
+    choices = [("", "— Selecciona partido —")]
+    if partidos_div1:
+        choices.append((
+            "🏆 Primera División (LaLiga EA Sports)",
+            [(p.id, f"{p.local.nombre} vs {p.visitante.nombre} (J{p.jornada.numero})") for p in partidos_div1],
+        ))
+    if partidos_div2:
+        choices.append((
+            "🥈 Segunda División (LaLiga Hypermotion)",
+            [(p.id, f"{p.local.nombre} vs {p.visitante.nombre} (J{p.jornada.numero})") for p in partidos_div2],
+        ))
+    if otros:
+        choices.append((
+            "⚽ Otros Partidos",
+            [(p.id, f"{p.local.nombre} vs {p.visitante.nombre} (J{p.jornada.numero})") for p in otros],
+        ))
+    return choices
+
+
+class QuinielaForm(forms.ModelForm):
+    class Meta:
+        model = Quiniela
+        fields = ["temporada", "jornada", "numero", "nombre", "n_dobles", "n_triples", "activa"]
+        widgets = {
+            "temporada": forms.Select(attrs={"class": FORM_SELECT}),
+            "jornada": forms.Select(attrs={"class": FORM_SELECT}),
+            "numero": forms.NumberInput(attrs={"class": FORM_INPUT, "placeholder": "Número de jornada"}),
+            "nombre": forms.TextInput(attrs={"class": FORM_INPUT, "placeholder": "Ej: Quiniela Jornada 5"}),
+            "n_dobles": forms.NumberInput(attrs={"class": FORM_INPUT, "min": 0, "max": 14}),
+            "n_triples": forms.NumberInput(attrs={"class": FORM_INPUT, "min": 0, "max": 14}),
+            "activa": forms.CheckboxInput(attrs={"class": FORM_CHECK}),
+        }
+
+    def __init__(self, *args, temporada=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        temp = temporada or (self.instance.temporada if self.instance.pk else None) or Temporada.objects.filter(activa=True).first()
+        if temp:
+            self.fields["temporada"].initial = temp
+            self.fields["jornada"].queryset = Jornada.objects.filter(temporada=temp).order_by("numero")
+            if not self.instance.pk:
+                ultima = Quiniela.objects.filter(temporada=temp).aggregate(Max("numero"))["numero__max"] or 0
+                self.fields["numero"].initial = ultima + 1
+                self.fields["nombre"].initial = f"Quiniela Jornada {ultima + 1}"
+        self.fields["jornada"].required = False
+        self.fields["jornada"].empty_label = "— Sin jornada fija (Partidos mixtos) —"

@@ -21,10 +21,13 @@
     </div>
     {% if partidos %}
     <form method="post" action="{% url 'ligas:jornada_cerrar' jornada.id %}"
-          onsubmit="return confirm('¿Cerrar Jornada {{ jornada.numero }} y re-entrenar el modelo con todos los resultados registrados?')">
+          data-confirm="¿Cerrar Jornada {{ jornada.numero }} y re-entrenar el modelo con todos los resultados registrados?"
+          data-confirm-title="Cerrar Jornada y Re-entrenar"
+          data-confirm-type="warning"
+          data-confirm-btn="Cerrar y Re-entrenar">
         {% csrf_token %}
         <button type="submit"
-                class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold px-4 py-2.5 rounded-2xl text-xs shadow transition">
+                class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold px-4 py-2.5 rounded-2xl text-xs shadow transition cursor-pointer">
             🏁 Cerrar Jornada y Re-entrenar
         </button>
     </form>
@@ -189,8 +192,11 @@
                                         </a>
                                         <button type="submit"
                                                 formaction="{% url 'ligas:partido_eliminar' jornada.id p.id %}"
-                                                onclick="return confirm('¿Eliminar este partido?')"
-                                                class="text-slate-300 hover:text-rose-600 transition text-sm p-1" title="Eliminar partido">
+                                                data-confirm="¿Eliminar el partido {{ p.local.nombre }} vs {{ p.visitante.nombre }} de la Jornada {{ jornada.numero }}?"
+                                                data-confirm-title="Eliminar Partido"
+                                                data-confirm-type="danger"
+                                                data-confirm-btn="Eliminar"
+                                                class="text-slate-300 hover:text-rose-600 transition text-sm p-1 cursor-pointer" title="Eliminar partido">
                                             ✕
                                         </button>
                                     </div>
@@ -272,8 +278,11 @@
                                         </a>
                                         <button type="submit"
                                                 formaction="{% url 'ligas:partido_eliminar' jornada.id p.id %}"
-                                                onclick="return confirm('¿Eliminar este partido?')"
-                                                class="text-slate-300 hover:text-rose-600 transition text-sm p-1" title="Eliminar partido">
+                                                data-confirm="¿Eliminar el partido {{ p.local.nombre }} vs {{ p.visitante.nombre }} de la Jornada {{ jornada.numero }}?"
+                                                data-confirm-title="Eliminar Partido"
+                                                data-confirm-type="danger"
+                                                data-confirm-btn="Eliminar"
+                                                class="text-slate-300 hover:text-rose-600 transition text-sm p-1 cursor-pointer" title="Eliminar partido">
                                             ✕
                                         </button>
                                     </div>

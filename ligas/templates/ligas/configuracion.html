@@ -46,13 +46,31 @@
     <!-- Columna Izquierda: Configuración de Jornada Activa & Crear Nueva Jornada -->
     <div class="lg:col-span-1 space-y-6">
         
-        <!-- Tarjeta 1: Selección de Próxima Jornada Activa -->
-        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6">
+        <!-- Tarjeta 0: Gestión y Confección de Quinielas -->
+        <div class="bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-900 text-white rounded-3xl shadow-md border border-indigo-700/40 p-6">
             <div class="flex items-center gap-2 mb-2">
                 <span class="text-xl">🎟️</span>
                 <div>
+                    <h2 class="font-black text-white text-base">Confección de Quinielas</h2>
+                    <p class="text-[11px] text-indigo-200">14 partidos 1X2 + Pleno al 15 (1ª y 2ª Div)</p>
+                </div>
+            </div>
+            <p class="text-xs text-slate-300 my-3">
+                Configura los 15 partidos elegidos por Loterías y Apuestas del Estado y genera pronósticos inteligentes con IA.
+            </p>
+            <a href="{% url 'ligas:quinielas_lista' %}"
+               class="w-full inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-2xl px-4 py-2.5 text-xs shadow-md transition">
+                ⚙️ Gestionar y Confeccionar Quinielas →
+            </a>
+        </div>
+
+        <!-- Tarjeta 1: Selección de Próxima Jornada Activa -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="text-xl">📅</span>
+                <div>
                     <h2 class="font-extrabold text-slate-900 text-base">Próxima Jornada Activa</h2>
-                    <p class="text-[11px] text-slate-500">Alimenta el Dashboard y el boleto de Quiniela.</p>
+                    <p class="text-[11px] text-slate-500">Alimenta el Dashboard y el calendario deportivo.</p>
                 </div>
             </div>
 
@@ -117,11 +135,15 @@
             <p class="text-xs text-indigo-200 mb-4">
                 Crea la temporada siguiente a {{ temporada|default:"la actual" }} aplicando ascensos y descensos automáticos entre 1ª y 2ª División.
             </p>
-            <form method="post" onsubmit="return confirm('¿Comenzar una nueva temporada? La actual quedará archivada.')">
+            <form method="post"
+                  data-confirm="¿Comenzar una nueva temporada? La temporada actual quedará archivada y se aplicarán los ascensos y descensos automáticos entre 1ª y 2ª División."
+                  data-confirm-title="Nueva Temporada"
+                  data-confirm-type="warning"
+                  data-confirm-btn="Iniciar Temporada">
                 {% csrf_token %}
                 <input type="hidden" name="accion" value="nueva_temporada">
                 <button type="submit"
-                        class="w-full bg-white/10 hover:bg-white/20 text-white font-bold rounded-2xl px-4 py-2.5 text-xs border border-white/20 transition">
+                        class="w-full bg-white/10 hover:bg-white/20 text-white font-bold rounded-2xl px-4 py-2.5 text-xs border border-white/20 transition cursor-pointer">
                     ▶️ Iniciar Nueva Temporada
                 </button>
             </form>
@@ -196,10 +218,13 @@
 
                         {% if not j.cerrada and j.partidos_jugados > 0 %}
                         <form method="post" action="{% url 'ligas:jornada_cerrar' j.id %}"
-                              onsubmit="return confirm('¿Cerrar Jornada {{ j.numero }} y re-entrenar el modelo con los resultados?')">
+                              data-confirm="¿Cerrar Jornada {{ j.numero }} y re-entrenar el modelo con los resultados registrados?"
+                              data-confirm-title="Cerrar Jornada"
+                              data-confirm-type="warning"
+                              data-confirm-btn="Cerrar y Re-entrenar">
                             {% csrf_token %}
                             <button type="submit"
-                                    class="text-xs font-bold text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-xl px-3 py-1.5 transition"
+                                    class="text-xs font-bold text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-xl px-3 py-1.5 transition cursor-pointer"
                                     title="Cierra la jornada y re-entrena el modelo">
                                 🏁 Cerrar
                             </button>

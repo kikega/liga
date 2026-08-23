@@ -36,7 +36,7 @@
                     División en {{ temporada|default:"la Temporada Actual" }}
                 </label>
                 {{ form.division }}
-                <p class="text-[11px] text-slate-400 mt-1">Define si compite en 1ª División (LaLiga EA Sports) o 2ª División (LaLiga Hypermotion).</p>
+                <p class="text-[11px] text-slate-400 mt-1">Define si compite en 1ª División (LaLiga EA Sports), 2ª División (LaLiga Hypermotion) o déjalo vacío si no participa en ninguna categoría activa.</p>
                 {% if form.division.errors %}<p class="text-xs text-rose-600 mt-1">{{ form.division.errors.0 }}</p>{% endif %}
             </div>
             
@@ -106,9 +106,12 @@
                             </button>
                         </form>
                         <form method="post" action="{% url 'ligas:jugador_eliminar' jugador.id %}"
-                              onsubmit="return confirm('¿Eliminar a {{ jugador.nombre }}?')">
+                              data-confirm="¿Eliminar a {{ jugador.nombre }} de la plantilla de {{ equipo.nombre }}?"
+                              data-confirm-title="Eliminar Jugador"
+                              data-confirm-type="danger"
+                              data-confirm-btn="Eliminar">
                             {% csrf_token %}
-                            <button type="submit" class="text-slate-400 hover:text-rose-600 transition p-1 text-sm" title="Eliminar">✕</button>
+                            <button type="submit" class="text-slate-400 hover:text-rose-600 transition p-1 text-sm cursor-pointer" title="Eliminar">✕</button>
                         </form>
                     </div>
                 </div>

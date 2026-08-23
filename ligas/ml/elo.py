@@ -96,7 +96,7 @@ class EloCalculator:
             local_id = p.local_id
             visit_id = p.visitante_id
 
-            div_local = getattr(p, "division_temporada_id", 1) or 1
+            div_local = getattr(p, "division_nivel", 1) or 1
             if local_id not in current_ratings:
                 current_ratings[local_id] = self.initial_rating(div_local)
             if visit_id not in current_ratings:

@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from django.core.management import call_command
 from django.test import Client, TestCase
 
+from ligas.forms import parse_fecha_flexible
 from ligas.ml.dixon_coles import DixonColesModel
 from ligas.ml.elo import EloCalculator
 from ligas.models import (
@@ -22,9 +23,11 @@ from ligas.models import (
     Partido,
     Participacion,
     Prediccion,
+    Quiniela,
+    CasillaQuiniela,
     Temporada,
 )
-from ligas.quiniela import GeneradorQuiniela, calcular_entropia
+from ligas.quiniela import GeneradorQuiniela, aplicar_predicciones_a_quiniela, calcular_entropia
 from ligas.services import clasificacion_por_division
 
 Usuario = get_user_model()
@@ -190,6 +193,164 @@ class QuinielaTests(TestCase):
         self.assertEqual(partido_seguro["tipo_apuesta"], "FIJO")
         self.assertEqual(partido_seguro["signos_jugados"], ["1"])
 
+    def test_crear_quiniela_y_casillas_oficiales(self):
+        div1 = crear_division(1)
+        div2 = crear_division(2)
+        temporada = crear_temporada("2024-2025", activa=True)
+        jornada = Jornada.objects.create(temporada=temporada, numero=1)
+        equipos = [Equipo.objects.create(nombre=f"Eq_{i}") for i in range(30)]
+
+        for i, eq in enumerate(equipos):
+            Participacion.objects.create(temporada=temporada, equipo=eq, division=div1 if i < 15 else div2)
+
+        partidos = []
+        for i in range(15):
+            p = Partido.objects.create(
+                jornada=jornada,
+                local=equipos[i * 2],
+                visitante=equipos[i * 2 + 1],
+            )
+            partidos.append(p)
+
+        quiniela = Quiniela.objects.create(
+            temporada=temporada,
+            jornada=jornada,
+            numero=1,
+            nombre="Quiniela Jornada 1",
+            activa=True,
+            n_dobles=2,
+            n_triples=1,
+        )
+
+        for idx, p in enumerate(partidos, start=1):
+            CasillaQuiniela.objects.create(
+                quiniela=quiniela,
+                posicion=idx,
+                partido=p,
+            )
+
+        self.assertEqual(quiniela.total_casillas, 15)
+        self.assertEqual(len(quiniela.casillas_1_14), 14)
+        self.assertEqual(quiniela.casilla_15.posicion, 15)
+
+        # Aplicar predicciones
+        aplicar_predicciones_a_quiniela(quiniela)
+
+        # Comprobar que las 15 casillas tienen signos
+        casillas = list(quiniela.casillas.order_by("posicion"))
+        for c in casillas[:14]:
+            self.assertIn(c.tipo_apuesta, ("FIJO", "DOBLE", "TRIPLE"))
+            self.assertTrue(len(c.signos_jugados) >= 1)
+        self.assertIsNotNone(casillas[14].pronostico_pleno)
+
+    def test_evaluar_aciertos_con_partidos_jugados(self):
+        div1 = crear_division(1)
+        temporada = crear_temporada("2024-2025", activa=True)
+        jornada = Jornada.objects.create(temporada=temporada, numero=2)
+        equipos = [Equipo.objects.create(nombre=f"Team_{i}") for i in range(30)]
+        for eq in equipos:
+            Participacion.objects.create(temporada=temporada, equipo=eq, division=div1)
+
+        quiniela = Quiniela.objects.create(
+            temporada=temporada,
+            jornada=jornada,
+            numero=2,
+            nombre="Quiniela Jornada 2",
+            activa=True,
+            n_dobles=2,
+            n_triples=1,
+        )
+
+        partidos = []
+        for i in range(15):
+            p = Partido.objects.create(
+                jornada=jornada,
+                local=equipos[i * 2],
+                visitante=equipos[i * 2 + 1],
+            )
+            partidos.append(p)
+            CasillaQuiniela.objects.create(
+                quiniela=quiniela,
+                posicion=i + 1,
+                partido=p,
+                signo_base="1",
+                tipo_apuesta="FIJO",
+                signos_jugados="1",
+                pronostico_pleno="2-1" if i == 14 else None,
+            )
+
+        # Registrar resultados reales en algunos partidos
+        partidos[0].guardar_resultado(2, 0)  # Signo '1' -> Acierto
+        partidos[1].guardar_resultado(0, 1)  # Signo '2' -> Fallo
+        partidos[14].guardar_resultado(2, 1)  # 2-1 -> Acierto pleno
+
+        res = quiniela.evaluar_aciertos()
+        self.assertEqual(res["partidos_jugados"], 3)
+        self.assertEqual(res["aciertos_14"], 1)
+        self.assertTrue(res["pleno_acierto"])
+
+        c1 = CasillaQuiniela.objects.get(quiniela=quiniela, posicion=1)
+        self.assertTrue(c1.acierto)
+        self.assertEqual(c1.resultado_real, "1")
+
+        c2 = CasillaQuiniela.objects.get(quiniela=quiniela, posicion=2)
+        self.assertFalse(c2.acierto)
+        self.assertEqual(c2.resultado_real, "2")
+
+        c15 = CasillaQuiniela.objects.get(quiniela=quiniela, posicion=15)
+        self.assertTrue(c15.acierto)
+        self.assertEqual(c15.resultado_real, "2-1")
+
+    def test_vistas_quinielas_flujo_completo(self):
+        usuario = Usuario.objects.create_superuser("admin_q@test.com", "pass")
+        client = Client()
+        client.force_login(usuario)
+
+        div1 = crear_division(1)
+        div2 = crear_division(2)
+        temporada = crear_temporada("2024-2025", activa=True)
+        jornada = Jornada.objects.create(temporada=temporada, numero=3)
+        equipos = [Equipo.objects.create(nombre=f"Club_{i}") for i in range(30)]
+        for i, eq in enumerate(equipos):
+            Participacion.objects.create(temporada=temporada, equipo=eq, division=div1 if i < 15 else div2)
+
+        for i in range(15):
+            Partido.objects.create(
+                jornada=jornada,
+                local=equipos[i * 2],
+                visitante=equipos[i * 2 + 1],
+            )
+
+        # 1. Crear Quiniela por POST
+        resp = client.post("/configuracion/quinielas/", {
+            "accion": "crear_quiniela",
+            "temporada": temporada.id,
+            "jornada": jornada.id,
+            "numero": 3,
+            "nombre": "Quiniela Oficial J3",
+            "n_dobles": 2,
+            "n_triples": 1,
+            "activa": True,
+        })
+        self.assertEqual(resp.status_code, 302)
+        q = Quiniela.objects.get(numero=3)
+        self.assertTrue(q.activa)
+
+        # 2. Autollenar casillas 1 a 15
+        resp_auto = client.post(f"/configuracion/quiniela/{q.id}/", {"accion": "autollenar"})
+        self.assertEqual(resp_auto.status_code, 302)
+        self.assertEqual(q.casillas.count(), 15)
+
+        # 3. Mover casilla 1 hacia abajo
+        resp_bajar = client.post(f"/configuracion/quiniela/{q.id}/", {"accion": "bajar", "posicion": 1})
+        self.assertEqual(resp_bajar.status_code, 302)
+
+        # 4. Ver página pública de Quiniela
+        resp_pub = client.get("/quiniela/")
+        self.assertEqual(resp_pub.status_code, 200)
+        self.assertContains(resp_pub, "Quiniela Oficial J3")
+        self.assertContains(resp_pub, "Pleno al 15")
+
 
 class PipelineMlTests(TestCase):
     """Flujo completo: datos -> características -> entrenamiento -> predicción -> cierre."""
@@ -277,6 +438,7 @@ class VistasConfiguracionTests(TestCase):
         )
         self.client.force_login(self.user)
         self.div = crear_division(1)
+        self.div2 = crear_division(2)
         self.temporada = crear_temporada("2024-2025")
         self.e1, self.e2, self.e3, self.e4 = crear_equipos("A", "B", "C", "D")
         for e in (self.e1, self.e2, self.e3, self.e4):
@@ -393,6 +555,11 @@ class VistasConfiguracionTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertTrue(Jornada.objects.filter(temporada=self.temporada, numero=6).exists())
 
+    def test_equipos_lista_get(self):
+        response = self.client.get("/configuracion/equipos/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.e1.nombre)
+
     def test_equipos_cambiar_division_rapido(self):
         div2 = Division.objects.get(nivel=2)
         response = self.client.post("/configuracion/equipos/", {
@@ -403,6 +570,37 @@ class VistasConfiguracionTests(TestCase):
         self.assertEqual(response.status_code, 302)
         p = Participacion.objects.get(temporada=self.temporada, equipo=self.e1)
         self.assertEqual(p.division, div2)
+
+    def test_equipos_desasignar_division_rapido(self):
+        self.assertTrue(Participacion.objects.filter(temporada=self.temporada, equipo=self.e1).exists())
+        response = self.client.post("/configuracion/equipos/", {
+            "accion": "desasignar_division",
+            "equipo_id": self.e1.id,
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(Participacion.objects.filter(temporada=self.temporada, equipo=self.e1).exists())
+
+    def test_equipo_editar_desasignar_division(self):
+        self.assertTrue(Participacion.objects.filter(temporada=self.temporada, equipo=self.e1).exists())
+        response = self.client.post(f"/configuracion/equipos/{self.e1.id}/", {
+            "nombre": self.e1.nombre,
+            "division": "",
+            "color_primario": "#112233",
+            "color_secundario": "#445566",
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(Participacion.objects.filter(temporada=self.temporada, equipo=self.e1).exists())
+
+    def test_equipo_nuevo_sin_division(self):
+        response = self.client.post("/configuracion/equipos/nuevo/", {
+            "nombre": "Club Sin Division",
+            "division": "",
+            "color_primario": "#112233",
+            "color_secundario": "#445566",
+        })
+        self.assertEqual(response.status_code, 302)
+        nuevo = Equipo.objects.get(nombre="Club Sin Division")
+        self.assertFalse(Participacion.objects.filter(temporada=self.temporada, equipo=nuevo).exists())
 
     def test_equipo_nuevo_con_division(self):
         div1 = Division.objects.get(nivel=1)

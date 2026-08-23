@@ -1,0 +1,330 @@
+{% extends "ligas/base.html" %}
+
+{% block title %}Confeccionar {{ quiniela.nombre }} · Fútbol Predictivo{% endblock %}
+
+{% block content %}
+<!-- Cabecera Principal -->
+<div class="mb-8 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-slate-700/50">
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+        <div>
+            <div class="flex items-center gap-2 mb-2">
+                <a href="{% url 'ligas:quinielas_lista' %}" class="text-xs font-bold text-slate-400 hover:text-white transition">
+                    ← Volver a Quinielas
+                </a>
+                <span class="text-slate-600">•</span>
+                <span class="inline-flex items-center gap-1 text-[11px] font-black text-amber-300 bg-amber-500/20 border border-amber-400/30 rounded-full px-2.5 py-0.5 uppercase tracking-wider">
+                    🎟️ Confeccionador Oficial 1X2
+                </span>
+                {% if quiniela.activa %}
+                <span class="bg-emerald-500/30 text-emerald-300 border border-emerald-400/30 text-[11px] font-black uppercase px-2.5 py-0.5 rounded-full">
+                    ⭐ Activa
+                </span>
+                {% endif %}
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight">{{ quiniela.nombre }}</h1>
+            <p class="text-slate-300 mt-1 text-sm font-medium">
+                Temporada <strong>{{ temporada.nombre }}</strong> {% if jornada %}· Jornada {{ jornada.numero }}{% endif %}
+                · Configura los 15 partidos de 1ª y 2ª División según el boleto de Loterías y Apuestas del Estado.
+            </p>
+        </div>
+
+        <!-- Barra de Acciones Rápidas -->
+        <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+            <!-- Auto-asignar 1ª + 2ª -->
+            <form method="post" action="{% url 'ligas:quiniela_confeccionar' quiniela.id %}"
+                  data-confirm="¿Asignar automáticamente 10 partidos de 1ª División y 5 de 2ª División a las casillas 1 a 15 y calcular pronósticos ML?"
+                  data-confirm-title="Auto-asignar Partidos"
+                  data-confirm-type="info"
+                  data-confirm-btn="Auto-asignar">
+                {% csrf_token %}
+                <input type="hidden" name="accion" value="autollenar">
+                <button type="submit"
+                        class="inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-3.5 py-2.5 rounded-2xl shadow transition cursor-pointer">
+                    ⚡ Auto-asignar 15 (1ª + 2ª)
+                </button>
+            </form>
+
+            <!-- Generar Pronósticos ML -->
+            <form method="post" action="{% url 'ligas:quiniela_confeccionar' quiniela.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="accion" value="generar_predicciones">
+                <button type="submit"
+                        class="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3.5 py-2.5 rounded-2xl shadow transition cursor-pointer">
+                    🧠 Generar Pronósticos ML
+                </button>
+            </form>
+
+            <!-- Sincronizar / Evaluar Resultados -->
+            <form method="post" action="{% url 'ligas:quiniela_confeccionar' quiniela.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="accion" value="evaluar">
+                <button type="submit"
+                        class="inline-flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-bold text-xs px-3.5 py-2.5 rounded-2xl shadow transition cursor-pointer">
+                    🏁 Sincronizar Resultados
+                </button>
+            </form>
+
+            <!-- Ver Boleto Público -->
+            <a href="{% url 'ligas:quiniela' %}?quiniela_id={{ quiniela.id }}"
+               class="inline-flex items-center gap-1.5 bg-white/15 hover:bg-white/25 text-white font-bold text-xs px-3.5 py-2.5 rounded-2xl border border-white/20 shadow transition">
+                🎟️ Ver Boleto →
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Formulario Principal de Asignación y Reordenación de Casillas -->
+<form method="post" action="{% url 'ligas:quiniela_confeccionar' quiniela.id %}">
+    {% csrf_token %}
+    <input type="hidden" name="accion" value="guardar_casillas">
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Bloque 1X2: Casillas 1 a 14 -->
+        <div class="lg:col-span-2 space-y-6">
+            
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="text-emerald-400 font-black text-base">1X2</span>
+                        <h2 class="font-extrabold text-sm tracking-wide">Bloque Principal · Casillas 1 a 14</h2>
+                    </div>
+                    <div class="text-xs text-slate-300">
+                        {{ quiniela.n_dobles }} Dobles · {{ quiniela.n_triples }} Triples
+                    </div>
+                </div>
+
+                <div class="divide-y divide-slate-100 p-2 sm:p-4 space-y-2 sm:space-y-0">
+                    {% for item in casillas_list %}
+                    {% if item.posicion <= 14 %}
+                    <div class="p-3 sm:p-4 rounded-2xl hover:bg-slate-50 transition flex flex-col md:flex-row md:items-center justify-between gap-3 {% if not item.partido %}bg-amber-50/40 border border-amber-100/80{% endif %}">
+                        
+                        <!-- Número y Selector de Partido -->
+                        <div class="flex items-center gap-3 min-w-0 flex-1">
+                            <span class="h-8 w-8 rounded-xl bg-slate-100 font-black text-xs text-slate-800 grid place-items-center shrink-0 border border-slate-200">
+                                {{ item.posicion }}
+                            </span>
+                            
+                            <div class="min-w-0 flex-1">
+                                <select name="partido_pos_{{ item.posicion }}"
+                                        class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm font-bold text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:outline-none shadow-xs">
+                                    <option value="">— Casilla {{ item.posicion }}: Seleccionar Partido —</option>
+                                    {% for optgroup, opciones in partidos_choices %}
+                                        {% if optgroup %}
+                                        <optgroup label="{{ optgroup }}">
+                                            {% for opt_id, opt_label in opciones %}
+                                            <option value="{{ opt_id }}" {% if item.partido and item.partido.id == opt_id %}selected{% endif %}>
+                                                {{ opt_label }}
+                                            </option>
+                                            {% endfor %}
+                                        </optgroup>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                
+                                {% if item.partido %}
+                                <div class="flex items-center gap-2 mt-1.5 text-[11px] text-slate-500">
+                                    <span class="font-bold {% if item.partido.division_nivel == 1 %}text-indigo-600{% else %}text-amber-600{% endif %}">
+                                        {{ item.partido.division_nombre }}
+                                    </span>
+                                    {% if item.partido.fecha %}
+                                    <span>• {{ item.partido.fecha|date:"D d M" }}</span>
+                                    {% endif %}
+                                    {% if item.partido.jugado %}
+                                    <span class="font-extrabold text-slate-800 bg-slate-100 px-1.5 py-0.5 rounded">
+                                        Resultado: {{ item.partido.goles_local }}-{{ item.partido.goles_visitante }} ({{ item.partido.resultado }})
+                                    </span>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Pronóstico y Botones de Reordenación -->
+                        <div class="flex items-center gap-2 self-end md:self-center shrink-0">
+                            {% if item.casilla and item.casilla.signos_jugados %}
+                            <div class="flex items-center gap-1 bg-slate-100 px-2 py-1 rounded-xl border border-slate-200 text-xs font-black">
+                                <span class="{% if '1' in item.casilla.signos_jugados %}text-emerald-700 font-extrabold{% else %}text-slate-300{% endif %}">1</span>
+                                <span class="{% if 'X' in item.casilla.signos_jugados %}text-emerald-700 font-extrabold{% else %}text-slate-300{% endif %}">X</span>
+                                <span class="{% if '2' in item.casilla.signos_jugados %}text-emerald-700 font-extrabold{% else %}text-slate-300{% endif %}">2</span>
+                            </div>
+                            <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md
+                                         {% if item.casilla.tipo_apuesta == 'TRIPLE' %}bg-purple-100 text-purple-800
+                                         {% elif item.casilla.tipo_apuesta == 'DOBLE' %}bg-blue-100 text-blue-800
+                                         {% else %}bg-slate-100 text-slate-600{% endif %}">
+                                {{ item.casilla.tipo_apuesta }}
+                            </span>
+                            {% endif %}
+
+                            <!-- Badge de Acierto en Vivo -->
+                            {% if item.partido and item.partido.jugado %}
+                                {% if item.casilla.acierto %}
+                                <span class="bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase px-2 py-1 rounded-lg border border-emerald-200">
+                                    ✓ Acierto
+                                </span>
+                                {% else %}
+                                <span class="bg-rose-100 text-rose-800 text-[10px] font-black uppercase px-2 py-1 rounded-lg border border-rose-200">
+                                    ✕ Fallo
+                                </span>
+                                {% endif %}
+                            {% endif %}
+
+                            <!-- Controles para Mover -->
+                            <div class="flex items-center gap-1 border-l border-slate-200 pl-2 ml-1">
+                                {% if item.posicion > 1 %}
+                                <button type="submit" formaction="{% url 'ligas:quiniela_confeccionar' quiniela.id %}"
+                                        name="accion" value="subir"
+                                        onclick="this.form.querySelector('input[name=posicion]') ? this.form.querySelector('input[name=posicion]').value='{{ item.posicion }}' : this.form.insertAdjacentHTML('beforeend', '<input type=hidden name=posicion value={{ item.posicion }}>')"
+                                        class="h-7 w-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition cursor-pointer"
+                                        title="Subir casilla">
+                                    ▲
+                                </button>
+                                {% endif %}
+                                {% if item.posicion < 14 %}
+                                <button type="submit" formaction="{% url 'ligas:quiniela_confeccionar' quiniela.id %}"
+                                        name="accion" value="bajar"
+                                        onclick="this.form.querySelector('input[name=posicion]') ? this.form.querySelector('input[name=posicion]').value='{{ item.posicion }}' : this.form.insertAdjacentHTML('beforeend', '<input type=hidden name=posicion value={{ item.posicion }}>')"
+                                        class="h-7 w-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition cursor-pointer"
+                                        title="Bajar casilla">
+                                    ▼
+                                </button>
+                                {% endif %}
+                                <button type="submit" formaction="{% url 'ligas:quiniela_confeccionar' quiniela.id %}"
+                                        name="accion" value="intercambiar_pleno"
+                                        onclick="this.form.querySelector('input[name=posicion]') ? this.form.querySelector('input[name=posicion]').value='{{ item.posicion }}' : this.form.insertAdjacentHTML('beforeend', '<input type=hidden name=posicion value={{ item.posicion }}>')"
+                                        class="h-7 px-2 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 font-bold text-[10px] transition cursor-pointer"
+                                        title="Intercambiar con el Pleno al 15">
+                                    ⭐ P15
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Botón para Guardar Asignación -->
+            <div class="flex items-center justify-end gap-3 pt-2">
+                <button type="submit"
+                        class="bg-slate-900 hover:bg-slate-800 text-white font-black text-sm px-6 py-3.5 rounded-2xl shadow-md transition cursor-pointer flex items-center gap-2">
+                    💾 Guardar Asignación de Casillas y Pronósticos ML
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Columna Lateral: Pleno al 15 y Resumen -->
+        <div class="space-y-6">
+
+            <!-- Tarjeta Especial: Casilla 15 (Pleno al 15) -->
+            {% for item in casillas_list %}
+            {% if item.posicion == 15 %}
+            <div class="bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-900 text-white rounded-3xl p-6 shadow-lg border border-amber-400/40 relative overflow-hidden">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <span class="text-amber-400 text-xl font-black">⭐ 15</span>
+                        <h3 class="font-black text-base tracking-wide text-white">Pleno al 15</h3>
+                    </div>
+                    <span class="text-[10px] font-extrabold uppercase bg-amber-400/20 text-amber-300 border border-amber-400/30 px-2.5 py-0.5 rounded-full">
+                        Goles 0, 1, 2, M
+                    </span>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="block text-xs font-bold text-indigo-200">
+                        Partido asignado al Pleno al 15:
+                    </label>
+                    <select name="partido_pos_15"
+                            class="w-full bg-slate-900 border border-indigo-400/40 text-white rounded-xl px-3 py-2.5 text-xs sm:text-sm font-bold focus:ring-2 focus:ring-amber-400 focus:outline-none shadow-xs">
+                        <option value="">— Seleccionar Partido para Casilla 15 —</option>
+                        {% for optgroup, opciones in partidos_choices %}
+                            {% if optgroup %}
+                            <optgroup label="{{ optgroup }}">
+                                {% for opt_id, opt_label in opciones %}
+                                <option value="{{ opt_id }}" {% if item.partido and item.partido.id == opt_id %}selected{% endif %}>
+                                    {{ opt_label }}
+                                </option>
+                                {% endfor %}
+                            </optgroup>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+
+                    {% if boleto_preview.pleno_al_15 %}
+                    {% with p15=boleto_preview.pleno_al_15 %}
+                    <div class="bg-white/10 rounded-2xl p-4 mt-4 backdrop-blur-md border border-white/10 text-center">
+                        <div class="text-[11px] uppercase font-bold text-indigo-300">Pronóstico Recomendado</div>
+                        <div class="text-3xl font-black text-amber-300 my-1 tracking-wider">
+                            {{ p15.pronostico_goles }}
+                        </div>
+                        <div class="text-xs text-slate-300">
+                            {{ p15.local.nombre }} vs {{ p15.visitante.nombre }}
+                        </div>
+                        {% if p15.jugado %}
+                        <div class="mt-2 pt-2 border-t border-white/10 text-xs">
+                            Resultado real: <strong>{{ p15.marcador_real }}</strong>
+                            {% if p15.acierto %}
+                            <span class="inline-block ml-2 text-emerald-400 font-extrabold">✓ Acertado</span>
+                            {% else %}
+                            <span class="inline-block ml-2 text-rose-400 font-extrabold">✕ No acertado</span>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endwith %}
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+
+            <!-- Resumen de Combinación y Coste -->
+            <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+                <h3 class="font-extrabold text-sm text-slate-900">Resumen del Boleto</h3>
+                
+                <div class="space-y-2.5 text-xs text-slate-600">
+                    <div class="flex justify-between py-1 border-b border-slate-100">
+                        <span>Casillas Asignadas:</span>
+                        <strong class="text-slate-900 font-black">{{ quiniela.total_casillas }} / 15</strong>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-slate-100">
+                        <span>Partidos Fijos:</span>
+                        <strong class="text-slate-800">{{ 14|add:"-"|add:quiniela.n_dobles|add:"-"|add:quiniela.n_triples }}</strong>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-slate-100">
+                        <span>Dobles:</span>
+                        <strong class="text-blue-600">{{ quiniela.n_dobles }}</strong>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-slate-100">
+                        <span>Triples:</span>
+                        <strong class="text-purple-600">{{ quiniela.n_triples }}</strong>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-slate-100">
+                        <span>Apuestas simples (Columnas):</span>
+                        <strong class="text-slate-900 font-extrabold">{{ boleto_preview.total_columnas }}</strong>
+                    </div>
+                    <div class="flex justify-between py-2 text-sm font-extrabold text-slate-900 bg-emerald-50 px-3 rounded-xl border border-emerald-100">
+                        <span>Importe estimado:</span>
+                        <span class="text-emerald-700">{{ boleto_preview.coste_total }} €</span>
+                    </div>
+                </div>
+
+                {% if boleto_preview.partidos_jugados > 0 %}
+                <div class="p-3.5 bg-slate-900 text-white rounded-2xl">
+                    <div class="text-[11px] uppercase font-bold text-slate-400">Aciertos Evaluados</div>
+                    <div class="text-2xl font-black text-amber-300 mt-1">
+                        {{ boleto_preview.total_aciertos }} / {{ boleto_preview.partidos_jugados }}
+                    </div>
+                    <div class="text-[10px] text-slate-400 mt-0.5">
+                        {{ boleto_preview.aciertos_14 }} en bloque 1X2 {% if boleto_preview.pleno_al_15.acierto %} + Pleno 🎯{% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+
+    </div>
+</form>
+{% endblock %}

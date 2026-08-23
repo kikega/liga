@@ -13,10 +13,24 @@ from ligas.forms import (
     JugadorForm,
     PartidoForm,
     PartidoRowForm,
+    QuinielaForm,
+    obtener_partidos_choices,
     parse_fecha_flexible,
 )
 from ligas.ml.predictor import entrenar_modelo
-from ligas.models import Configuracion, Equipo, Jornada, Jugador, Partido, Temporada
+from ligas.models import (
+    CasillaQuiniela,
+    Configuracion,
+    Division,
+    Equipo,
+    Jornada,
+    Jugador,
+    Participacion,
+    Partido,
+    Quiniela,
+    Temporada,
+)
+from ligas.quiniela import GeneradorQuiniela, aplicar_predicciones_a_quiniela
 
 PartidoFormSet = forms.formset_factory(PartidoRowForm, extra=4, min_num=1)
 
@@ -330,19 +344,24 @@ def equipos(request):
     div1 = Division.objects.filter(nivel=1).first()
     div2 = Division.objects.filter(nivel=2).first()
 
-    # Cambio rápido de división desde la lista de equipos
-    if request.method == "POST" and request.POST.get("accion") == "cambiar_division":
+    # Cambio rápido o desasignación de división desde la lista de equipos
+    if request.method == "POST" and request.POST.get("accion") in ("cambiar_division", "desasignar_division"):
+        accion = request.POST.get("accion")
         equipo_id = request.POST.get("equipo_id")
         nueva_div_id = request.POST.get("division_id")
-        if equipo_id and nueva_div_id and temporada:
+        if equipo_id and temporada:
             equipo = get_object_or_404(Equipo, pk=equipo_id)
-            div = get_object_or_404(Division, pk=nueva_div_id)
-            Participacion.objects.update_or_create(
-                temporada=temporada,
-                equipo=equipo,
-                defaults={"division": div},
-            )
-            messages.success(request, f"{equipo.nombre} asignado a {div.nombre} para la temporada {temporada}.")
+            if accion == "desasignar_division" or not nueva_div_id:
+                Participacion.objects.filter(temporada=temporada, equipo=equipo).delete()
+                messages.success(request, f"Se ha desasignado la división de {equipo.nombre} para la temporada {temporada}.")
+            else:
+                div = get_object_or_404(Division, pk=nueva_div_id)
+                Participacion.objects.update_or_create(
+                    temporada=temporada,
+                    equipo=equipo,
+                    defaults={"division": div},
+                )
+                messages.success(request, f"{equipo.nombre} asignado a {div.nombre} para la temporada {temporada}.")
             return redirect("ligas:equipos")
 
     equipos_qs = list(
@@ -447,3 +466,216 @@ def jugador_eliminar(request, jugador_id):
         jugador.delete()
         messages.success(request, "Jugador eliminado.")
     return redirect("ligas:equipo_editar", equipo_id=equipo_id)
+
+
+# ==========================================
+# GESTIÓN Y CONFECCIÓN DE QUINIELAS (1X2)
+# ==========================================
+
+
+@login_required
+def quinielas_lista(request):
+    """Lista de boletos de Quiniela creados y formulario para dar de alta una nueva."""
+    config = Configuracion.cargar()
+    temporada = config.temporada_actual or Temporada.objects.filter(activa=True).first()
+
+    if request.method == "POST" and request.POST.get("accion") == "crear_quiniela":
+        form = QuinielaForm(request.POST, temporada=temporada)
+        if form.is_valid():
+            nueva_q = form.save()
+            messages.success(
+                request,
+                f"¡{nueva_q.nombre} creada con éxito! Confecciona ahora las 15 casillas.",
+            )
+            return redirect("ligas:quiniela_confeccionar", quiniela_id=nueva_q.id)
+    else:
+        form = QuinielaForm(temporada=temporada)
+
+    quinielas = list(
+        Quiniela.objects.filter(temporada=temporada)
+        .prefetch_related("casillas__partido")
+        .order_by("-numero")
+        if temporada
+        else []
+    )
+
+    return render(
+        request,
+        "ligas/quinielas_lista.html",
+        {
+            "form": form,
+            "config": config,
+            "temporada": temporada,
+            "quinielas": quinielas,
+        },
+    )
+
+
+@login_required
+def quiniela_confeccionar(request, quiniela_id):
+    """Editor interactivo para asignar los 15 partidos (1ª y 2ª Div) y ordenar las casillas de la Quiniela."""
+    quiniela = get_object_or_404(
+        Quiniela.objects.select_related("temporada", "jornada"),
+        pk=quiniela_id,
+    )
+    temporada = quiniela.temporada
+    jornada = quiniela.jornada
+
+    # 1. AUTO-LLENAR CON 10 DE 1ª Y 5 DE 2ª
+    if request.method == "POST" and request.POST.get("accion") == "autollenar":
+        # Buscar partidos de la jornada deportiva seleccionada o de la temporada
+        partidos_qs = list(
+            Partido.objects.filter(jornada=jornada)
+            .select_related("local", "visitante")
+            .prefetch_related("local__participaciones__division", "visitante__participaciones__division")
+            .order_by("id")
+            if jornada
+            else Partido.objects.filter(jornada__temporada=temporada).order_by("-id")[:20]
+        )
+        p_div1 = [p for p in partidos_qs if p.division_nivel == 1]
+        p_div2 = [p for p in partidos_qs if p.division_nivel == 2]
+        p_otros = [p for p in partidos_qs if p.division_nivel not in (1, 2)]
+
+        # Asignar los primeros 10 a 1ª Div y 5 siguientes a 2ª Div
+        elegidos = p_div1[:10] + p_div2[:5]
+        if len(elegidos) < 15:
+            # Rellenar con los que falten de div1 o div2 u otros
+            restantes = [p for p in (p_div1[10:] + p_div2[5:] + p_otros) if p not in elegidos]
+            elegidos += restantes[: (15 - len(elegidos))]
+
+        # Guardar en base de datos
+        for idx, partido in enumerate(elegidos[:15], start=1):
+            CasillaQuiniela.objects.update_or_create(
+                quiniela=quiniela,
+                posicion=idx,
+                defaults={"partido": partido},
+            )
+
+        aplicar_predicciones_a_quiniela(quiniela)
+        messages.success(
+            request,
+            f"Se han auto-asignado {len(elegidos[:15])} partidos a las casillas oficiales 1 a 15 con pronósticos calculados.",
+        )
+        return redirect("ligas:quiniela_confeccionar", quiniela_id=quiniela.id)
+
+    # 2. GUARDAR CASILLAS ASIGNADAS MANUALMENTE
+    if request.method == "POST" and request.POST.get("accion") == "guardar_casillas":
+        actualizadas = 0
+        partidos_asignados = set()
+
+        for pos in range(1, 16):
+            partido_id_str = request.POST.get(f"partido_pos_{pos}", "").strip()
+            if partido_id_str.isdigit():
+                pid = int(partido_id_str)
+                if pid not in partidos_asignados:
+                    partido = Partido.objects.filter(pk=pid).first()
+                    if partido:
+                        CasillaQuiniela.objects.update_or_create(
+                            quiniela=quiniela,
+                            posicion=pos,
+                            defaults={"partido": partido},
+                        )
+                        partidos_asignados.add(pid)
+                        actualizadas += 1
+
+        aplicar_predicciones_a_quiniela(quiniela)
+        messages.success(request, f"¡Casillas actualizadas ({actualizadas}/15) y pronósticos ML recalculados!")
+        return redirect("ligas:quiniela_confeccionar", quiniela_id=quiniela.id)
+
+    # 3. MOVER CASILLA ARRIBA / ABAJO
+    if request.method == "POST" and request.POST.get("accion") in ("subir", "bajar", "intercambiar_pleno"):
+        accion = request.POST.get("accion")
+        pos = int(request.POST.get("posicion", 0))
+        target_pos = None
+
+        if accion == "subir" and pos > 1:
+            target_pos = pos - 1
+        elif accion == "bajar" and pos < 15:
+            target_pos = pos + 1
+        elif accion == "intercambiar_pleno" and pos != 15:
+            target_pos = 15
+
+        if target_pos:
+            c_origen = CasillaQuiniela.objects.filter(quiniela=quiniela, posicion=pos).first()
+            c_destino = CasillaQuiniela.objects.filter(quiniela=quiniela, posicion=target_pos).first()
+            if c_origen and c_destino:
+                p_tmp = c_origen.partido
+                c_origen.partido = c_destino.partido
+                c_destino.partido = p_tmp
+                c_origen.save(update_fields=["partido"])
+                c_destino.save(update_fields=["partido"])
+                aplicar_predicciones_a_quiniela(quiniela)
+                messages.success(request, f"Casilla {pos} intercambiada con Casilla {target_pos}.")
+        return redirect("ligas:quiniela_confeccionar", quiniela_id=quiniela.id)
+
+    # 4. GENERAR PRONÓSTICOS ML MANUALMENTE
+    if request.method == "POST" and request.POST.get("accion") == "generar_predicciones":
+        aplicar_predicciones_a_quiniela(quiniela)
+        messages.success(request, "¡Pronósticos 1X2, Dobles, Triples y Pleno al 15 calculados con éxito por la IA!")
+        return redirect("ligas:quiniela_confeccionar", quiniela_id=quiniela.id)
+
+    # 5. EVALUAR RESULTADOS REALES
+    if request.method == "POST" and request.POST.get("accion") == "evaluar":
+        res = quiniela.evaluar_aciertos()
+        messages.success(
+            request,
+            f"Resultados sincronizados: {res['aciertos_14']} aciertos en bloque 1X2 "
+            f"({res['partidos_jugados']} partidos jugados)."
+            + (" ¡Pleno al 15 Acertado! 🎯" if res["pleno_acierto"] else ""),
+        )
+        return redirect("ligas:quiniela_confeccionar", quiniela_id=quiniela.id)
+
+    # Cargar las 15 casillas organizadas
+    casillas_dict = {
+        c.posicion: c
+        for c in quiniela.casillas.select_related("partido__local", "partido__visitante", "partido__prediccion").all()
+    }
+    casillas_list = []
+    for pos in range(1, 16):
+        c = casillas_dict.get(pos)
+        casillas_list.append({"posicion": pos, "casilla": c, "partido": c.partido if c else None})
+
+    partidos_choices = obtener_partidos_choices(temporada=temporada, jornada=jornada)
+
+    generador = GeneradorQuiniela(n_dobles=quiniela.n_dobles, n_triples=quiniela.n_triples)
+    boleto_preview = generador.generar_desde_quiniela(quiniela)
+
+    return render(
+        request,
+        "ligas/quiniela_confeccionar.html",
+        {
+            "quiniela": quiniela,
+            "temporada": temporada,
+            "jornada": jornada,
+            "casillas_list": casillas_list,
+            "partidos_choices": partidos_choices,
+            "boleto_preview": boleto_preview,
+        },
+    )
+
+
+@login_required
+def quiniela_activar(request, quiniela_id):
+    """Establece esta Quiniela como la activa para la vista pública."""
+    if request.method != "POST":
+        return redirect("ligas:quinielas_lista")
+    quiniela = get_object_or_404(Quiniela, pk=quiniela_id)
+    quiniela.activa = True
+    quiniela.save()
+    config = Configuracion.cargar()
+    config.quiniela_actual = quiniela
+    config.save(update_fields=["quiniela_actual"])
+    messages.success(request, f"¡'{quiniela.nombre}' marcada como la Quiniela Activa del simulador!")
+    return redirect("ligas:quinielas_lista")
+
+
+@login_required
+def quiniela_eliminar(request, quiniela_id):
+    """Elimina una Quiniela y sus casillas asociadas."""
+    if request.method != "POST":
+        return redirect("ligas:quinielas_lista")
+    quiniela = get_object_or_404(Quiniela, pk=quiniela_id)
+    nombre = quiniela.nombre
+    quiniela.delete()
+    messages.success(request, f"Quiniela '{nombre}' eliminada.")
+    return redirect("ligas:quinielas_lista")

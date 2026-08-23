@@ -14,6 +14,8 @@ from ligas.models import (
     Participacion,
     Partido,
     Prediccion,
+    Quiniela,
+    CasillaQuiniela,
     Temporada,
 )
 
@@ -152,7 +154,7 @@ class PrediccionAdmin(admin.ModelAdmin):
 
 @admin.register(Configuracion)
 class ConfiguracionAdmin(admin.ModelAdmin):
-    list_display = ("temporada_actual", "proxima_jornada")
+    list_display = ("temporada_actual", "proxima_jornada", "quiniela_actual")
 
     def has_add_permission(self, request):
         return not Configuracion.objects.exists()
@@ -175,3 +177,17 @@ class ConfiguracionAdmin(admin.ModelAdmin):
     def _redirect_to_singleton(self, request):
         config, _ = Configuracion.objects.get_or_create(pk=1)
         return redirect(f"../../{self.model._meta.model_name}/{config.pk}/change/")
+
+
+class CasillaQuinielaInline(admin.TabularInline):
+    model = CasillaQuiniela
+    extra = 0
+    fields = ("posicion", "partido", "signo_base", "tipo_apuesta", "signos_jugados", "pronostico_pleno", "resultado_real", "acierto")
+    ordering = ("posicion",)
+
+
+@admin.register(Quiniela)
+class QuinielaAdmin(admin.ModelAdmin):
+    list_display = ("nombre", "temporada", "jornada", "numero", "activa", "cerrada", "n_dobles", "n_triples", "total_casillas")
+    list_filter = ("temporada", "activa", "cerrada")
+    inlines = [CasillaQuinielaInline]
