@@ -13,7 +13,7 @@ from ligas.models import (
     Quiniela,
     Temporada,
 )
-from ligas.quiniela import GeneradorQuiniela
+from ligas.quiniela import GeneradorQuiniela, aplicar_predicciones_a_quiniela
 from ligas.services import clasificacion_por_division
 
 
@@ -214,6 +214,10 @@ def quiniela_view(request):
 
     jornada = quiniela.jornada if quiniela else config.proxima_jornada
 
+    # Recálculo de predicciones bajo demanda (vía POST o HTMX)
+    if request.method == "POST" and request.POST.get("accion") == "recalcular" and quiniela:
+        aplicar_predicciones_a_quiniela(quiniela)
+
     if quiniela and quiniela.casillas.exists():
         generador = GeneradorQuiniela(n_dobles=n_dobles, n_triples=n_triples)
         boleto = generador.generar_desde_quiniela(quiniela)
@@ -283,7 +287,7 @@ def quiniela_view(request):
         "n_triples": n_triples,
     }
 
-    if request.headers.get("HX-Request") and request.GET.get("partial") == "boleto":
+    if request.headers.get("HX-Request") and (request.GET.get("partial") == "boleto" or request.POST.get("accion") == "recalcular"):
         return render(request, "ligas/_boleto_quiniela.html", contexto)
 
     return render(request, "ligas/quiniela.html", contexto)

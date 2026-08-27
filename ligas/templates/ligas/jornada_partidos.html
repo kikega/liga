@@ -21,14 +21,18 @@
     </div>
     {% if partidos %}
     <form method="post" action="{% url 'ligas:jornada_cerrar' jornada.id %}"
-          data-confirm="¿Cerrar Jornada {{ jornada.numero }} y re-entrenar el modelo con todos los resultados registrados?"
-          data-confirm-title="Cerrar Jornada y Re-entrenar"
+          data-confirm="{% if jornada.cerrada %}¿Re-evaluar pronósticos de la Jornada {{ jornada.numero }} y re-entrenar el modelo con los marcadores actuales?{% else %}¿Cerrar Jornada {{ jornada.numero }} y re-entrenar el modelo con todos los resultados registrados?{% endif %}"
+          data-confirm-title="{% if jornada.cerrada %}Re-evaluar y Re-entrenar{% else %}Cerrar Jornada y Re-entrenar{% endif %}"
           data-confirm-type="warning"
-          data-confirm-btn="Cerrar y Re-entrenar">
+          data-confirm-btn="{% if jornada.cerrada %}Re-entrenar Modelo{% else %}Cerrar y Re-entrenar{% endif %}">
         {% csrf_token %}
         <button type="submit"
                 class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold px-4 py-2.5 rounded-2xl text-xs shadow transition cursor-pointer">
+            {% if jornada.cerrada %}
+            🔄 Re-evaluar y Re-entrenar Modelo
+            {% else %}
             🏁 Cerrar Jornada y Re-entrenar
+            {% endif %}
         </button>
     </form>
     {% endif %}
@@ -301,10 +305,18 @@
 
             </div>
 
-            <div class="p-4 bg-slate-50/70 border-t border-slate-100 flex items-center justify-end">
-                <button type="submit"
-                        class="bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-2xl px-6 py-2.5 text-xs shadow transition">
-                    💾 Guardar Marcadores (1ª y 2ª División)
+            <div class="p-4 bg-slate-50/70 border-t border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3">
+                <button type="submit" name="accion" value="actualizar_resultados"
+                        class="bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 font-bold rounded-2xl px-5 py-2.5 text-xs shadow-xs transition cursor-pointer">
+                    💾 Guardar Marcadores
+                </button>
+                <button type="submit" name="accion" value="actualizar_y_reentrenar"
+                        class="bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-2xl px-6 py-2.5 text-xs shadow transition cursor-pointer flex items-center justify-center gap-1.5">
+                    {% if jornada.cerrada %}
+                    🏁 Guardar, Cerrar y Re-entrenar
+                    {% else %}
+                    🏁 Guardar, Cerrar Jornada y Re-entrenar
+                    {% endif %}
                 </button>
             </div>
         </form>

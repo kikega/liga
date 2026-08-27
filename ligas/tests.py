@@ -321,7 +321,7 @@ class QuinielaTests(TestCase):
                 visitante=equipos[i * 2 + 1],
             )
 
-        # 1. Crear Quiniela por POST
+        # 1. Crear Quiniela por POST (ahora auto-asigna casillas y calcula ML de inmediato)
         resp = client.post("/configuracion/quinielas/", {
             "accion": "crear_quiniela",
             "temporada": temporada.id,
@@ -335,8 +335,13 @@ class QuinielaTests(TestCase):
         self.assertEqual(resp.status_code, 302)
         q = Quiniela.objects.get(numero=3)
         self.assertTrue(q.activa)
+        self.assertEqual(q.casillas.count(), 15)
 
-        # 2. Autollenar casillas 1 a 15
+        # Configuración global actualizada con la quiniela activa
+        config = Configuracion.cargar()
+        self.assertEqual(config.quiniela_actual, q)
+
+        # 2. Re-autollenar casillas 1 a 15
         resp_auto = client.post(f"/configuracion/quiniela/{q.id}/", {"accion": "autollenar"})
         self.assertEqual(resp_auto.status_code, 302)
         self.assertEqual(q.casillas.count(), 15)
@@ -350,6 +355,131 @@ class QuinielaTests(TestCase):
         self.assertEqual(resp_pub.status_code, 200)
         self.assertContains(resp_pub, "Quiniela Oficial J3")
         self.assertContains(resp_pub, "Pleno al 15")
+
+        # 5. Recalcular predicciones vía HTMX en la vista pública
+        resp_htmx = client.post("/quiniela/", {"accion": "recalcular", "quiniela_id": q.id}, HTTP_HX_REQUEST="true")
+        self.assertEqual(resp_htmx.status_code, 200)
+        self.assertContains(resp_htmx, "Bloque Principal (14 Partidos)")
+
+    def test_crear_quiniela_campos_automaticos(self):
+        usuario = Usuario.objects.create_superuser("admin_auto@test.com", "pass")
+        client = Client()
+        client.force_login(usuario)
+
+        div1 = crear_division(1)
+        div2 = crear_division(2)
+        temporada = crear_temporada("2024-2025", activa=True)
+        jornada = Jornada.objects.create(temporada=temporada, numero=1)
+        equipos = [Equipo.objects.create(nombre=f"TeamX_{i}") for i in range(30)]
+        for i, eq in enumerate(equipos):
+            Participacion.objects.create(temporada=temporada, equipo=eq, division=div1 if i < 15 else div2)
+
+        for i in range(15):
+            Partido.objects.create(
+                jornada=jornada,
+                local=equipos[i * 2],
+                visitante=equipos[i * 2 + 1],
+            )
+
+        # Crear sin especificar numero ni nombre
+        resp = client.post("/configuracion/quinielas/", {
+            "accion": "crear_quiniela",
+            "temporada": temporada.id,
+            "jornada": jornada.id,
+            "numero": "",
+            "nombre": "",
+            "n_dobles": 2,
+            "n_triples": 1,
+            "activa": True,
+        })
+        self.assertEqual(resp.status_code, 302)
+        q = Quiniela.objects.get(temporada=temporada, numero=1)
+        self.assertEqual(q.nombre, "Quiniela Jornada 1")
+        self.assertEqual(q.casillas.count(), 15)
+
+    def test_crear_quiniela_validacion_errores(self):
+        usuario = Usuario.objects.create_superuser("admin_err@test.com", "pass")
+        client = Client()
+        client.force_login(usuario)
+
+        temporada = crear_temporada("2024-2025", activa=True)
+
+        # Enviar dobles + triples > 14
+        resp = client.post("/configuracion/quinielas/", {
+            "accion": "crear_quiniela",
+            "temporada": temporada.id,
+            "numero": "1",
+            "nombre": "Quiniela Invalida",
+            "n_dobles": 10,
+            "n_triples": 5,
+            "activa": True,
+        })
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "La suma de dobles y triples no puede superar")
+
+    def test_quiniela_selector_partidos_solo_de_la_jornada(self):
+        usuario = Usuario.objects.create_superuser("admin_jornada@test.com", "pass")
+        client = Client()
+        client.force_login(usuario)
+
+        div1 = crear_division(1)
+        div2 = crear_division(2)
+        temporada = crear_temporada("2024-2025", activa=True)
+        j1 = Jornada.objects.create(temporada=temporada, numero=1)
+        j2 = Jornada.objects.create(temporada=temporada, numero=2)
+
+        equipos = [Equipo.objects.create(nombre=f"ClubE_{i}") for i in range(30)]
+        for i, eq in enumerate(equipos):
+            Participacion.objects.create(temporada=temporada, equipo=eq, division=div1 if i < 15 else div2)
+
+        # Partidos de Jornada 1
+        partidos_j1 = []
+        for i in range(15):
+            p = Partido.objects.create(jornada=j1, local=equipos[i * 2], visitante=equipos[i * 2 + 1])
+            partidos_j1.append(p)
+
+        # Partidos de Jornada 2
+        partidos_j2 = []
+        for i in range(15):
+            p = Partido.objects.create(jornada=j2, local=equipos[i * 2 + 1], visitante=equipos[i * 2])
+            partidos_j2.append(p)
+
+        # Crear Quiniela para Jornada 2
+        resp = client.post("/configuracion/quinielas/", {
+            "accion": "crear_quiniela",
+            "temporada": temporada.id,
+            "jornada": j2.id,
+            "numero": 2,
+            "nombre": "Quiniela Jornada 2",
+            "n_dobles": 2,
+            "n_triples": 1,
+            "activa": True,
+        })
+        self.assertEqual(resp.status_code, 302)
+        q2 = Quiniela.objects.get(temporada=temporada, numero=2)
+
+        # Verificar que las casillas auto-asignadas son SOLO de Jornada 2
+        for casilla in q2.casillas.all():
+            self.assertEqual(casilla.partido.jornada, j2)
+
+        # Verificar que el selector de confeccionar muestra SOLO partidos de Jornada 2
+        resp_conf = client.get(f"/configuracion/quiniela/{q2.id}/")
+        self.assertEqual(resp_conf.status_code, 200)
+        choices = resp_conf.context["partidos_choices"]
+
+        choice_ids = set()
+        for group, opts in choices:
+            if group and isinstance(opts, list):
+                for pid, _ in opts:
+                    choice_ids.add(pid)
+
+        p_j1_ids = {p.id for p in partidos_j1}
+        p_j2_ids = {p.id for p in partidos_j2}
+
+        # No debe haber ningún partido de Jornada 1
+        self.assertEqual(choice_ids.intersection(p_j1_ids), set())
+        # Todos los partidos del selector deben ser de Jornada 2
+        self.assertTrue(choice_ids.issubset(p_j2_ids))
 
 
 class PipelineMlTests(TestCase):
@@ -545,6 +675,52 @@ class VistasConfiguracionTests(TestCase):
         self.assertEqual(response.status_code, 302)
         config = Configuracion.cargar()
         self.assertEqual(config.proxima_jornada_id, jornada.id)
+
+    def test_jornada_cerrada_no_se_puede_activar(self):
+        jornada = Jornada.objects.create(temporada=self.temporada, numero=7, cerrada=True)
+        config_antes = Configuracion.cargar()
+        response = self.client.post(f"/configuracion/jornada/{jornada.id}/activar/")
+        self.assertEqual(response.status_code, 302)
+        config_despues = Configuracion.cargar()
+        self.assertNotEqual(config_despues.proxima_jornada_id, jornada.id)
+
+        # En la página de configuración debe aparecer 'Editar Resultados' y no 'Activar'
+        resp_get = self.client.get("/configuracion/")
+        self.assertEqual(resp_get.status_code, 200)
+        self.assertContains(resp_get, "Editar Resultados")
+        self.assertContains(resp_get, "🔒 Cerrada")
+
+    def test_cerrar_jornada_avanza_proxima_jornada(self):
+        j1 = Jornada.objects.create(temporada=self.temporada, numero=8)
+        j2 = Jornada.objects.create(temporada=self.temporada, numero=9)
+        config = Configuracion.cargar()
+        config.proxima_jornada = j1
+        config.save()
+
+        Partido.objects.create(jornada=j1, local=self.e1, visitante=self.e2, goles_local=2, goles_visitante=1)
+        response = self.client.post(f"/configuracion/jornada/{j1.id}/cerrar/")
+        self.assertEqual(response.status_code, 302)
+
+        j1.refresh_from_db()
+        self.assertTrue(j1.cerrada)
+        config.refresh_from_db()
+        self.assertEqual(config.proxima_jornada_id, j2.id)
+
+    def test_jornada_partidos_actualizar_y_reentrenar(self):
+        jornada = Jornada.objects.create(temporada=self.temporada, numero=10)
+        p = Partido.objects.create(jornada=jornada, local=self.e1, visitante=self.e2)
+        data = {
+            "accion": "actualizar_y_reentrenar",
+            f"gl_{p.id}": "3",
+            f"gv_{p.id}": "0",
+        }
+        response = self.client.post(f"/configuracion/jornada/{jornada.id}/", data)
+        self.assertEqual(response.status_code, 302)
+        p.refresh_from_db()
+        jornada.refresh_from_db()
+        self.assertEqual(p.goles_local, 3)
+        self.assertEqual(p.goles_visitante, 0)
+        self.assertTrue(jornada.cerrada)
 
     def test_crear_jornada_desde_configuracion(self):
         response = self.client.post("/configuracion/", {

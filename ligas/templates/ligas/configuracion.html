@@ -169,21 +169,20 @@
                 <div class="px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-slate-50/80 transition {% if j.id == config.proxima_jornada_id %}bg-emerald-50/30{% endif %}">
                     <div class="flex items-center gap-3.5 min-w-0">
                         <span class="grid place-items-center h-10 w-10 rounded-2xl text-sm font-black shrink-0
-                                     {% if j.id == config.proxima_jornada_id %}bg-emerald-500 text-white shadow-sm shadow-emerald-500/30{% else %}bg-slate-100 text-slate-700{% endif %}">
+                                     {% if j.id == config.proxima_jornada_id %}bg-emerald-500 text-white shadow-sm shadow-emerald-500/30{% elif j.cerrada %}bg-slate-200 text-slate-500{% else %}bg-slate-100 text-slate-700{% endif %}">
                             {{ j.numero }}
                         </span>
                         
                         <div class="min-w-0">
                             <div class="flex items-center gap-2 flex-wrap">
                                 <span class="font-black text-slate-900 text-sm">Jornada {{ j.numero }}</span>
-                                {% if j.id == config.proxima_jornada_id %}
+                                {% if j.cerrada %}
+                                <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-600 bg-slate-100 border border-slate-300 rounded-full px-2.5 py-0.5 shadow-2xs">
+                                    🔒 Cerrada
+                                </span>
+                                {% elif j.id == config.proxima_jornada_id %}
                                 <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-100 border border-emerald-300 rounded-full px-2.5 py-0.5 shadow-xs">
                                     ⭐ Próxima Activa
-                                </span>
-                                {% endif %}
-                                {% if j.cerrada %}
-                                <span class="text-[10px] font-bold text-slate-500 bg-slate-100 border border-slate-200 rounded-full px-2 py-0.5">
-                                    Cerrada
                                 </span>
                                 {% endif %}
                             </div>
@@ -205,18 +204,25 @@
                     </div>
 
                     <div class="flex items-center gap-2 self-end sm:self-center shrink-0">
+                        {% if j.cerrada %}
+                        <a href="{% url 'ligas:jornada_partidos_add' j.id %}"
+                           class="text-xs font-bold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl px-3.5 py-1.5 transition shadow-xs flex items-center gap-1.5"
+                           title="Editar resultados o corregir datos de la jornada cerrada">
+                            ✏️ Editar Resultados
+                        </a>
+                        {% else %}
                         {% if j.id != config.proxima_jornada_id %}
                         <form method="post" action="{% url 'ligas:jornada_activar' j.id %}">
                             {% csrf_token %}
                             <button type="submit"
-                                    class="text-xs font-bold text-slate-600 hover:text-emerald-700 bg-white hover:bg-emerald-50 border border-slate-200 rounded-xl px-3 py-1.5 transition shadow-xs"
+                                    class="text-xs font-bold text-slate-600 hover:text-emerald-700 bg-white hover:bg-emerald-50 border border-slate-200 rounded-xl px-3 py-1.5 transition shadow-xs cursor-pointer"
                                     title="Establece esta jornada como la activa para la Quiniela y el Dashboard">
                                 ⭐ Activar
                             </button>
                         </form>
                         {% endif %}
 
-                        {% if not j.cerrada and j.partidos_jugados > 0 %}
+                        {% if j.partidos_jugados > 0 %}
                         <form method="post" action="{% url 'ligas:jornada_cerrar' j.id %}"
                               data-confirm="¿Cerrar Jornada {{ j.numero }} y re-entrenar el modelo con los resultados registrados?"
                               data-confirm-title="Cerrar Jornada"
@@ -232,9 +238,10 @@
                         {% endif %}
 
                         <a href="{% url 'ligas:jornada_partidos_add' j.id %}"
-                           class="text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 rounded-xl px-3.5 py-1.5 transition shadow-xs">
+                           class="text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 rounded-xl px-3.5 py-1.5 transition shadow-xs flex items-center gap-1.5">
                             ✏️ Gestionar Partidos
                         </a>
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}

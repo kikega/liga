@@ -30,7 +30,7 @@ from ligas.models import (
     Quiniela,
     Temporada,
 )
-from ligas.quiniela import GeneradorQuiniela, aplicar_predicciones_a_quiniela
+from ligas.quiniela import GeneradorQuiniela, aplicar_predicciones_a_quiniela, poblar_casillas_oficiales
 
 PartidoFormSet = forms.formset_factory(PartidoRowForm, extra=4, min_num=1)
 
@@ -119,9 +119,13 @@ def configuracion(request):
 
 @login_required
 def jornada_activar_view(request, jornada_id):
-    """Establece rápidamente una jornada como la próxima activa para predicciones y Quiniela."""
+    """Establece rápidamente una jornada abierta como la próxima activa para predicciones y Quiniela."""
     jornada = get_object_or_404(Jornada, pk=jornada_id)
     if request.method == "POST":
+        if jornada.cerrada:
+            messages.warning(request, f"La Jornada {jornada.numero} está cerrada y no puede volver a activarse.")
+            return redirect("ligas:configuracion")
+
         config = Configuracion.cargar()
         config.temporada_actual = jornada.temporada
         config.proxima_jornada = jornada
@@ -158,7 +162,7 @@ def reentrenar_modelo_view(request):
 
 @login_required
 def jornada_cerrar_view(request, jornada_id):
-    """Cierra la jornada, evalúa aciertos de predicciones y re-entrena automáticamente el modelo."""
+    """Cierra la jornada, evalúa aciertos de predicciones, sincroniza quinielas y re-entrena automáticamente el modelo."""
     jornada = get_object_or_404(Jornada, pk=jornada_id)
     if request.method == "POST":
         aciertos = total = 0
@@ -170,6 +174,21 @@ def jornada_cerrar_view(request, jornada_id):
 
         jornada.cerrada = True
         jornada.save(update_fields=["cerrada"])
+
+        # Evaluar aciertos en las quinielas asociadas
+        for q in jornada.quinielas.all():
+            q.evaluar_aciertos()
+
+        # Si la configuración apuntaba a esta jornada como la próxima activa, avanzar a la siguiente abierta
+        config = Configuracion.cargar()
+        if config.proxima_jornada_id == jornada.id:
+            siguiente = (
+                Jornada.objects.filter(temporada=jornada.temporada, numero__gt=jornada.numero, cerrada=False)
+                .order_by("numero")
+                .first()
+            )
+            config.proxima_jornada = siguiente
+            config.save(update_fields=["proxima_jornada"])
 
         partidos = list(
             Partido.objects.filter(goles_local__isnull=False)
@@ -209,7 +228,7 @@ def jornada_partidos_add(request, jornada_id):
     jornada = get_object_or_404(Jornada, pk=jornada_id)
     temporada = jornada.temporada
 
-    if request.method == "POST" and request.POST.get("accion") == "actualizar_resultados":
+    if request.method == "POST" and request.POST.get("accion") in ("actualizar_resultados", "actualizar_y_reentrenar"):
         actualizados = 0
         for p in jornada.partidos.all():
             gl_key = f"gl_{p.id}"
@@ -232,6 +251,45 @@ def jornada_partidos_add(request, jornada_id):
             if campos_modificados:
                 p.save(update_fields=list(set(campos_modificados)))
                 actualizados += 1
+
+        if request.POST.get("accion") == "actualizar_y_reentrenar":
+            aciertos = total = 0
+            for partido in jornada.partidos.select_related("prediccion").filter(goles_local__isnull=False):
+                if hasattr(partido, "prediccion"):
+                    total += 1
+                    if partido.prediccion.actualizar_con_resultado(partido.resultado):
+                        aciertos += 1
+
+            jornada.cerrada = True
+            jornada.save(update_fields=["cerrada"])
+
+            for q in jornada.quinielas.all():
+                q.evaluar_aciertos()
+
+            config = Configuracion.cargar()
+            if config.proxima_jornada_id == jornada.id:
+                siguiente = (
+                    Jornada.objects.filter(temporada=jornada.temporada, numero__gt=jornada.numero, cerrada=False)
+                    .order_by("numero")
+                    .first()
+                )
+                config.proxima_jornada = siguiente
+                config.save(update_fields=["proxima_jornada"])
+
+            partidos = list(
+                Partido.objects.filter(goles_local__isnull=False)
+                .select_related("jornada__temporada", "local", "visitante")
+                .prefetch_related("ausencias__jugador")
+            )
+            msg = f"Resultados guardados. Jornada {jornada.numero} cerrada ({aciertos}/{total} aciertos)."
+            try:
+                if len(partidos) >= 15:
+                    _, exactitud, brier, _, _ = entrenar_modelo(partidos)
+                    msg += f" Modelo re-entrenado automáticamente (Exactitud: {exactitud:.1%}, Brier: {brier:.4f})."
+            except Exception as exc:
+                msg += f" (Aviso de re-entrenamiento: {exc})"
+            messages.success(request, msg)
+            return redirect("ligas:configuracion")
 
         messages.success(request, f"Resultados de {actualizados} partido(s) actualizados.")
         return redirect("ligas:jornada_partidos_add", jornada_id=jornada.id)
@@ -483,11 +541,23 @@ def quinielas_lista(request):
         form = QuinielaForm(request.POST, temporada=temporada)
         if form.is_valid():
             nueva_q = form.save()
-            messages.success(
-                request,
-                f"¡{nueva_q.nombre} creada con éxito! Confecciona ahora las 15 casillas.",
-            )
+            n_asignados = poblar_casillas_oficiales(nueva_q)
+            if n_asignados > 0:
+                messages.success(
+                    request,
+                    f"¡{nueva_q.nombre} creada con éxito! Se han auto-asignado {n_asignados} partidos y generado sus pronósticos ML.",
+                )
+            else:
+                messages.success(
+                    request,
+                    f"¡{nueva_q.nombre} creada con éxito! Confecciona ahora las 15 casillas.",
+                )
             return redirect("ligas:quiniela_confeccionar", quiniela_id=nueva_q.id)
+        else:
+            errores = []
+            for campo, errs in form.errors.items():
+                errores.append(", ".join(errs))
+            messages.error(request, f"Error al crear la Quiniela: {' '.join(errores)}")
     else:
         form = QuinielaForm(temporada=temporada)
 
@@ -521,40 +591,20 @@ def quiniela_confeccionar(request, quiniela_id):
     temporada = quiniela.temporada
     jornada = quiniela.jornada
 
+    # Si no tiene jornada asignada, auto-enlazar con la jornada del mismo número de la temporada
+    if not jornada and temporada:
+        jornada_match = Jornada.objects.filter(temporada=temporada, numero=quiniela.numero).first()
+        if jornada_match:
+            quiniela.jornada = jornada_match
+            quiniela.save(update_fields=["jornada"])
+            jornada = jornada_match
+
     # 1. AUTO-LLENAR CON 10 DE 1ª Y 5 DE 2ª
     if request.method == "POST" and request.POST.get("accion") == "autollenar":
-        # Buscar partidos de la jornada deportiva seleccionada o de la temporada
-        partidos_qs = list(
-            Partido.objects.filter(jornada=jornada)
-            .select_related("local", "visitante")
-            .prefetch_related("local__participaciones__division", "visitante__participaciones__division")
-            .order_by("id")
-            if jornada
-            else Partido.objects.filter(jornada__temporada=temporada).order_by("-id")[:20]
-        )
-        p_div1 = [p for p in partidos_qs if p.division_nivel == 1]
-        p_div2 = [p for p in partidos_qs if p.division_nivel == 2]
-        p_otros = [p for p in partidos_qs if p.division_nivel not in (1, 2)]
-
-        # Asignar los primeros 10 a 1ª Div y 5 siguientes a 2ª Div
-        elegidos = p_div1[:10] + p_div2[:5]
-        if len(elegidos) < 15:
-            # Rellenar con los que falten de div1 o div2 u otros
-            restantes = [p for p in (p_div1[10:] + p_div2[5:] + p_otros) if p not in elegidos]
-            elegidos += restantes[: (15 - len(elegidos))]
-
-        # Guardar en base de datos
-        for idx, partido in enumerate(elegidos[:15], start=1):
-            CasillaQuiniela.objects.update_or_create(
-                quiniela=quiniela,
-                posicion=idx,
-                defaults={"partido": partido},
-            )
-
-        aplicar_predicciones_a_quiniela(quiniela)
+        n_elegidos = poblar_casillas_oficiales(quiniela)
         messages.success(
             request,
-            f"Se han auto-asignado {len(elegidos[:15])} partidos a las casillas oficiales 1 a 15 con pronósticos calculados.",
+            f"Se han auto-asignado {n_elegidos} partidos a las casillas oficiales 1 a 15 con pronósticos calculados.",
         )
         return redirect("ligas:quiniela_confeccionar", quiniela_id=quiniela.id)
 

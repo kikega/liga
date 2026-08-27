@@ -360,3 +360,57 @@ def aplicar_predicciones_a_quiniela(quiniela: Any) -> None:
         )
 
     quiniela.evaluar_aciertos()
+
+
+def poblar_casillas_oficiales(quiniela: Any) -> int:
+    """Auto-asigna 10 partidos de 1ª División y 5 de 2ª División de la jornada deportiva a las 15 casillas."""
+    from ligas.models import CasillaQuiniela, Jornada, Partido
+
+    temporada = quiniela.temporada
+    jornada = quiniela.jornada
+
+    # Si no tiene jornada asociada explícitamente, intentar buscarla por número en su temporada
+    if not jornada and temporada:
+        jornada = Jornada.objects.filter(temporada=temporada, numero=quiniela.numero).first()
+        if jornada:
+            quiniela.jornada = jornada
+            quiniela.save(update_fields=["jornada"])
+
+    if not jornada and not temporada:
+        return 0
+
+    # Obtener única y exclusivamente los partidos de la jornada deportiva correspondiente
+    partidos_qs = list(
+        Partido.objects.filter(jornada=jornada)
+        .select_related("local", "visitante")
+        .prefetch_related("local__participaciones__division", "visitante__participaciones__division")
+        .order_by("fecha", "id")
+        if jornada
+        else Partido.objects.filter(jornada__temporada=temporada)
+        .select_related("local", "visitante")
+        .prefetch_related("local__participaciones__division", "visitante__participaciones__division")
+        .order_by("fecha", "id")
+    )
+
+    p_div1 = [p for p in partidos_qs if p.division_nivel == 1]
+    p_div2 = [p for p in partidos_qs if p.division_nivel == 2]
+    p_otros = [p for p in partidos_qs if p.division_nivel not in (1, 2)]
+
+    # 10 primeros de 1ª División y 5 primeros de 2ª División de esta jornada
+    elegidos = p_div1[:10] + p_div2[:5]
+    if len(elegidos) < 15:
+        restantes = [p for p in (p_div1[10:] + p_div2[5:] + p_otros) if p not in elegidos]
+        elegidos += restantes[: (15 - len(elegidos))]
+
+    # Guardar en base de datos
+    for idx, partido in enumerate(elegidos[:15], start=1):
+        CasillaQuiniela.objects.update_or_create(
+            quiniela=quiniela,
+            posicion=idx,
+            defaults={"partido": partido},
+        )
+
+    if elegidos:
+        aplicar_predicciones_a_quiniela(quiniela)
+
+    return len(elegidos[:15])

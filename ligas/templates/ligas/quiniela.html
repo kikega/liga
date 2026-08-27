@@ -37,9 +37,10 @@
             </a>
             {% endif %}
 
-            {% if jornada %}
+            {% if quiniela %}
             <button
-                hx-post="{% url 'ligas:jornada_predecir' jornada.id %}"
+                hx-post="{% url 'ligas:quiniela' %}"
+                hx-vals='{"accion": "recalcular", "quiniela_id": "{{ quiniela.id }}", "dobles": "{{ n_dobles }}", "triples": "{{ n_triples }}"}'
                 hx-target="#boleto-container"
                 hx-indicator="#quiniela-refresh-spin"
                 hx-disabled-elt="this"

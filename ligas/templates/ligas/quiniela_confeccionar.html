@@ -74,9 +74,10 @@
 </div>
 
 <!-- Formulario Principal de Asignación y Reordenación de Casillas -->
-<form method="post" action="{% url 'ligas:quiniela_confeccionar' quiniela.id %}">
+<form method="post" action="{% url 'ligas:quiniela_confeccionar' quiniela.id %}" id="form-confeccionar-casillas">
     {% csrf_token %}
-    <input type="hidden" name="accion" value="guardar_casillas">
+    <input type="hidden" name="accion" id="casillas-form-accion" value="guardar_casillas">
+    <input type="hidden" name="posicion" id="casillas-form-posicion" value="">
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
@@ -172,26 +173,23 @@
                             <!-- Controles para Mover -->
                             <div class="flex items-center gap-1 border-l border-slate-200 pl-2 ml-1">
                                 {% if item.posicion > 1 %}
-                                <button type="submit" formaction="{% url 'ligas:quiniela_confeccionar' quiniela.id %}"
-                                        name="accion" value="subir"
-                                        onclick="this.form.querySelector('input[name=posicion]') ? this.form.querySelector('input[name=posicion]').value='{{ item.posicion }}' : this.form.insertAdjacentHTML('beforeend', '<input type=hidden name=posicion value={{ item.posicion }}>')"
+                                <button type="submit"
+                                        onclick="document.getElementById('casillas-form-accion').value='subir'; document.getElementById('casillas-form-posicion').value='{{ item.posicion }}';"
                                         class="h-7 w-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition cursor-pointer"
                                         title="Subir casilla">
                                     ▲
                                 </button>
                                 {% endif %}
                                 {% if item.posicion < 14 %}
-                                <button type="submit" formaction="{% url 'ligas:quiniela_confeccionar' quiniela.id %}"
-                                        name="accion" value="bajar"
-                                        onclick="this.form.querySelector('input[name=posicion]') ? this.form.querySelector('input[name=posicion]').value='{{ item.posicion }}' : this.form.insertAdjacentHTML('beforeend', '<input type=hidden name=posicion value={{ item.posicion }}>')"
+                                <button type="submit"
+                                        onclick="document.getElementById('casillas-form-accion').value='bajar'; document.getElementById('casillas-form-posicion').value='{{ item.posicion }}';"
                                         class="h-7 w-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition cursor-pointer"
                                         title="Bajar casilla">
                                     ▼
                                 </button>
                                 {% endif %}
-                                <button type="submit" formaction="{% url 'ligas:quiniela_confeccionar' quiniela.id %}"
-                                        name="accion" value="intercambiar_pleno"
-                                        onclick="this.form.querySelector('input[name=posicion]') ? this.form.querySelector('input[name=posicion]').value='{{ item.posicion }}' : this.form.insertAdjacentHTML('beforeend', '<input type=hidden name=posicion value={{ item.posicion }}>')"
+                                <button type="submit"
+                                        onclick="document.getElementById('casillas-form-accion').value='intercambiar_pleno'; document.getElementById('casillas-form-posicion').value='{{ item.posicion }}';"
                                         class="h-7 px-2 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 font-bold text-[10px] transition cursor-pointer"
                                         title="Intercambiar con el Pleno al 15">
                                     ⭐ P15
@@ -207,6 +205,7 @@
             <!-- Botón para Guardar Asignación -->
             <div class="flex items-center justify-end gap-3 pt-2">
                 <button type="submit"
+                        onclick="document.getElementById('casillas-form-accion').value='guardar_casillas';"
                         class="bg-slate-900 hover:bg-slate-800 text-white font-black text-sm px-6 py-3.5 rounded-2xl shadow-md transition cursor-pointer flex items-center gap-2">
                     💾 Guardar Asignación de Casillas y Pronósticos ML
                 </button>

@@ -426,6 +426,8 @@ class Quiniela(models.Model):
         if self.activa:
             Quiniela.objects.filter(activa=True).exclude(pk=self.pk).update(activa=False)
         super().save(*args, **kwargs)
+        if self.activa:
+            Configuracion.objects.filter(pk=1).update(quiniela_actual=self)
 
     @property
     def total_casillas(self) -> int:
