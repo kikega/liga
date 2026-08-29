@@ -40,7 +40,7 @@
                 <select name="division" id="division" onchange="this.form.submit()"
                         class="border border-white/20 rounded-xl px-3 py-1.5 bg-slate-900/90 text-white font-bold text-xs shadow-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                     {% for d in divisiones %}
-                        <option value="{{ d.nivel }}" {% if d.id == division.id %}selected{% endif %}>{{ d.nombre }}</option>
+                        <option value="{{ d.id }}" {% if d.id == division.id %}selected{% endif %}>{{ d.nombre }}</option>
                     {% endfor %}
                 </select>
             </div>

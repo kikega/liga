@@ -22,17 +22,15 @@
 <!-- Filtro de Pestañas por Categoría -->
 <div class="flex items-center gap-2 mb-6 overflow-x-auto pb-1">
     <button type="button" onclick="filtrarEquipos('todos')" id="btn-filtro-todos"
-            class="filtro-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-white text-slate-900 border border-slate-200 shadow-xs">
+            class="filtro-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-white text-slate-900 border border-slate-200 shadow-xs ring-2 ring-slate-900 font-black">
         🌐 Todos ({{ total_equipos }})
     </button>
-    <button type="button" onclick="filtrarEquipos('div1')" id="btn-filtro-div1"
-            class="filtro-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200">
-        🏆 1ª División ({{ equipos_div1|length }})
+    {% for g in grupos_divisiones %}
+    <button type="button" onclick="filtrarEquipos('div-{{ g.division.id }}')" id="btn-filtro-div-{{ g.division.id }}"
+            class="filtro-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-white hover:bg-slate-50 text-slate-800 border border-slate-200">
+        {{ g.icono }} {{ g.division.nombre }} ({{ g.equipos|length }})
     </button>
-    <button type="button" onclick="filtrarEquipos('div2')" id="btn-filtro-div2"
-            class="filtro-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200">
-        🥈 2ª División ({{ equipos_div2|length }})
-    </button>
+    {% endfor %}
     {% if equipos_sin_asignar %}
     <button type="button" onclick="filtrarEquipos('sin_asignar')" id="btn-filtro-sin_asignar"
             class="filtro-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 animate-pulse">
@@ -49,7 +47,7 @@
             <h2 class="text-base font-extrabold text-rose-900 flex items-center gap-2">
                 <span>⚠️</span> Equipos Registrados sin División en {{ temporada }}
             </h2>
-            <p class="text-xs text-rose-700 mt-0.5">Asígnalos a 1ª o 2ª División para que aparezcan en los desplegables de partidos.</p>
+            <p class="text-xs text-rose-700 mt-0.5">Asígnalos a una división para que aparezcan en los desplegables de partidos.</p>
         </div>
         <span class="text-xs font-black text-rose-800 bg-rose-100 px-3 py-1 rounded-full border border-rose-200">
             {{ equipos_sin_asignar|length }} pendientes
@@ -67,23 +65,17 @@
                 </div>
             </div>
             <div class="flex items-center gap-2 pt-2 border-t border-slate-100">
-                <form method="post" class="flex-1">
+                <form method="post" class="flex-1 flex items-center gap-1">
                     {% csrf_token %}
                     <input type="hidden" name="accion" value="cambiar_division">
                     <input type="hidden" name="equipo_id" value="{{ equipo.id }}">
-                    <input type="hidden" name="division_id" value="{{ div1.id }}">
-                    <button type="submit" class="w-full text-center text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-xl py-1.5 transition">
-                        ＋ Mover a 1ª
-                    </button>
-                </form>
-                <form method="post" class="flex-1">
-                    {% csrf_token %}
-                    <input type="hidden" name="accion" value="cambiar_division">
-                    <input type="hidden" name="equipo_id" value="{{ equipo.id }}">
-                    <input type="hidden" name="division_id" value="{{ div2.id }}">
-                    <button type="submit" class="w-full text-center text-xs font-bold text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-xl py-1.5 transition">
-                        ＋ Mover a 2ª
-                    </button>
+                    <select name="division_id" onchange="this.form.submit()"
+                            class="w-full text-xs font-bold text-slate-700 bg-slate-50 border border-slate-200 rounded-xl px-2 py-1.5 focus:ring-2 focus:ring-emerald-500">
+                        <option value="">＋ Asignar División...</option>
+                        {% for d in divisiones %}
+                        <option value="{{ d.id }}">{% if d.categoria == 'FEM' %}🎀{% elif d.nivel == 1 %}🏆{% else %}🥈{% endif %} {{ d.nombre }}</option>
+                        {% endfor %}
+                    </select>
                 </form>
                 <a href="{% url 'ligas:equipo_editar' equipo.id %}" class="p-1.5 text-slate-400 hover:text-slate-700 transition text-sm" title="Editar">✏️</a>
             </div>
@@ -93,25 +85,26 @@
 </div>
 {% endif %}
 
-<!-- SECCIÓN 1: PRIMERA DIVISIÓN -->
-<div id="seccion-div1" class="seccion-equipos mb-8 bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
-    <div class="bg-gradient-to-r from-indigo-900 via-indigo-800 to-slate-900 px-6 py-4 flex items-center justify-between text-white">
+<!-- SECCIONES POR CADA DIVISIÓN -->
+{% for g in grupos_divisiones %}
+<div id="seccion-div-{{ g.division.id }}" class="seccion-equipos mb-8 bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+    <div class="bg-gradient-to-r {{ g.color_grad }} px-6 py-4 flex items-center justify-between text-white">
         <div class="flex items-center gap-3">
-            <span class="text-xl">🏆</span>
+            <span class="text-xl">{{ g.icono }}</span>
             <div>
-                <h2 class="font-black text-base tracking-wide">Primera División · LaLiga EA Sports</h2>
-                <p class="text-xs text-indigo-200">Equipos de la máxima categoría en {{ temporada }}</p>
+                <h2 class="font-black text-base tracking-wide">{{ g.division.nombre }}</h2>
+                <p class="text-xs text-slate-300">Equipos participantes en {{ temporada }}</p>
             </div>
         </div>
         <span class="text-xs font-black bg-white/15 px-3 py-1 rounded-full border border-white/20">
-            {{ equipos_div1|length }} equipos
+            {{ g.equipos|length }} equipos
         </span>
     </div>
 
     <div class="p-6">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {% for equipo in equipos_div1 %}
-            <div class="rounded-2xl border border-slate-200/80 bg-slate-50/40 p-4 flex flex-col justify-between gap-3 hover:border-indigo-300 hover:bg-white hover:shadow-sm transition">
+            {% for equipo in g.equipos %}
+            <div class="rounded-2xl border border-slate-200/80 bg-slate-50/40 p-4 flex flex-col justify-between gap-3 hover:border-slate-300 hover:bg-white hover:shadow-sm transition">
                 <div class="flex items-center justify-between gap-3">
                     <div class="flex items-center gap-3 min-w-0">
                         {% include "ligas/_escudo.html" with equipo=equipo %}
@@ -130,21 +123,6 @@
 
                 <div class="flex items-center justify-between gap-1.5 pt-2 border-t border-slate-200/60 text-xs">
                     <div class="flex items-center gap-1">
-                        <form method="post" class="inline">
-                            {% csrf_token %}
-                            <input type="hidden" name="accion" value="cambiar_division">
-                            <input type="hidden" name="equipo_id" value="{{ equipo.id }}">
-                            <input type="hidden" name="division_id" value="{{ div2.id }}">
-                            <button type="submit"
-                                    data-confirm="¿Mover a {{ equipo.nombre }} a 2ª División para la temporada {{ temporada }}?"
-                                    data-confirm-title="Cambiar a Segunda División"
-                                    data-confirm-type="warning"
-                                    data-confirm-btn="Mover a 2ª"
-                                    class="text-[11px] font-bold text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-lg px-2 py-1 transition cursor-pointer"
-                                    title="Mover a Segunda División">
-                                ↓ A 2ª
-                            </button>
-                        </form>
                         <form method="post" class="inline">
                             {% csrf_token %}
                             <input type="hidden" name="accion" value="desasignar_division">
@@ -168,117 +146,34 @@
             </div>
             {% empty %}
             <div class="col-span-full py-8 text-center text-sm text-slate-400">
-                No hay equipos asignados a 1ª División todavía.
+                No hay equipos asignados a {{ g.division.nombre }} todavía.
             </div>
             {% endfor %}
         </div>
     </div>
 </div>
-
-<!-- SECCIÓN 2: SEGUNDA DIVISIÓN -->
-<div id="seccion-div2" class="seccion-equipos bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
-    <div class="bg-gradient-to-r from-amber-900 via-amber-800 to-slate-900 px-6 py-4 flex items-center justify-between text-white">
-        <div class="flex items-center gap-3">
-            <span class="text-xl">🥈</span>
-            <div>
-                <h2 class="font-black text-base tracking-wide">Segunda División · LaLiga Hypermotion</h2>
-                <p class="text-xs text-amber-200">Equipos de la categoría de plata en {{ temporada }}</p>
-            </div>
-        </div>
-        <span class="text-xs font-black bg-white/15 px-3 py-1 rounded-full border border-white/20">
-            {{ equipos_div2|length }} equipos
-        </span>
-    </div>
-
-    <div class="p-6">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {% for equipo in equipos_div2 %}
-            <div class="rounded-2xl border border-slate-200/80 bg-slate-50/40 p-4 flex flex-col justify-between gap-3 hover:border-amber-300 hover:bg-white hover:shadow-sm transition">
-                <div class="flex items-center justify-between gap-3">
-                    <div class="flex items-center gap-3 min-w-0">
-                        {% include "ligas/_escudo.html" with equipo=equipo %}
-                        <div class="min-w-0">
-                            <span class="font-extrabold text-slate-900 text-sm block truncate">{{ equipo.nombre }}</span>
-                            <span class="text-[11px] text-slate-500 font-medium">
-                                {{ equipo.n_clave }} jugador{{ equipo.n_clave|pluralize }} clave
-                            </span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-1 shrink-0">
-                        <span class="h-4 w-4 rounded-full border border-white shadow-2xs" style="background: {{ equipo.color_primario|default:'#1e293b' }};"></span>
-                        <span class="h-4 w-4 rounded-full border border-white shadow-2xs" style="background: {{ equipo.color_secundario|default:'#0f172a' }};"></span>
-                    </div>
-                </div>
-
-                <div class="flex items-center justify-between gap-1.5 pt-2 border-t border-slate-200/60 text-xs">
-                    <div class="flex items-center gap-1">
-                        <form method="post" class="inline">
-                            {% csrf_token %}
-                            <input type="hidden" name="accion" value="cambiar_division">
-                            <input type="hidden" name="equipo_id" value="{{ equipo.id }}">
-                            <input type="hidden" name="division_id" value="{{ div1.id }}">
-                            <button type="submit"
-                                    data-confirm="¿Ascender a {{ equipo.nombre }} a 1ª División para la temporada {{ temporada }}?"
-                                    data-confirm-title="Ascenso a Primera División"
-                                    data-confirm-type="success"
-                                    data-confirm-btn="Ascender a 1ª"
-                                    class="text-[11px] font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-lg px-2 py-1 transition cursor-pointer"
-                                    title="Ascender a Primera División">
-                                ↑ A 1ª
-                            </button>
-                        </form>
-                        <form method="post" class="inline">
-                            {% csrf_token %}
-                            <input type="hidden" name="accion" value="desasignar_division">
-                            <input type="hidden" name="equipo_id" value="{{ equipo.id }}">
-                            <button type="submit"
-                                    data-confirm="¿Desasignar división a {{ equipo.nombre }} para {{ temporada }}? El equipo pasará al listado de no asignados."
-                                    data-confirm-title="Desasignar Categoría"
-                                    data-confirm-type="danger"
-                                    data-confirm-btn="Quitar División"
-                                    class="text-[11px] font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-lg px-2 py-1 transition cursor-pointer"
-                                    title="Desasignar división (dejar sin división)">
-                                ✕ Quitar
-                            </button>
-                        </form>
-                    </div>
-                    <a href="{% url 'ligas:equipo_editar' equipo.id %}"
-                       class="text-xs font-bold text-slate-600 hover:text-emerald-700 bg-white hover:bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1 transition">
-                        ✏️ Editar
-                    </a>
-                </div>
-            </div>
-            {% empty %}
-            <div class="col-span-full py-8 text-center text-sm text-slate-400">
-                No hay equipos asignados a 2ª División todavía.
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</div>
+{% endfor %}
 
 <script>
     function filtrarEquipos(modo) {
         const secSin = document.getElementById('seccion-sin-asignar');
-        const secDiv1 = document.getElementById('seccion-div1');
-        const secDiv2 = document.getElementById('seccion-div2');
+        const seccionesDiv = document.querySelectorAll('.seccion-equipos[id^="seccion-div-"]');
 
         if (modo === 'todos') {
             if (secSin) secSin.classList.remove('hidden');
-            if (secDiv1) secDiv1.classList.remove('hidden');
-            if (secDiv2) secDiv2.classList.remove('hidden');
-        } else if (modo === 'div1') {
-            if (secSin) secSin.classList.add('hidden');
-            if (secDiv1) secDiv1.classList.remove('hidden');
-            if (secDiv2) secDiv2.classList.add('hidden');
-        } else if (modo === 'div2') {
-            if (secSin) secSin.classList.add('hidden');
-            if (secDiv1) secDiv1.classList.add('hidden');
-            if (secDiv2) secDiv2.classList.remove('hidden');
+            seccionesDiv.forEach(s => s.classList.remove('hidden'));
         } else if (modo === 'sin_asignar') {
             if (secSin) secSin.classList.remove('hidden');
-            if (secDiv1) secDiv1.classList.add('hidden');
-            if (secDiv2) secDiv2.classList.add('hidden');
+            seccionesDiv.forEach(s => s.classList.add('hidden'));
+        } else {
+            if (secSin) secSin.classList.add('hidden');
+            seccionesDiv.forEach(s => {
+                if (s.id === 'seccion-' + modo) {
+                    s.classList.remove('hidden');
+                } else {
+                    s.classList.add('hidden');
+                }
+            });
         }
 
         document.querySelectorAll('.filtro-btn').forEach(btn => {

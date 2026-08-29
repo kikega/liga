@@ -57,6 +57,23 @@ def configuracion(request):
         messages.success(request, mensaje)
         return redirect("ligas:configuracion")
 
+    if request.method == "POST" and request.POST.get("accion") == "init_liga_f":
+        div_fem, creada = Division.objects.get_or_create(
+            categoria="FEM",
+            nivel=1,
+            defaults={
+                "nombre": "1ª División Femenina (Liga F)",
+                "codigo": "LIGA_F",
+                "n_champions": 3,
+                "n_descensos": 2,
+            },
+        )
+        if creada:
+            messages.success(request, f"¡División '{div_fem.nombre}' registrada correctamente!")
+        else:
+            messages.info(request, f"La división '{div_fem.nombre}' ya está registrada.")
+        return redirect("ligas:configuracion")
+
     if request.method == "POST" and request.POST.get("accion") == "crear_jornada":
         jornada_form = JornadaForm(request.POST)
         if jornada_form.is_valid():
@@ -102,6 +119,7 @@ def configuracion(request):
     )
 
     total_partidos_historicos = Partido.objects.filter(goles_local__isnull=False).count()
+    divisiones = list(Division.objects.all().order_by("categoria", "nivel"))
 
     return render(
         request,
@@ -112,6 +130,7 @@ def configuracion(request):
             "config": config,
             "temporada": temporada,
             "jornadas": jornadas,
+            "divisiones": divisiones,
             "total_partidos_historicos": total_partidos_historicos,
         },
     )
@@ -337,12 +356,20 @@ def jornada_partidos_add(request, jornada_id):
             grupos[label]["partidos"].append(p)
         return list(grupos.values())
 
-    partidos_div1 = [p for p in partidos_qs if p.division_nivel == 1]
-    partidos_div2 = [p for p in partidos_qs if p.division_nivel == 2]
+    partidos_div1 = [
+        p for p in partidos_qs if p.division and getattr(p.division, "categoria", "MASC") == "MASC" and p.division_nivel == 1
+    ]
+    partidos_div2 = [
+        p for p in partidos_qs if p.division and getattr(p.division, "categoria", "MASC") == "MASC" and p.division_nivel == 2
+    ]
+    partidos_fem = [
+        p for p in partidos_qs if p.division and getattr(p.division, "categoria", "MASC") == "FEM"
+    ]
 
     grupos_fecha = agrupar_partidos(partidos_qs)
     grupos_div1 = agrupar_partidos(partidos_div1)
     grupos_div2 = agrupar_partidos(partidos_div2)
+    grupos_fem = agrupar_partidos(partidos_fem)
 
     return render(
         request,
@@ -355,8 +382,10 @@ def jornada_partidos_add(request, jornada_id):
             "grupos_fecha": grupos_fecha,
             "grupos_div1": grupos_div1,
             "grupos_div2": grupos_div2,
+            "grupos_fem": grupos_fem,
             "partidos_div1": partidos_div1,
             "partidos_div2": partidos_div2,
+            "partidos_fem": partidos_fem,
         },
     )
 
@@ -430,27 +459,40 @@ def equipos(request):
         .order_by("nombre")
     )
 
-    equipos_div1 = []
-    equipos_div2 = []
+    divisiones = list(Division.objects.all().order_by("categoria", "nivel"))
+    equipos_por_div = {div.id: [] for div in divisiones}
     equipos_sin_asignar = []
 
     for eq in equipos_qs:
         part = next((p for p in eq.participaciones.all() if p.temporada_id == getattr(temporada, 'id', None)), None)
-        if part:
+        if part and part.division_id in equipos_por_div:
             eq.division_actual = part.division
-            if part.division.nivel == 1:
-                equipos_div1.append(eq)
-            else:
-                equipos_div2.append(eq)
+            equipos_por_div[part.division_id].append(eq)
         else:
             eq.division_actual = None
             equipos_sin_asignar.append(eq)
+
+    grupos_divisiones = []
+    for div in divisiones:
+        grupos_divisiones.append({
+            "division": div,
+            "equipos": equipos_por_div[div.id],
+            "icono": "🎀" if div.categoria == "FEM" else ("🏆" if div.nivel == 1 else "🥈"),
+            "color_grad": "from-purple-900 via-purple-800 to-slate-900" if div.categoria == "FEM" else ("from-indigo-900 via-indigo-800 to-slate-900" if div.nivel == 1 else "from-amber-900 via-amber-800 to-slate-900"),
+        })
+
+    div1 = next((d for d in divisiones if d.categoria == "MASC" and d.nivel == 1), None) or (divisiones[0] if divisiones else None)
+    div2 = next((d for d in divisiones if d.categoria == "MASC" and d.nivel == 2), None) or (divisiones[1] if len(divisiones) > 1 else None)
+    equipos_div1 = equipos_por_div.get(div1.id, []) if div1 else []
+    equipos_div2 = equipos_por_div.get(div2.id, []) if div2 else []
 
     return render(
         request,
         "ligas/equipos.html",
         {
             "temporada": temporada,
+            "divisiones": divisiones,
+            "grupos_divisiones": grupos_divisiones,
             "equipos_div1": equipos_div1,
             "equipos_div2": equipos_div2,
             "equipos_sin_asignar": equipos_sin_asignar,

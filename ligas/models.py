@@ -22,19 +22,51 @@ MOTIVO_AUSENCIA_CHOICES = [
     ("sancion", "Sanción"),
 ]
 
+CATEGORIA_MASCULINO = "MASC"
+CATEGORIA_FEMENINO = "FEM"
+
+CATEGORIA_CHOICES = [
+    (CATEGORIA_MASCULINO, "Fútbol Masculino"),
+    (CATEGORIA_FEMENINO, "Fútbol Femenino"),
+]
+
 
 class Division(models.Model):
-    """Competición: 1ª y 2ª División del fútbol español."""
+    """Competición o categoría deportiva (1ª Masc, 2ª Masc, Liga F, etc.)."""
 
     nombre = models.CharField(max_length=64, unique=True)
-    nivel = models.PositiveSmallIntegerField(unique=True, help_text="1 para Primera, 2 para Segunda")
-    n_descensos = models.PositiveSmallIntegerField(default=3, help_text="Equipos que descienden al final de temporada")
+    codigo = models.CharField(
+        max_length=16,
+        blank=True,
+        default="",
+        help_text="Identificador corto ej. '1DIV', '2DIV', 'LIGA_F'",
+    )
+    categoria = models.CharField(
+        max_length=8,
+        choices=CATEGORIA_CHOICES,
+        default=CATEGORIA_MASCULINO,
+        help_text="Fútbol Masculino o Femenino",
+    )
+    nivel = models.PositiveSmallIntegerField(
+        help_text="Nivel jerárquico dentro de su categoría (1 para Primera, 2 para Segunda)"
+    )
+    n_descensos = models.PositiveSmallIntegerField(
+        default=3, help_text="Equipos que descienden al final de temporada"
+    )
+    n_champions = models.PositiveSmallIntegerField(
+        default=4, help_text="Equipos clasificados para Champions League (o UWCL)"
+    )
 
     class Meta:
-        ordering = ["nivel"]
+        ordering = ["categoria", "nivel"]
+        unique_together = [("categoria", "nivel")]
 
     def __str__(self):
         return self.nombre
+
+    @property
+    def es_femenino(self) -> bool:
+        return self.categoria == CATEGORIA_FEMENINO
 
 
 class Temporada(models.Model):
@@ -56,11 +88,7 @@ class Temporada(models.Model):
         return Partido.objects.filter(jornada__temporada=self, goles_local__isnull=False)
 
     def aplicar_ascensos_descensos(self):
-        """Regla de negocio: 3 descienden de 1ª y 3 ascienden de 2ª al cierre.
-
-        Crea/actualiza las Participaciones de la temporada siguiente según la
-        clasificación final de la temporada actual.
-        """
+        """Aplica ascensos y descensos al cierre de temporada de forma aislada por categoría."""
         from ligas.services import clasificacion_por_division
 
         temporada_siguiente = (
@@ -72,57 +100,62 @@ class Temporada(models.Model):
             )
 
         movimientos = []
-        for division in Division.objects.order_by("nivel"):
-            clasificacion = clasificacion_por_division(self, division)
-            if not clasificacion:
-                continue
-            equipos = [fila["equipo_id"] for fila in clasificacion]
-            n_descensos = division.n_descensos
-            descendidos = equipos[-n_descensos:] if len(equipos) >= n_descensos else []
-            for pos, equipo in enumerate(equipos, start=1):
-                Participacion.objects.filter(temporada=self, equipo_id=equipo).update(
-                    posicion_final=pos
-                )
-
-            division_inferior = self._division_siguiente(division, subir=False)
-            if division_inferior is not None:
-                # Los que no descienden se mantienen en la misma división.
-                for equipo in equipos[: len(equipos) - len(descendidos)]:
-                    Participacion.objects.update_or_create(
-                        temporada=temporada_siguiente,
-                        equipo_id=equipo,
-                        defaults={"division": division},
-                    )
-                for equipo in descendidos:
-                    movimientos.append((equipo, division, "descenso"))
-                    Participacion.objects.update_or_create(
-                        temporada=temporada_siguiente,
-                        equipo_id=equipo,
-                        defaults={"division": division_inferior},
-                    )
-            else:
-                # No hay división inferior: todos se mantienen.
-                for equipo in equipos:
-                    Participacion.objects.update_or_create(
-                        temporada=temporada_siguiente,
-                        equipo_id=equipo,
-                        defaults={"division": division},
+        categorias = Division.objects.values_list("categoria", flat=True).distinct()
+        for cat in categorias:
+            divs_cat = list(Division.objects.filter(categoria=cat).order_by("nivel"))
+            for division in divs_cat:
+                clasificacion = clasificacion_por_division(self, division)
+                if not clasificacion:
+                    continue
+                equipos = [fila["equipo_id"] for fila in clasificacion]
+                n_descensos = division.n_descensos
+                descendidos = equipos[-n_descensos:] if len(equipos) >= n_descensos else []
+                for pos, equipo in enumerate(equipos, start=1):
+                    Participacion.objects.filter(temporada=self, equipo_id=equipo).update(
+                        posicion_final=pos
                     )
 
-        division_1 = Division.objects.filter(nivel=1).first()
-        division_2 = Division.objects.filter(nivel=2).first()
-        if division_2 and division_1:
-            ascendidos = [
-                fila["equipo_id"]
-                for fila in clasificacion_por_division(self, division_2)[: division_1.n_descensos]
-            ]
-            for equipo in ascendidos:
-                movimientos.append((equipo, division_2, "ascenso"))
-                Participacion.objects.update_or_create(
-                    temporada=temporada_siguiente,
-                    equipo_id=equipo,
-                    defaults={"division": division_1},
-                )
+                division_inferior = self._division_siguiente(division, subir=False)
+                if division_inferior is not None:
+                    # Los que no descienden se mantienen en la misma división.
+                    for equipo in equipos[: len(equipos) - len(descendidos)]:
+                        Participacion.objects.update_or_create(
+                            temporada=temporada_siguiente,
+                            equipo_id=equipo,
+                            defaults={"division": division},
+                        )
+                    for equipo in descendidos:
+                        movimientos.append((equipo, division, "descenso"))
+                        Participacion.objects.update_or_create(
+                            temporada=temporada_siguiente,
+                            equipo_id=equipo,
+                            defaults={"division": division_inferior},
+                        )
+                else:
+                    # No hay división inferior en esta categoría: todos se mantienen.
+                    for equipo in equipos:
+                        Participacion.objects.update_or_create(
+                            temporada=temporada_siguiente,
+                            equipo_id=equipo,
+                            defaults={"division": division},
+                        )
+
+            # Ascensos dentro de la misma categoría (nivel 2 a nivel 1)
+            division_1 = next((d for d in divs_cat if d.nivel == 1), None)
+            division_2 = next((d for d in divs_cat if d.nivel == 2), None)
+            if division_2 and division_1:
+                clasif_div2 = clasificacion_por_division(self, division_2)
+                ascendidos = [
+                    fila["equipo_id"]
+                    for fila in clasif_div2[: division_1.n_descensos]
+                ]
+                for equipo in ascendidos:
+                    movimientos.append((equipo, division_2, "ascenso"))
+                    Participacion.objects.update_or_create(
+                        temporada=temporada_siguiente,
+                        equipo_id=equipo,
+                        defaults={"division": division_1},
+                    )
         return movimientos
 
     @classmethod
@@ -155,8 +188,8 @@ class Temporada(models.Model):
 
     @staticmethod
     def _division_siguiente(division, subir=False):
-        nivel = division.nivel + 1
-        return Division.objects.filter(nivel=nivel).first()
+        nivel = (division.nivel - 1) if subir else (division.nivel + 1)
+        return Division.objects.filter(categoria=division.categoria, nivel=nivel).first()
 
 
 class Equipo(models.Model):

@@ -28,7 +28,9 @@ class EquipoAdminForm(forms.ModelForm):
 
 @admin.register(Division)
 class DivisionAdmin(admin.ModelAdmin):
-    list_display = ("nombre", "nivel", "n_descensos")
+    list_display = ("nombre", "categoria", "nivel", "codigo", "n_champions", "n_descensos")
+    list_filter = ("categoria",)
+    search_fields = ("nombre", "codigo")
 
 
 @admin.register(Temporada)

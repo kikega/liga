@@ -144,10 +144,26 @@ def clasificacion_por_division(temporada, division) -> List[Dict[str, Any]]:
     # Asignar demarcación de zona según posición y división
     total_equipos = len(tabla_ordenada)
     nivel = getattr(division, "nivel", 1)
+    categoria = getattr(division, "categoria", "MASC")
+    n_descensos = getattr(division, "n_descensos", 3)
+    n_champions = getattr(division, "n_champions", 4)
 
     for pos, fila in enumerate(tabla_ordenada, start=1):
         fila["posicion"] = pos
-        if nivel == 1:
+        if categoria == "FEM":
+            if pos <= n_champions:
+                fila["zona_clase"] = "border-l-4 border-purple-500"
+                fila["zona_badge"] = "bg-purple-50 text-purple-700 border-purple-200"
+                fila["zona_tipo"] = "UWCL"
+            elif pos > total_equipos - n_descensos:
+                fila["zona_clase"] = "border-l-4 border-rose-500"
+                fila["zona_badge"] = "bg-rose-50 text-rose-700 border-rose-200"
+                fila["zona_tipo"] = "DESC"
+            else:
+                fila["zona_clase"] = "border-l-4 border-transparent"
+                fila["zona_badge"] = ""
+                fila["zona_tipo"] = ""
+        elif nivel == 1:
             if pos <= 4:
                 fila["zona_clase"] = "border-l-4 border-blue-500"
                 fila["zona_badge"] = "bg-blue-50 text-blue-700 border-blue-200"
@@ -160,7 +176,7 @@ def clasificacion_por_division(temporada, division) -> List[Dict[str, Any]]:
                 fila["zona_clase"] = "border-l-4 border-emerald-500"
                 fila["zona_badge"] = "bg-emerald-50 text-emerald-700 border-emerald-200"
                 fila["zona_tipo"] = "UECL"
-            elif pos > total_equipos - 3:
+            elif pos > total_equipos - n_descensos:
                 fila["zona_clase"] = "border-l-4 border-rose-500"
                 fila["zona_badge"] = "bg-rose-50 text-rose-700 border-rose-200"
                 fila["zona_tipo"] = "DESC"
@@ -177,7 +193,7 @@ def clasificacion_por_division(temporada, division) -> List[Dict[str, Any]]:
                 fila["zona_clase"] = "border-l-4 border-blue-500"
                 fila["zona_badge"] = "bg-blue-50 text-blue-700 border-blue-200"
                 fila["zona_tipo"] = "PLAYOFF"
-            elif pos > total_equipos - 4:
+            elif pos > total_equipos - n_descensos:
                 fila["zona_clase"] = "border-l-4 border-rose-500"
                 fila["zona_badge"] = "bg-rose-50 text-rose-700 border-rose-200"
                 fila["zona_tipo"] = "DESC"

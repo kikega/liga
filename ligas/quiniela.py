@@ -363,7 +363,8 @@ def aplicar_predicciones_a_quiniela(quiniela: Any) -> None:
 
 
 def poblar_casillas_oficiales(quiniela: Any) -> int:
-    """Auto-asigna 10 partidos de 1ª División y 5 de 2ª División de la jornada deportiva a las 15 casillas."""
+    """Auto-asigna los 15 partidos oficiales de la jornada (1ª Masc, 2ª Masc y Liga F coincidentes)."""
+    from datetime import timedelta
     from ligas.models import CasillaQuiniela, Jornada, Partido
 
     temporada = quiniela.temporada
@@ -379,27 +380,67 @@ def poblar_casillas_oficiales(quiniela: Any) -> int:
     if not jornada and not temporada:
         return 0
 
-    # Obtener única y exclusivamente los partidos de la jornada deportiva correspondiente
-    partidos_qs = list(
-        Partido.objects.filter(jornada=jornada)
-        .select_related("local", "visitante")
-        .prefetch_related("local__participaciones__division", "visitante__participaciones__division")
-        .order_by("fecha", "id")
-        if jornada
-        else Partido.objects.filter(jornada__temporada=temporada)
-        .select_related("local", "visitante")
-        .prefetch_related("local__participaciones__division", "visitante__participaciones__division")
-        .order_by("fecha", "id")
+    qs = Partido.objects.select_related("local", "visitante", "jornada__temporada").prefetch_related(
+        "local__participaciones__division", "visitante__participaciones__division"
     )
 
-    p_div1 = [p for p in partidos_qs if p.division_nivel == 1]
-    p_div2 = [p for p in partidos_qs if p.division_nivel == 2]
-    p_otros = [p for p in partidos_qs if p.division_nivel not in (1, 2)]
+    partidos_dict = {}
 
-    # 10 primeros de 1ª División y 5 primeros de 2ª División de esta jornada
-    elegidos = p_div1[:10] + p_div2[:5]
+    if jornada is not None:
+        directos = list(qs.filter(jornada=jornada).order_by("fecha", "id"))
+        for p in directos:
+            partidos_dict[p.id] = p
+
+        fechas = [p.fecha for p in directos if p.fecha]
+        if fechas:
+            f_min = min(fechas) - timedelta(days=2)
+            f_max = max(fechas) + timedelta(days=2)
+            coincidentes = list(
+                qs.filter(
+                    jornada__temporada=jornada.temporada,
+                    fecha__gte=f_min,
+                    fecha__lte=f_max,
+                ).order_by("fecha", "id")
+            )
+            for p in coincidentes:
+                partidos_dict.setdefault(p.id, p)
+        else:
+            p_fem_extra = list(
+                qs.filter(
+                    jornada__temporada=jornada.temporada,
+                    local__participaciones__division__categoria="FEM",
+                ).order_by("jornada__numero", "fecha", "id")[:6]
+            )
+            for p in p_fem_extra:
+                partidos_dict.setdefault(p.id, p)
+    else:
+        partidos_temp = list(qs.filter(jornada__temporada=temporada).order_by("fecha", "id"))
+        for p in partidos_temp:
+            partidos_dict[p.id] = p
+
+    partidos_qs = list(partidos_dict.values())
+
+    p_div1_masc = [
+        p for p in partidos_qs if p.division and getattr(p.division, "categoria", "MASC") == "MASC" and p.division.nivel == 1
+    ]
+    p_div2_masc = [
+        p for p in partidos_qs if p.division and getattr(p.division, "categoria", "MASC") == "MASC" and p.division.nivel == 2
+    ]
+    p_fem = [
+        p for p in partidos_qs if p.division and getattr(p.division, "categoria", "MASC") == "FEM"
+    ]
+    p_otros = [p for p in partidos_qs if p not in (p_div1_masc + p_div2_masc + p_fem)]
+
+    # Priorización oficial 1X2: 10 de 1ª División, 3-4 de 2ª División y 1-2 de Liga Femenina
+    elegidos = p_div1_masc[:10]
+    if p_div2_masc:
+        elegidos += p_div2_masc[: (5 if not p_fem else 3)]
+    if p_fem:
+        espacios_fem = max(1, 15 - len(elegidos))
+        elegidos += p_fem[:espacios_fem]
+
     if len(elegidos) < 15:
-        restantes = [p for p in (p_div1[10:] + p_div2[5:] + p_otros) if p not in elegidos]
+        restantes = [p for p in (p_div1_masc[10:] + p_div2_masc + p_fem + p_otros) if p not in elegidos]
         elegidos += restantes[: (15 - len(elegidos))]
 
     # Guardar en base de datos

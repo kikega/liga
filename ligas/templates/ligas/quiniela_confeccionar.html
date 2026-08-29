@@ -23,16 +23,16 @@
             </div>
             <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight">{{ quiniela.nombre }}</h1>
             <p class="text-slate-300 mt-1 text-sm font-medium">
-                Temporada <strong>{{ temporada.nombre }}</strong> {% if jornada %}· Jornada {{ jornada.numero }}{% endif %}
-                · Configura los 15 partidos de 1ª y 2ª División según el boleto de Loterías y Apuestas del Estado.
+                Temporada <strong>{{ temporada.nombre }}</strong> {% if jornada %}· Jornada Base {{ jornada.numero }}{% endif %}
+                · Configura los 15 partidos de 1ª División, 2ª División y Liga Femenina según el boleto de Loterías y Apuestas del Estado.
             </p>
         </div>
 
         <!-- Barra de Acciones Rápidas -->
         <div class="flex flex-wrap items-center gap-2.5 shrink-0">
-            <!-- Auto-asignar 1ª + 2ª -->
+            <!-- Auto-asignar 15 Oficiales -->
             <form method="post" action="{% url 'ligas:quiniela_confeccionar' quiniela.id %}"
-                  data-confirm="¿Asignar automáticamente 10 partidos de 1ª División y 5 de 2ª División a las casillas 1 a 15 y calcular pronósticos ML?"
+                  data-confirm="¿Asignar automáticamente los 15 partidos oficiales de la jornada (1ª Masc, 2ª Masc y Liga F coincidentes) a las casillas 1 a 15 y calcular pronósticos ML?"
                   data-confirm-title="Auto-asignar Partidos"
                   data-confirm-type="info"
                   data-confirm-btn="Auto-asignar">
@@ -40,7 +40,7 @@
                 <input type="hidden" name="accion" value="autollenar">
                 <button type="submit"
                         class="inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-3.5 py-2.5 rounded-2xl shadow transition cursor-pointer">
-                    ⚡ Auto-asignar 15 (1ª + 2ª)
+                    ⚡ Auto-asignar 15 Oficiales
                 </button>
             </form>
 

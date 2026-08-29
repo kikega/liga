@@ -779,7 +779,7 @@ class VistasConfiguracionTests(TestCase):
         self.assertFalse(Participacion.objects.filter(temporada=self.temporada, equipo=nuevo).exists())
 
     def test_equipo_nuevo_con_division(self):
-        div1 = Division.objects.get(nivel=1)
+        div1 = Division.objects.filter(categoria="MASC", nivel=1).first() or Division.objects.get(nivel=1)
         response = self.client.post("/configuracion/equipos/nuevo/", {
             "nombre": "Nuevo Club",
             "division": div1.id,
@@ -789,3 +789,159 @@ class VistasConfiguracionTests(TestCase):
         self.assertEqual(response.status_code, 302)
         nuevo = Equipo.objects.get(nombre="Nuevo Club")
         self.assertTrue(Participacion.objects.filter(temporada=self.temporada, equipo=nuevo, division=div1).exists())
+
+
+class DivisionFemeninaTests(TestCase):
+    def setUp(self):
+        self.div_masc1 = Division.objects.create(nombre="1ª División Masculina", categoria="MASC", nivel=1, n_descensos=3)
+        self.div_masc2 = Division.objects.create(nombre="2ª División Masculina", categoria="MASC", nivel=2, n_descensos=4)
+        self.div_fem = Division.objects.create(nombre="1ª División Femenina (Liga F)", categoria="FEM", nivel=1, n_champions=3, n_descensos=2)
+        self.temporada = crear_temporada("2024-2025")
+
+    def test_division_femenina_properties(self):
+        self.assertTrue(self.div_fem.es_femenino)
+        self.assertFalse(self.div_masc1.es_femenino)
+        self.assertEqual(self.div_fem.n_champions, 3)
+        self.assertEqual(self.div_fem.n_descensos, 2)
+
+    def test_clasificacion_liga_f_zonas_uwcl_y_descenso(self):
+        equipos = [Equipo.objects.create(nombre=f"Fem Team {i}") for i in range(1, 7)]
+        for eq in equipos:
+            Participacion.objects.create(temporada=self.temporada, equipo=eq, division=self.div_fem)
+
+        j1 = Jornada.objects.create(temporada=self.temporada, numero=1)
+        # 1 beats 2 (3 pts), 3 beats 4 (3 pts), 5 draws 6 (1 pt each)
+        p1 = Partido.objects.create(jornada=j1, local=equipos[0], visitante=equipos[1], goles_local=3, goles_visitante=0)
+        p2 = Partido.objects.create(jornada=j1, local=equipos[2], visitante=equipos[3], goles_local=2, goles_visitante=1)
+        p3 = Partido.objects.create(jornada=j1, local=equipos[4], visitante=equipos[5], goles_local=1, goles_visitante=1)
+
+        clasif = clasificacion_por_division(self.temporada, self.div_fem)
+        self.assertEqual(len(clasif), 6)
+        
+        # Puestos 1, 2, 3 deben tener UWCL
+        self.assertEqual(clasif[0]["zona_tipo"], "UWCL")
+        self.assertEqual(clasif[1]["zona_tipo"], "UWCL")
+        self.assertEqual(clasif[2]["zona_tipo"], "UWCL")
+        self.assertIn("border-purple-500", clasif[0]["zona_clase"])
+
+        # Puesto 4 neutral
+        self.assertEqual(clasif[3]["zona_tipo"], "")
+
+        # Puestos 5 y 6 (últimos 2 con n_descensos=2) deben ser DESC
+        self.assertEqual(clasif[4]["zona_tipo"], "DESC")
+        self.assertEqual(clasif[5]["zona_tipo"], "DESC")
+        self.assertIn("border-rose-500", clasif[4]["zona_clase"])
+
+    def test_ascensos_descensos_aislados_por_categoria(self):
+        temporada_sig = crear_temporada("2025-2026", activa=False)
+        
+        # Equipos femeninos
+        fem_eqs = [Equipo.objects.create(nombre=f"Fem {i}") for i in range(1, 5)]
+        for eq in fem_eqs:
+            Participacion.objects.create(temporada=self.temporada, equipo=eq, division=self.div_fem)
+
+        # Equipos masculinos en 1ª y 2ª
+        masc_1 = [Equipo.objects.create(nombre=f"Masc1_{i}") for i in range(1, 5)]
+        for eq in masc_1:
+            Participacion.objects.create(temporada=self.temporada, equipo=eq, division=self.div_masc1)
+
+        masc_2 = [Equipo.objects.create(nombre=f"Masc2_{i}") for i in range(1, 5)]
+        for eq in masc_2:
+            Participacion.objects.create(temporada=self.temporada, equipo=eq, division=self.div_masc2)
+
+        j1 = Jornada.objects.create(temporada=self.temporada, numero=1)
+        for i in range(0, 4, 2):
+            Partido.objects.create(jornada=j1, local=fem_eqs[i], visitante=fem_eqs[i+1], goles_local=2, goles_visitante=0)
+            Partido.objects.create(jornada=j1, local=masc_1[i], visitante=masc_1[i+1], goles_local=2, goles_visitante=0)
+            Partido.objects.create(jornada=j1, local=masc_2[i], visitante=masc_2[i+1], goles_local=2, goles_visitante=0)
+
+        movimientos = self.temporada.aplicar_ascensos_descensos()
+        
+        # Verificar que todos los equipos femeninos siguen en div_fem en la temporada siguiente
+        for eq in fem_eqs:
+            part_sig = Participacion.objects.get(temporada=temporada_sig, equipo=eq)
+            self.assertEqual(part_sig.division, self.div_fem)
+
+    def test_poblar_casillas_con_partidos_femeninos(self):
+        jornada = Jornada.objects.create(temporada=self.temporada, numero=1)
+        
+        # Crear 8 partidos masc 1ª, 4 partidos masc 2ª, 3 partidos Liga F (total 15)
+        partidos = []
+        for i in range(8):
+            l = Equipo.objects.create(nombre=f"M1_L_{i}")
+            v = Equipo.objects.create(nombre=f"M1_V_{i}")
+            Participacion.objects.create(temporada=self.temporada, equipo=l, division=self.div_masc1)
+            Participacion.objects.create(temporada=self.temporada, equipo=v, division=self.div_masc1)
+            partidos.append(Partido.objects.create(jornada=jornada, local=l, visitante=v))
+
+        for i in range(4):
+            l = Equipo.objects.create(nombre=f"M2_L_{i}")
+            v = Equipo.objects.create(nombre=f"M2_V_{i}")
+            Participacion.objects.create(temporada=self.temporada, equipo=l, division=self.div_masc2)
+            Participacion.objects.create(temporada=self.temporada, equipo=v, division=self.div_masc2)
+            partidos.append(Partido.objects.create(jornada=jornada, local=l, visitante=v))
+
+        for i in range(3):
+            l = Equipo.objects.create(nombre=f"F_L_{i}")
+            v = Equipo.objects.create(nombre=f"F_V_{i}")
+            Participacion.objects.create(temporada=self.temporada, equipo=l, division=self.div_fem)
+            Participacion.objects.create(temporada=self.temporada, equipo=v, division=self.div_fem)
+            partidos.append(Partido.objects.create(jornada=jornada, local=l, visitante=v))
+
+        quiniela = Quiniela.objects.create(temporada=self.temporada, jornada=jornada, numero=1, nombre="Quiniela Mixta")
+        from ligas.quiniela import poblar_casillas_oficiales
+        n_poblados = poblar_casillas_oficiales(quiniela)
+        self.assertEqual(n_poblados, 15)
+        self.assertEqual(quiniela.casillas.count(), 15)
+
+        # Comprobar que hay partidos de Liga F asignados en las casillas
+        casillas_partidos = [c.partido for c in quiniela.casillas.all()]
+        partidos_fem_en_quiniela = [p for p in casillas_partidos if p.division == self.div_fem]
+        self.assertEqual(len(partidos_fem_en_quiniela), 3)
+
+    def test_quiniela_con_jornadas_desfasadas_por_fecha(self):
+        # 1ª y 2ª Masculina en Jornada 3 (31 de Agosto)
+        jornada_3 = Jornada.objects.create(temporada=self.temporada, numero=3)
+        fecha_fin_semana = date(2024, 8, 31)
+
+        for i in range(10):
+            l = Equipo.objects.create(nombre=f"M1_J3_L_{i}")
+            v = Equipo.objects.create(nombre=f"M1_J3_V_{i}")
+            Participacion.objects.create(temporada=self.temporada, equipo=l, division=self.div_masc1)
+            Participacion.objects.create(temporada=self.temporada, equipo=v, division=self.div_masc1)
+            Partido.objects.create(jornada=jornada_3, local=l, visitante=v, fecha=fecha_fin_semana)
+
+        for i in range(5):
+            l = Equipo.objects.create(nombre=f"M2_J3_L_{i}")
+            v = Equipo.objects.create(nombre=f"M2_J3_V_{i}")
+            Participacion.objects.create(temporada=self.temporada, equipo=l, division=self.div_masc2)
+            Participacion.objects.create(temporada=self.temporada, equipo=v, division=self.div_masc2)
+            Partido.objects.create(jornada=jornada_3, local=l, visitante=v, fecha=fecha_fin_semana)
+
+        # Liga F en Jornada 1 (Misma fecha: 31 de Agosto)
+        jornada_1 = Jornada.objects.create(temporada=self.temporada, numero=1)
+        for i in range(4):
+            l = Equipo.objects.create(nombre=f"F_J1_L_{i}")
+            v = Equipo.objects.create(nombre=f"F_J1_V_{i}")
+            Participacion.objects.create(temporada=self.temporada, equipo=l, division=self.div_fem)
+            Participacion.objects.create(temporada=self.temporada, equipo=v, division=self.div_fem)
+            Partido.objects.create(jornada=jornada_1, local=l, visitante=v, fecha=fecha_fin_semana)
+
+        from ligas.forms import obtener_partidos_choices
+        from ligas.quiniela import poblar_casillas_oficiales
+
+        choices = obtener_partidos_choices(temporada=self.temporada, jornada=jornada_3)
+        titulos_grupos = [grupo[0] for grupo in choices if grupo[0]]
+        self.assertTrue(any("1ª División Masculina" in t for t in titulos_grupos))
+        self.assertTrue(any("2ª División Masculina" in t for t in titulos_grupos))
+        self.assertTrue(any("Liga F" in t for t in titulos_grupos))
+
+        # Auto-asignar a la Quiniela vinculada a la Jornada 3
+        quiniela = Quiniela.objects.create(temporada=self.temporada, jornada=jornada_3, numero=3, nombre="Quiniela J3")
+        n_poblados = poblar_casillas_oficiales(quiniela)
+        self.assertEqual(n_poblados, 15)
+
+        partidos_asignados = [c.partido for c in quiniela.casillas.all()]
+        fem_en_quiniela = [p for p in partidos_asignados if p.division == self.div_fem]
+        self.assertGreater(len(fem_en_quiniela), 0)
+        self.assertEqual(fem_en_quiniela[0].jornada.numero, 1)

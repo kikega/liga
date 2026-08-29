@@ -25,11 +25,22 @@ def _temporada_activa():
 
 
 def _division_desde_parametro(request):
-    nivel = request.GET.get("division") or "1"
-    try:
-        return Division.objects.get(nivel=int(nivel))
-    except (Division.DoesNotExist, ValueError):
-        return Division.objects.order_by("nivel").first()
+    div_param = (request.GET.get("division") or "").strip()
+    if div_param:
+        if div_param.isdigit():
+            div_por_pk = Division.objects.filter(pk=int(div_param)).first()
+            if div_por_pk:
+                return div_por_pk
+            div_por_nivel = Division.objects.filter(nivel=int(div_param)).order_by("categoria", "nivel").first()
+            if div_por_nivel:
+                return div_por_nivel
+        div_por_codigo = Division.objects.filter(codigo__iexact=div_param).first()
+        if div_por_codigo:
+            return div_por_codigo
+        div_por_nombre = Division.objects.filter(nombre__icontains=div_param).first()
+        if div_por_nombre:
+            return div_por_nombre
+    return Division.objects.order_by("categoria", "nivel").first()
 
 
 def dashboard(request):
@@ -40,7 +51,7 @@ def dashboard(request):
         return render(
             request,
             "ligas/dashboard.html",
-            {"config": config, "temporadas": [], "divisiones": Division.objects.order_by("nivel")},
+            {"config": config, "temporadas": [], "divisiones": Division.objects.order_by("categoria", "nivel")},
         )
 
     temporada_id = request.GET.get("temporada")
@@ -71,7 +82,7 @@ def dashboard(request):
 
     grupos_resultados = []
     if jornada_sel is not None:
-        for div in Division.objects.order_by("nivel"):
+        for div in Division.objects.order_by("categoria", "nivel"):
             partidos_div = [
                 p for p in jornada_sel.partidos.all() if p.division_temporada_id == div.id
             ]
@@ -94,7 +105,7 @@ def dashboard(request):
                 "local__participaciones", "visitante__participaciones"
             )
         )
-        for div in Division.objects.order_by("nivel"):
+        for div in Division.objects.order_by("categoria", "nivel"):
             partidos_div = [
                 p for p in proxima_partidos if p.division_temporada_id == div.id
             ]
@@ -105,7 +116,7 @@ def dashboard(request):
         "config": config,
         "temporadas": temporadas,
         "temporada": temporada,
-        "divisiones": Division.objects.order_by("nivel"),
+        "divisiones": Division.objects.order_by("categoria", "nivel"),
         "division": division,
         "jornadas": jornadas,
         "jornada_sel": jornada_sel,
@@ -143,7 +154,7 @@ def predicciones(request):
                 "partido__local", "partido__visitante"
             )
         )
-        for div in Division.objects.order_by("nivel"):
+        for div in Division.objects.order_by("categoria", "nivel"):
             partidos_div = [
                 p for p in jornada.partidos.all() if p.division_temporada_id == div.id
             ]

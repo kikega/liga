@@ -52,7 +52,7 @@
                 <span class="text-xl">🎟️</span>
                 <div>
                     <h2 class="font-black text-white text-base">Confección de Quinielas</h2>
-                    <p class="text-[11px] text-indigo-200">14 partidos 1X2 + Pleno al 15 (1ª y 2ª Div)</p>
+                    <p class="text-[11px] text-indigo-200">14 partidos 1X2 + Pleno al 15 (1ª, 2ª y Liga F)</p>
                 </div>
             </div>
             <p class="text-xs text-slate-300 my-3">
@@ -62,6 +62,47 @@
                class="w-full inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-2xl px-4 py-2.5 text-xs shadow-md transition">
                 ⚙️ Gestionar y Confeccionar Quinielas →
             </a>
+        </div>
+
+        <!-- Tarjeta 0B: Divisiones y Categorías Deportivas -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6">
+            <div class="flex items-center justify-between gap-2 mb-2">
+                <div class="flex items-center gap-2">
+                    <span class="text-xl">🏆</span>
+                    <div>
+                        <h2 class="font-extrabold text-slate-900 text-base">Divisiones Registradas</h2>
+                        <p class="text-[11px] text-slate-500">Competiciones activas del sistema.</p>
+                    </div>
+                </div>
+                <a href="{% url 'ligas:equipos' %}" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 transition">
+                    Ver Equipos →
+                </a>
+            </div>
+
+            <div class="divide-y divide-slate-100 my-3">
+                {% for d in divisiones %}
+                <div class="py-2 flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-2">
+                        <span>{% if d.categoria == 'FEM' %}🎀{% elif d.nivel == 1 %}🏆{% else %}🥈{% endif %}</span>
+                        <strong class="text-slate-800">{{ d.nombre }}</strong>
+                    </div>
+                    <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full {% if d.categoria == 'FEM' %}bg-purple-50 text-purple-700 border border-purple-200{% elif d.nivel == 1 %}bg-indigo-50 text-indigo-700 border border-indigo-200{% else %}bg-amber-50 text-amber-800 border border-amber-200{% endif %}">
+                        {{ d.get_categoria_display }}
+                    </span>
+                </div>
+                {% empty %}
+                <p class="py-2 text-xs text-slate-400">No hay divisiones registradas.</p>
+                {% endfor %}
+            </div>
+
+            <form method="post" class="mt-3">
+                {% csrf_token %}
+                <input type="hidden" name="accion" value="init_liga_f">
+                <button type="submit"
+                        class="w-full inline-flex items-center justify-center gap-1.5 bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 font-bold rounded-2xl px-4 py-2.5 text-xs transition cursor-pointer">
+                    🎀 Inicializar / Sincronizar Liga Femenina
+                </button>
+            </form>
         </div>
 
         <!-- Tarjeta 1: Selección de Próxima Jornada Activa -->

@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from django import forms
 from django.db.models import Max, Q
 from django.utils.dateparse import parse_date, parse_datetime
@@ -67,30 +67,29 @@ def parse_fecha_flexible(fecha_val):
 
 def obtener_equipos_choices(temporada=None):
     """Devuelve las opciones de equipos agrupadas limpiamente por división."""
-    div1 = Division.objects.filter(nivel=1).first()
-    div2 = Division.objects.filter(nivel=2).first()
-
-    equipos_1 = []
-    equipos_2 = []
+    divisiones = list(Division.objects.all().order_by("categoria", "nivel"))
+    choices = [("", "Selecciona equipo")]
     ids_usados = set()
 
-    if temporada is not None:
-        p1 = Participacion.objects.filter(temporada=temporada, division=div1).select_related("equipo").order_by("equipo__nombre")
-        p2 = Participacion.objects.filter(temporada=temporada, division=div2).select_related("equipo").order_by("equipo__nombre")
-        equipos_1 = [p.equipo for p in p1]
-        equipos_2 = [p.equipo for p in p2]
-        ids_usados = {e.id for e in equipos_1} | {e.id for e in equipos_2}
+    for div in divisiones:
+        if temporada is not None:
+            partic = (
+                Participacion.objects.filter(temporada=temporada, division=div)
+                .select_related("equipo")
+                .order_by("equipo__nombre")
+            )
+            equipos = [p.equipo for p in partic]
+        else:
+            equipos = list(
+                Equipo.objects.filter(participaciones__division=div)
+                .distinct()
+                .order_by("nombre")
+            )
 
-    if not equipos_1 and not equipos_2:
-        equipos_1 = list(Equipo.objects.filter(participaciones__division__nivel=1).distinct().order_by("nombre"))
-        equipos_2 = list(Equipo.objects.filter(participaciones__division__nivel=2).distinct().order_by("nombre"))
-        ids_usados = {e.id for e in equipos_1} | {e.id for e in equipos_2}
-
-    choices = [("", "Selecciona equipo")]
-    if equipos_1:
-        choices.append(("🏆 1ª División (LaLiga EA Sports)", [(e.id, e.nombre) for e in equipos_1]))
-    if equipos_2:
-        choices.append(("🥈 2ª División (LaLiga Hypermotion)", [(e.id, e.nombre) for e in equipos_2]))
+        if equipos:
+            ids_usados.update(e.id for e in equipos)
+            icono = "🎀" if div.categoria == "FEM" else ("🏆" if div.nivel == 1 else "🥈")
+            choices.append((f"{icono} {div.nombre}", [(e.id, e.nombre) for e in equipos]))
 
     otros = list(Equipo.objects.exclude(id__in=ids_usados).order_by("nombre"))
     if otros:
@@ -297,39 +296,92 @@ class PartidoRowForm(forms.Form):
 
 
 def obtener_partidos_choices(temporada=None, jornada=None):
-    """Devuelve única y exclusivamente los partidos de la jornada deportiva indicada,
+    """Devuelve los partidos de la jornada deportiva indicada y aquellos coincidentes en fechas
 
-    agrupados por 1ª División y 2ª División.
+    (por ejemplo, 1ª/2ª Masc J3 + Liga F J1), agrupados por división.
     """
     qs = Partido.objects.select_related("local", "visitante", "jornada__temporada").prefetch_related(
         "local__participaciones__division", "visitante__participaciones__division"
     )
+
+    partidos_dict = {}
+
     if jornada is not None:
-        partidos = list(qs.filter(jornada=jornada).order_by("fecha", "id"))
+        # 1. Partidos directos de la jornada deportiva base
+        directos = list(qs.filter(jornada=jornada).order_by("fecha", "id"))
+        for p in directos:
+            partidos_dict[p.id] = p
+
+        # 2. Sincronización por fechas de fin de semana (±2 días)
+        fechas = [p.fecha for p in directos if p.fecha]
+        if fechas:
+            f_min = min(fechas) - timedelta(days=2)
+            f_max = max(fechas) + timedelta(days=2)
+            coincidentes = list(
+                qs.filter(
+                    jornada__temporada=jornada.temporada,
+                    fecha__gte=f_min,
+                    fecha__lte=f_max,
+                ).order_by("fecha", "id")
+            )
+            for p in coincidentes:
+                partidos_dict.setdefault(p.id, p)
+
+        # 3. Si alguna categoría (como Liga F) no tiene partidos por fecha aún, incluir los de su jornada abierta más cercana
+        divisiones = list(Division.objects.all().order_by("categoria", "nivel"))
+        div_ids_presentes = {p.division_temporada_id for p in partidos_dict.values()}
+        for div in divisiones:
+            if div.id not in div_ids_presentes:
+                p_extra = list(
+                    qs.filter(
+                        jornada__temporada=jornada.temporada,
+                        local__participaciones__division=div,
+                    ).order_by("jornada__numero", "fecha", "id")[:10]
+                )
+                for p in p_extra:
+                    partidos_dict.setdefault(p.id, p)
+
+        partidos = list(partidos_dict.values())
     elif temporada is not None:
         partidos = list(qs.filter(jornada__temporada=temporada).order_by("jornada__numero", "fecha", "id"))
     else:
-        partidos = list(qs.order_by("-id")[:30])
+        partidos = list(qs.order_by("-id")[:40])
 
-    partidos_div1 = [p for p in partidos if p.division_nivel == 1]
-    partidos_div2 = [p for p in partidos if p.division_nivel == 2]
-    otros = [p for p in partidos if p.division_nivel not in (1, 2)]
+    divisiones = list(Division.objects.all().order_by("categoria", "nivel"))
+    partidos_por_div = {div.id: [] for div in divisiones}
+    partidos_sin_div = []
+
+    for p in partidos:
+        div_id = p.division_temporada_id
+        if div_id in partidos_por_div:
+            partidos_por_div[div_id].append(p)
+        else:
+            partidos_sin_div.append(p)
 
     choices = [("", "— Selecciona partido de la jornada —")]
-    if partidos_div1:
+    for div in divisiones:
+        p_list = partidos_por_div[div.id]
+        if p_list:
+            j_nums = sorted(list({p.jornada.numero for p in p_list if getattr(p, "jornada", None)}))
+            j_str = f" (J{'/J'.join(str(n) for n in j_nums)})" if j_nums else ""
+            icono = "🎀" if div.categoria == "FEM" else ("🏆" if div.nivel == 1 else "🥈")
+            choices.append((
+                f"{icono} {div.nombre}{j_str} ({len(p_list)} partidos)",
+                [
+                    (
+                        p.id,
+                        f"{p.local.nombre} vs {p.visitante.nombre}"
+                        + (f" [J{p.jornada.numero}]" if p.jornada else "")
+                        + (f" ({p.fecha.strftime('%d/%m')})" if p.fecha else ""),
+                    )
+                    for p in p_list
+                ],
+            ))
+
+    if partidos_sin_div:
         choices.append((
-            f"🏆 Primera División (LaLiga EA Sports - {len(partidos_div1)} partidos)",
-            [(p.id, f"{p.local.nombre} vs {p.visitante.nombre}") for p in partidos_div1],
-        ))
-    if partidos_div2:
-        choices.append((
-            f"🥈 Segunda División (LaLiga Hypermotion - {len(partidos_div2)} partidos)",
-            [(p.id, f"{p.local.nombre} vs {p.visitante.nombre}") for p in partidos_div2],
-        ))
-    if otros:
-        choices.append((
-            f"⚽ Otros Partidos ({len(otros)} partidos)",
-            [(p.id, f"{p.local.nombre} vs {p.visitante.nombre}") for p in otros],
+            f"⚽ Otros Partidos ({len(partidos_sin_div)} partidos)",
+            [(p.id, f"{p.local.nombre} vs {p.visitante.nombre}") for p in partidos_sin_div],
         ))
     return choices
 

@@ -24,7 +24,9 @@
                 <td class="py-3 px-3 sm:px-4 text-center font-extrabold text-slate-600">
                     <div class="flex items-center justify-center gap-1.5">
                         <span>{{ fila.posicion }}</span>
-                        {% if fila.zona_tipo == 'UCL' %}
+                        {% if fila.zona_tipo == 'UWCL' %}
+                        <span class="h-1.5 w-1.5 rounded-full bg-purple-500 hidden sm:inline-block" title="UEFA Women's Champions League"></span>
+                        {% elif fila.zona_tipo == 'UCL' %}
                         <span class="h-1.5 w-1.5 rounded-full bg-blue-500 hidden sm:inline-block" title="Zona Champions League"></span>
                         {% elif fila.zona_tipo == 'UEL' %}
                         <span class="h-1.5 w-1.5 rounded-full bg-amber-500 hidden sm:inline-block" title="Zona Europa League"></span>
@@ -97,15 +99,18 @@
 <!-- Leyenda de Zonas de Competición -->
 <div class="px-5 py-3.5 bg-slate-50/90 border-t border-slate-100 text-[11px] text-slate-500 flex flex-wrap items-center gap-4">
     <span class="font-bold text-slate-700 uppercase tracking-wider text-[10px]">Leyenda:</span>
-    {% if division.nivel == 1 %}
+    {% if division.categoria == 'FEM' %}
+    <div class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-purple-500"></span> Women's Champions League (1-{{ division.n_champions }})</div>
+    <div class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-rose-500"></span> Descenso (Últimos {{ division.n_descensos }})</div>
+    {% elif division.nivel == 1 %}
     <div class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-blue-500"></span> Champions League (1-4)</div>
     <div class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-amber-500"></span> Europa League (5)</div>
     <div class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span> Conference League (6)</div>
-    <div class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-rose-500"></span> Descenso (18-20)</div>
+    <div class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-rose-500"></span> Descenso (Últimos {{ division.n_descensos }})</div>
     {% else %}
     <div class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span> Ascenso Directo (1-2)</div>
     <div class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-blue-500"></span> Playoff de Ascenso (3-6)</div>
-    <div class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-rose-500"></span> Descenso (19-22)</div>
+    <div class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-rose-500"></span> Descenso (Últimos {{ division.n_descensos }})</div>
     {% endif %}
 </div>
 {% else %}

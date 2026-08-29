@@ -57,11 +57,13 @@ FORMATOS_FECHA = ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M", "%Y-%m-%d %H:%M:%S.%f")
 
 def normalizar_division(valor):
     texto = str(valor or "").strip().lower()
-    if texto.startswith("1") or texto.startswith("primera"):
-        return 1
+    if "fem" in texto or "liga f" in texto or "liga_f" in texto:
+        return ("FEM", 1, "1ª División (Liga F)", "LIGA_F")
     if texto.startswith("2") or texto.startswith("segunda"):
-        return 2
-    raise CommandError(f"División no reconocida: {valor!r} (usa '1' o '2').")
+        return ("MASC", 2, "2ª División", "2DIV")
+    if texto.startswith("1") or texto.startswith("primera"):
+        return ("MASC", 1, "1ª División", "1DIV")
+    raise CommandError(f"División no reconocida: {valor!r} (usa '1', '2', 'Liga F' o 'Femenino').")
 
 
 def parsear_fecha(valor):
@@ -158,10 +160,12 @@ class Command(BaseCommand):
 
     def _procesar_fila(self, fila, resumen, creados, fecha_a_jornada):
         temporada, es_nueva_t = self._get_temporada(fila["temporada"])
-        division = Division.objects.get_or_create(
-            nivel=normalizar_division(fila["division"]),
-            defaults={"nombre": f"{normalizar_division(fila['division'])}ª División"},
-        )[0]
+        cat, nivel, nombre_def, cod_def = normalizar_division(fila["division"])
+        division, _ = Division.objects.get_or_create(
+            categoria=cat,
+            nivel=nivel,
+            defaults={"nombre": nombre_def, "codigo": cod_def},
+        )
         jornada, _ = Jornada.objects.get_or_create(
             temporada=temporada,
             numero=self._numero_jornada(fila, temporada, fecha_a_jornada),
