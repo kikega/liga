@@ -83,17 +83,17 @@ class PuntosTests(TestCase):
 
 class ClasificacionTests(TestCase):
     def setUp(self):
-        div = crear_division(1)
+        self.div = crear_division(1)
         self.temporada = crear_temporada()
         self.e1, self.e2, self.e3, self.e4 = crear_equipos("Real", "Atletico", "Valencia", "Sevilla")
         for e in (self.e1, self.e2, self.e3, self.e4):
-            Participacion.objects.create(temporada=self.temporada, equipo=e, division=div)
+            Participacion.objects.create(temporada=self.temporada, equipo=e, division=self.div)
         j1 = Jornada.objects.create(temporada=self.temporada, numero=1)
         Partido.objects.create(jornada=j1, local=self.e1, visitante=self.e2, goles_local=2, goles_visitante=0)
         Partido.objects.create(jornada=j1, local=self.e3, visitante=self.e1, goles_local=0, goles_visitante=1)
 
     def test_orden_y_puntos(self):
-        clasificacion = clasificacion_por_division(self.temporada, Division.objects.get(nivel=1))
+        clasificacion = clasificacion_por_division(self.temporada, self.div)
         # Sevilla no ha jugado partidos pero debe figurar con 0 puntos
         self.assertEqual(len(clasificacion), 4)
         nombres = [f["nombre"] for f in clasificacion]
@@ -793,9 +793,9 @@ class VistasConfiguracionTests(TestCase):
 
 class DivisionFemeninaTests(TestCase):
     def setUp(self):
-        self.div_masc1 = Division.objects.create(nombre="1ª División Masculina", categoria="MASC", nivel=1, n_descensos=3)
-        self.div_masc2 = Division.objects.create(nombre="2ª División Masculina", categoria="MASC", nivel=2, n_descensos=4)
-        self.div_fem = Division.objects.create(nombre="1ª División Femenina (Liga F)", categoria="FEM", nivel=1, n_champions=3, n_descensos=2)
+        self.div_masc1, _ = Division.objects.get_or_create(nombre="1ª División Masculina", defaults={"categoria": "MASC", "nivel": 1, "n_descensos": 3})
+        self.div_masc2, _ = Division.objects.get_or_create(nombre="2ª División Masculina", defaults={"categoria": "MASC", "nivel": 2, "n_descensos": 4})
+        self.div_fem, _ = Division.objects.get_or_create(nombre="1ª División Femenina (Liga F)", defaults={"categoria": "FEM", "nivel": 1, "n_champions": 3, "n_descensos": 2})
         self.temporada = crear_temporada("2024-2025")
 
     def test_division_femenina_properties(self):
@@ -945,3 +945,105 @@ class DivisionFemeninaTests(TestCase):
         fem_en_quiniela = [p for p in partidos_asignados if p.division == self.div_fem]
         self.assertGreater(len(fem_en_quiniela), 0)
         self.assertEqual(fem_en_quiniela[0].jornada.numero, 1)
+
+
+class QuinielaPronosticoPersistenciaTests(TestCase):
+    def setUp(self):
+        self.div1, _ = Division.objects.get_or_create(nombre="1ª División", defaults={"nivel": 1})
+        self.div2, _ = Division.objects.get_or_create(nombre="2ª División", defaults={"nivel": 2})
+        self.temporada = crear_temporada("2024-2025", activa=True)
+        self.jornada_1 = Jornada.objects.create(temporada=self.temporada, numero=1)
+        self.jornada_2 = Jornada.objects.create(temporada=self.temporada, numero=2)
+
+        # Crear 40 equipos
+        self.equipos = [Equipo.objects.create(nombre=f"Team_{i}") for i in range(40)]
+        for i, eq in enumerate(self.equipos):
+            div = self.div1 if i < 20 else self.div2
+            Participacion.objects.create(temporada=self.temporada, equipo=eq, division=div)
+
+        # Crear partidos en J1
+        self.partidos_j1 = []
+        for i in range(10):
+            p = Partido.objects.create(jornada=self.jornada_1, local=self.equipos[i*2], visitante=self.equipos[i*2+1])
+            self.partidos_j1.append(p)
+
+        # Crear partidos en J2
+        self.partidos_j2 = []
+        for i in range(10):
+            p = Partido.objects.create(jornada=self.jornada_2, local=self.equipos[20 + i*2], visitante=self.equipos[20 + i*2+1])
+            self.partidos_j2.append(p)
+
+    def test_pronostico_se_cine_a_partidos_grabados_en_quiniela(self):
+        """Verifica que una vez grabados los partidos en la Quiniela, generar pronóstico respeta exactamente esos partidos."""
+        quiniela = Quiniela.objects.create(
+            temporada=self.temporada,
+            jornada=self.jornada_1,
+            numero=1,
+            nombre="Quiniela Personalizada",
+            activa=True,
+            n_dobles=2,
+            n_triples=1,
+        )
+
+        # Asignar 15 partidos personalizados (combinación de J1 y J2 en orden arbitrario)
+        partidos_elegidos = self.partidos_j2[:8] + self.partidos_j1[:7]
+        self.assertEqual(len(partidos_elegidos), 15)
+
+        for pos, p in enumerate(partidos_elegidos, start=1):
+            CasillaQuiniela.objects.create(
+                quiniela=quiniela,
+                posicion=pos,
+                partido=p,
+            )
+
+        # Generar los pronósticos
+        aplicar_predicciones_a_quiniela(quiniela)
+
+        # Verificar que las casillas NO han cambiado sus partidos
+        casillas_actuales = list(quiniela.casillas.order_by("posicion"))
+        self.assertEqual(len(casillas_actuales), 15)
+
+        for idx, c in enumerate(casillas_actuales):
+            self.assertEqual(
+                c.partido_id,
+                partidos_elegidos[idx].id,
+                f"La casilla {c.posicion} cambió de partido: esperado {partidos_elegidos[idx]}, obtenido {c.partido}"
+            )
+            self.assertIn(c.tipo_apuesta, ("FIJO", "DOBLE", "TRIPLE"))
+            self.assertTrue(len(c.signos_jugados) >= 1)
+
+        # El pleno al 15 debe tener pronóstico
+        self.assertIsNotNone(casillas_actuales[14].pronostico_pleno)
+
+    def test_vista_confeccionar_guardar_casillas_y_generar_predicciones(self):
+        """Verifica que enviar el formulario con 'generar_predicciones' guarda los partidos y calcula pronósticos."""
+        usuario = Usuario.objects.create_superuser("admin_persist@test.com", "pass")
+        client = Client()
+        client.force_login(usuario)
+
+        quiniela = Quiniela.objects.create(
+            temporada=self.temporada,
+            jornada=self.jornada_1,
+            numero=1,
+            nombre="Quiniela Post Test",
+            activa=True,
+        )
+
+        partidos_custom = self.partidos_j2[:10] + self.partidos_j1[:5]
+        post_data = {
+            "accion": "generar_predicciones",
+        }
+        for pos, p in enumerate(partidos_custom, start=1):
+            post_data[f"partido_pos_{pos}"] = str(p.id)
+
+        from django.urls import reverse
+        url = reverse("ligas:quiniela_confeccionar", kwargs={"quiniela_id": quiniela.id})
+        resp = client.post(url, post_data)
+        self.assertEqual(resp.status_code, 302)
+
+        # Verificar que se grabaron los 15 partidos
+        casillas = list(quiniela.casillas.order_by("posicion"))
+        self.assertEqual(len(casillas), 15)
+        for idx, c in enumerate(casillas):
+            self.assertEqual(c.partido_id, partidos_custom[idx].id)
+            self.assertTrue(len(c.signos_jugados) >= 1)

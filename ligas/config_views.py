@@ -650,8 +650,8 @@ def quiniela_confeccionar(request, quiniela_id):
         )
         return redirect("ligas:quiniela_confeccionar", quiniela_id=quiniela.id)
 
-    # 2. GUARDAR CASILLAS ASIGNADAS MANUALMENTE
-    if request.method == "POST" and request.POST.get("accion") == "guardar_casillas":
+    # 2. GUARDAR CASILLAS Y/O GENERAR PRONÓSTICOS ML
+    if request.method == "POST" and request.POST.get("accion") in ("guardar_casillas", "generar_predicciones", "guardar_y_predecir"):
         actualizadas = 0
         partidos_asignados = set()
 
@@ -671,7 +671,10 @@ def quiniela_confeccionar(request, quiniela_id):
                         actualizadas += 1
 
         aplicar_predicciones_a_quiniela(quiniela)
-        messages.success(request, f"¡Casillas actualizadas ({actualizadas}/15) y pronósticos ML recalculados!")
+        if actualizadas > 0:
+            messages.success(request, f"¡Casillas guardadas ({actualizadas}/15) y pronósticos ML calculados para la Quiniela!")
+        else:
+            messages.success(request, "¡Pronósticos ML recalculados respetando los 15 partidos grabados en la Quiniela!")
         return redirect("ligas:quiniela_confeccionar", quiniela_id=quiniela.id)
 
     # 3. MOVER CASILLA ARRIBA / ABAJO
@@ -700,13 +703,7 @@ def quiniela_confeccionar(request, quiniela_id):
                 messages.success(request, f"Casilla {pos} intercambiada con Casilla {target_pos}.")
         return redirect("ligas:quiniela_confeccionar", quiniela_id=quiniela.id)
 
-    # 4. GENERAR PRONÓSTICOS ML MANUALMENTE
-    if request.method == "POST" and request.POST.get("accion") == "generar_predicciones":
-        aplicar_predicciones_a_quiniela(quiniela)
-        messages.success(request, "¡Pronósticos 1X2, Dobles, Triples y Pleno al 15 calculados con éxito por la IA!")
-        return redirect("ligas:quiniela_confeccionar", quiniela_id=quiniela.id)
-
-    # 5. EVALUAR RESULTADOS REALES
+    # 4. EVALUAR RESULTADOS REALES
     if request.method == "POST" and request.POST.get("accion") == "evaluar":
         res = quiniela.evaluar_aciertos()
         messages.success(
@@ -727,7 +724,7 @@ def quiniela_confeccionar(request, quiniela_id):
         c = casillas_dict.get(pos)
         casillas_list.append({"posicion": pos, "casilla": c, "partido": c.partido if c else None})
 
-    partidos_choices = obtener_partidos_choices(temporada=temporada, jornada=jornada)
+    partidos_choices = obtener_partidos_choices(temporada=temporada, jornada=jornada, quiniela=quiniela)
 
     generador = GeneradorQuiniela(n_dobles=quiniela.n_dobles, n_triples=quiniela.n_triples)
     boleto_preview = generador.generar_desde_quiniela(quiniela)

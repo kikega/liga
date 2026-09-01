@@ -45,14 +45,13 @@
             </form>
 
             <!-- Generar Pronósticos ML -->
-            <form method="post" action="{% url 'ligas:quiniela_confeccionar' quiniela.id %}">
-                {% csrf_token %}
-                <input type="hidden" name="accion" value="generar_predicciones">
-                <button type="submit"
-                        class="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3.5 py-2.5 rounded-2xl shadow transition cursor-pointer">
-                    🧠 Generar Pronósticos ML
-                </button>
-            </form>
+            <button type="submit"
+                    form="form-confeccionar-casillas"
+                    onclick="document.getElementById('casillas-form-accion').value='generar_predicciones';"
+                    class="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3.5 py-2.5 rounded-2xl shadow transition cursor-pointer"
+                    title="Guarda los partidos seleccionados y genera los pronósticos ML para esta Quiniela">
+                🧠 Generar Pronósticos ML
+            </button>
 
             <!-- Sincronizar / Evaluar Resultados -->
             <form method="post" action="{% url 'ligas:quiniela_confeccionar' quiniela.id %}">
@@ -207,7 +206,7 @@
                 <button type="submit"
                         onclick="document.getElementById('casillas-form-accion').value='guardar_casillas';"
                         class="bg-slate-900 hover:bg-slate-800 text-white font-black text-sm px-6 py-3.5 rounded-2xl shadow-md transition cursor-pointer flex items-center gap-2">
-                    💾 Guardar Asignación de Casillas y Pronósticos ML
+                    💾 Guardar Casillas y Calcular Pronósticos ML
                 </button>
             </div>
 

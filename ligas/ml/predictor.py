@@ -166,33 +166,52 @@ def entrenar_modelo(
     return predictor_full, exactitud, brier, reporte, path
 
 
-def predecir_jornada(
-    jornada: Any, path: Optional[str] = None, form_window: int = 5
+def predecir_partidos(
+    partidos_a_predecir: List[Any],
+    temporada: Optional[Any] = None,
+    path: Optional[str] = None,
+    form_window: int = 5,
 ) -> List[Prediccion]:
-    """Predice todos los partidos de la jornada indicada y almacena las Prediccion."""
-    partidos_a_predecir = list(
-        jornada.partidos.select_related("local", "visitante").prefetch_related("ausencias__jugador")
-    )
+    """Predice una lista arbitraria de partidos y almacena sus Prediccion."""
     if not partidos_a_predecir:
         return []
 
-    historico = list(
-        jornada.temporada.partidos_historicos()
-        .select_related("jornada__temporada", "local", "visitante")
-        .prefetch_related("ausencias__jugador")
-    )
-    todos = historico + partidos_a_predecir
+    # Determinar temporada de referencia para el histórico de partidos
+    if temporada is None:
+        for p in partidos_a_predecir:
+            if getattr(p, "jornada", None) and getattr(p.jornada, "temporada", None):
+                temporada = p.jornada.temporada
+                break
+            elif getattr(p, "temporada", None):
+                temporada = p.temporada
+                break
+
+    historico = []
+    if temporada is not None and hasattr(temporada, "partidos_historicos"):
+        historico = list(
+            temporada.partidos_historicos()
+            .select_related("jornada__temporada", "local", "visitante")
+            .prefetch_related("ausencias__jugador")
+        )
+
+    # Combinar histórico con los partidos a predecir evitando duplicados
+    partidos_ids_hist = {p.id for p in historico}
+    todos = historico + [p for p in partidos_a_predecir if p.id not in partidos_ids_hist]
     extractor = FeatureExtractor(form_window=form_window)
     datos = extractor.extract(todos)
 
-    filas = [datos["indices"][p.id] for p in partidos_a_predecir]
+    filas = [datos["indices"][p.id] for p in partidos_a_predecir if p.id in datos["indices"]]
+    partidos_validos = [p for p in partidos_a_predecir if p.id in datos["indices"]]
+    if not filas:
+        return []
+
     X_pred = datos["X"][filas]
 
     predictor = Predictor.cargar(path)
     proba_gbdt, resultados = predictor.predecir(X_pred)
 
     predicciones = []
-    for partido, probs_gbdt, resultado in zip(partidos_a_predecir, proba_gbdt, resultados):
+    for partido, probs_gbdt, resultado in zip(partidos_validos, proba_gbdt, resultados):
         # Combinar con probabilidades de Dixon-Coles si está disponible
         try:
             p_dc = predictor.dixon_coles.predict_1x2_probabilities(
@@ -219,3 +238,21 @@ def predecir_jornada(
         predicciones.append(pred)
 
     return predicciones
+
+
+def predecir_jornada(
+    jornada: Any, path: Optional[str] = None, form_window: int = 5
+) -> List[Prediccion]:
+    """Predice todos los partidos de la jornada indicada y almacena las Prediccion."""
+    partidos_a_predecir = list(
+        jornada.partidos.select_related("local", "visitante").prefetch_related("ausencias__jugador")
+    )
+    if not partidos_a_predecir:
+        return []
+
+    return predecir_partidos(
+        partidos_a_predecir=partidos_a_predecir,
+        temporada=getattr(jornada, "temporada", None),
+        path=path,
+        form_window=form_window,
+    )

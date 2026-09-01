@@ -295,10 +295,11 @@ class PartidoRowForm(forms.Form):
         return parse_fecha_flexible(self.cleaned_data.get("fecha"))
 
 
-def obtener_partidos_choices(temporada=None, jornada=None):
-    """Devuelve los partidos de la jornada deportiva indicada y aquellos coincidentes en fechas
+def obtener_partidos_choices(temporada=None, jornada=None, quiniela=None):
+    """Devuelve los partidos disponibles para asignar a las casillas de la Quiniela.
 
-    (por ejemplo, 1ª/2ª Masc J3 + Liga F J1), agrupados por división.
+    Incluye siempre los partidos ya grabados en la Quiniela y los partidos disponibles
+    de la temporada/jornada agrupados por división.
     """
     qs = Partido.objects.select_related("local", "visitante", "jornada__temporada").prefetch_related(
         "local__participaciones__division", "visitante__participaciones__division"
@@ -306,13 +307,24 @@ def obtener_partidos_choices(temporada=None, jornada=None):
 
     partidos_dict = {}
 
+    # 1. Incluir siempre de forma prioritaria los partidos ya asignados a las casillas de la Quiniela
+    if quiniela is not None:
+        if not temporada and quiniela.temporada:
+            temporada = quiniela.temporada
+        if not jornada and quiniela.jornada:
+            jornada = quiniela.jornada
+
+        for c in quiniela.casillas.select_related("partido__local", "partido__visitante", "partido__jornada__temporada").all():
+            if c.partido:
+                partidos_dict[c.partido.id] = c.partido
+
     if jornada is not None:
-        # 1. Partidos directos de la jornada deportiva base
+        # Partidos directos de la jornada deportiva base
         directos = list(qs.filter(jornada=jornada).order_by("fecha", "id"))
         for p in directos:
-            partidos_dict[p.id] = p
+            partidos_dict.setdefault(p.id, p)
 
-        # 2. Sincronización por fechas de fin de semana (±2 días)
+        # Sincronización por fechas de fin de semana (±2 días)
         fechas = [p.fecha for p in directos if p.fecha]
         if fechas:
             f_min = min(fechas) - timedelta(days=2)
@@ -327,7 +339,7 @@ def obtener_partidos_choices(temporada=None, jornada=None):
             for p in coincidentes:
                 partidos_dict.setdefault(p.id, p)
 
-        # 3. Si alguna categoría (como Liga F) no tiene partidos por fecha aún, incluir los de su jornada abierta más cercana
+        # Si alguna categoría (como Liga F) no tiene partidos por fecha aún, incluir los de su jornada más cercana
         divisiones = list(Division.objects.all().order_by("categoria", "nivel"))
         div_ids_presentes = {p.division_temporada_id for p in partidos_dict.values()}
         for div in divisiones:
@@ -343,9 +355,15 @@ def obtener_partidos_choices(temporada=None, jornada=None):
 
         partidos = list(partidos_dict.values())
     elif temporada is not None:
-        partidos = list(qs.filter(jornada__temporada=temporada).order_by("jornada__numero", "fecha", "id"))
+        partidos_temp = list(qs.filter(jornada__temporada=temporada).order_by("jornada__numero", "fecha", "id"))
+        for p in partidos_temp:
+            partidos_dict.setdefault(p.id, p)
+        partidos = list(partidos_dict.values())
     else:
-        partidos = list(qs.order_by("-id")[:40])
+        partidos_restantes = list(qs.order_by("-id")[:40])
+        for p in partidos_restantes:
+            partidos_dict.setdefault(p.id, p)
+        partidos = list(partidos_dict.values())
 
     divisiones = list(Division.objects.all().order_by("categoria", "nivel"))
     partidos_por_div = {div.id: [] for div in divisiones}

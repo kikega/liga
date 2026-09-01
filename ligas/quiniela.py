@@ -326,23 +326,26 @@ class GeneradorQuiniela:
 
 def aplicar_predicciones_a_quiniela(quiniela: Any) -> None:
     """Ejecuta el pipeline ML sobre los partidos de la Quiniela y persiste los pronósticos en cada CasillaQuiniela."""
-    from ligas.ml.predictor import predecir_jornada, Predictor
+    from ligas.ml.predictor import predecir_partidos
     from ligas.models import CasillaQuiniela
 
-    # Asegurar predicciones ML en los partidos de la quiniela
-    casillas = list(quiniela.casillas.select_related("partido__local", "partido__visitante", "partido__prediccion"))
-    partidos = [c.partido for c in casillas]
+    # Asegurar predicciones ML específicamente en los partidos grabados en las casillas de la quiniela
+    casillas = list(
+        quiniela.casillas.select_related("partido__local", "partido__visitante", "partido__prediccion")
+        .order_by("posicion")
+    )
+    partidos = [c.partido for c in casillas if c.partido]
 
-    if quiniela.jornada:
+    if partidos:
         try:
-            predecir_jornada(quiniela.jornada)
+            predecir_partidos(partidos, temporada=quiniela.temporada)
         except Exception:
             pass
 
     generador = GeneradorQuiniela(n_dobles=quiniela.n_dobles, n_triples=quiniela.n_triples)
     boleto = generador.generar_desde_quiniela(quiniela)
 
-    # Persistir en las casillas
+    # Persistir en las casillas los pronósticos calculados respetando los partidos asignados
     for fila in boleto["filas"]:
         CasillaQuiniela.objects.filter(pk=fila["casilla_id"]).update(
             signo_base=fila["signo_base"],
